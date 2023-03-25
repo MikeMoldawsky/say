@@ -14,7 +14,7 @@ export async function getChatGPTCompletion(options: ChatGPTOptions): Promise<str
 	};
 
 	const data = {
-		model: model || "text-davinci-003",
+		model,
 		prompt,
 		max_tokens: maxTokens || 50,
 		temperature: temperature || 0.7,
