@@ -23,7 +23,7 @@ const BotList: React.FC<BotListProps> = ({ bots }) => {
 					<BotCard key={bot.id} bot={bot} />
 				))}
 			</div>
-			<div className="fixed bottom-4 right-4">
+			<div className="mt-8 w-full flex justify-center">
 				<AddBotButton />
 			</div>
 		</div>
