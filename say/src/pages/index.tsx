@@ -1,38 +1,19 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import Header from '../components/Header';
+import BotList from '../components/BotList';
 
-function ChatGPTDemo() {
-    const [prompt, setPrompt] = useState('');
-    const [completion, setCompletion] = useState('');
-
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        try {
-            const response = await axios.post('/api/completions', { prompt });
-            setCompletion(response.data.completion);
-        } catch (error) {
-            console.error('Error fetching completion:', error);
-        }
-    };
+const IndexPage: React.FC = () => {
+    const [bots, setBots] = useState([
+        { id: 1, name: 'Bot 1', behavior: 'happy' },
+        { id: 2, name: 'Bot 2', behavior: 'sad' },
+    ]);
 
     return (
         <div>
-            <h1>ChatGPT Demo</h1>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Prompt:
-                    <input
-                        type="text"
-                        value={prompt}
-                        onChange={(event) => setPrompt(event.target.value)}
-                    />
-                </label>
-                <button type="submit">Get Completion</button>
-            </form>
-            <p>Completion: {completion}</p>
+            <Header />
+            <BotList bots={bots} />
         </div>
     );
-}
+};
 
-export default ChatGPTDemo;
+export default IndexPage;
