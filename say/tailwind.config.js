@@ -5,12 +5,18 @@ module.exports = {
   theme: {
     extend: {
       backgroundColor: {
-        'primary': '#FFDE59',
+        'primary': '`#6EE7B7',
+        'secondary': '#3B82F6',
+        'accent': '#9333EA',
+      },
+      textColor: {
+        'primary': '#6EE7B7',
+        'secondary': '#3B82F6',
+        'accent': '#9333EA',
       },
     },
   },
-  variants: {
-    extend: {},
-  },
+  variants: {},
   plugins: [],
 }
+

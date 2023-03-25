@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-family: 'Inter', sans-serif;
+}
+
 body {
-  @apply bg-primary;
+  background-color: #f7f8fa;
 }
