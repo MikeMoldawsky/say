@@ -11,16 +11,18 @@ interface BotCardProps {
 	bot: Bot;
 }
 
-const BotCard = ({ bot }: BotCardProps) => {
+const BotCard : React.FC<BotCardProps> = ({ bot }) => {
 	return (
 		<div>
 			<h3>{bot.name}</h3>
 			<p>{bot.behavior}</p>
 			<Link href={`/configure-bot?id=${bot.id}`}>
-				<button as="a">Configure</button>
+
+				<button>Configure</button>
 			</Link>
 			<Link href={`/chat?id=${bot.id}`}>
-				<button as="a">Chat</button>
+					<button>Chat</button>
+
 			</Link>
 			<button>Delete</button>
 		</div>

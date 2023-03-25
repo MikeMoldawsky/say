@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ConfigurationForm = () => {
+const ConfigurationForm: React.FC = () => {
 	return (
 		<form>
 			<label htmlFor="botName">Bot Name:</label>

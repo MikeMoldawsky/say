@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 
-const AddBotButton = () => {
+const AddBotButton :  React.FC = () => {
 	return (
 		<Link href="/configure-bot">
-			<button as="a">Add Bot</button>
+				<button>Add Bot</button>
 		</Link>
 	);
 };

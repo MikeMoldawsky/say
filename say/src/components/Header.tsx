@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Header = () => {
+const Header: React.FC = () => {
 	return (
 		<header>
 			<h1>AI Bot Assistant</h1>
