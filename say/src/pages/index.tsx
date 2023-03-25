@@ -9,7 +9,7 @@ const IndexPage: React.FC = () => {
     ]);
 
     return (
-        <div>
+        <div >
             <Header />
             <BotList bots={bots} />
         </div>
