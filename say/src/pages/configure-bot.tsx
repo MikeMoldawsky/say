@@ -6,7 +6,9 @@ const ConfigureBotPage: React.FC = () => {
     return (
         <div>
             <Header />
-            <BotConfiguration />
+            <div className="pt-20 px-4">
+                <BotConfiguration />
+            </div>
         </div>
     );
 };

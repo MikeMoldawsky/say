@@ -11,7 +11,9 @@ const IndexPage: React.FC = () => {
     return (
         <div >
             <Header />
-            <BotList bots={bots} />
+            <div className="pt-20 px-4">
+                <BotList bots={bots} />
+            </div>
         </div>
     );
 };

@@ -6,7 +6,9 @@ const ChatPage: React.FC = () => {
     return (
         <div>
             <Header />
-            <ChatWindow />
+            <div className="pt-20 px-4">
+                <ChatWindow />
+            </div>
         </div>
     );
 };
