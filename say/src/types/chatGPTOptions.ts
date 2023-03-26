@@ -6,9 +6,15 @@ export interface ChatGPTCompletionsOptions {
 	topP?: number;
 }
 
+export interface ChatGPTMessage {
+	id: string,
+	role: string,
+	content: string
+}
+
 export interface ChatGPTChatOptions {
 	model: string,
-	messages: [any];
+	messages: ChatGPTMessage[];
 	maxTokens?: number;
 	temperature?: number;
 	topP?: number;

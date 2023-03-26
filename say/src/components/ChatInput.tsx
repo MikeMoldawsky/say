@@ -1,6 +1,6 @@
 // ChatInput.tsx
 import React, { useState } from 'react';
-import { sendMessage } from '../api/chat';
+import { chatWithBackendAPI } from '../clients/sayClient';
 import { Message } from './ChatMessage';
 
 interface ChatInputProps {

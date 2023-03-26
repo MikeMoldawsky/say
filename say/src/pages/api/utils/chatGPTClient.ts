@@ -1,5 +1,5 @@
 // utils/chatGPT.ts
-import { ChatGPTChatOptions, ChatGPTCompletionsOptions } from '@/types/chatGPTCompletionsOptions';
+import { ChatGPTChatOptions, ChatGPTCompletionsOptions } from '../../../types/chatGPTOptions';
 import axios from 'axios';
 
 const chatGPT_API_KEY = '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'; // TODO: remove to env var
@@ -7,7 +7,7 @@ const chatGPT_COMPLETIONS_ENDPOINT = 'https://api.openai.com/v1/completions';
 const chatGPT_CHAT_ENDPOINT = 'https://api.openai.com/v1/chat';
 
 
-export class ChatGPT {
+export class ChatGPTClient {
 
 	async getChatGPTCompletion(options: ChatGPTCompletionsOptions): Promise<string> {
 		const {model, prompt, maxTokens, temperature, topP} = options;
@@ -63,5 +63,4 @@ export class ChatGPT {
 			throw error;
 		}
 	}
-
 }

@@ -4,6 +4,10 @@ import ChatMessages from './ChatMessages';
 import ChatInput from './ChatInput';
 import BotInformation from './BotInformation';
 import { Bot } from './Bot';
+import { ChatGPTChatOptions } from '../types/chatGPTOptions';
+import { convertChatWindowMessagesToChatGPTMessages } from "../utils/messageConverter";
+import { chatWithBackendAPI } from '@/clients/chatClient';
+
 
 interface ChatBotProps {
 	bot: Bot;
@@ -13,8 +17,29 @@ interface ChatBotProps {
 const ChatWindow: React.FC<ChatBotProps> = ({bot}) => {
 	const [messages, setMessages] = useState<Message[]>([]);
 
-	const handleNewMessage = (message: Message) => {
-		setMessages((prevMessages) => [...prevMessages, message]);
+	const handleNewMessage = async (userMessage: string) => {
+		const systemMessage = 'Your assistant is a helpful bot that can answer your questions.';
+		const chatGPTMessages = convertChatWindowMessagesToChatGPTMessages(messages);
+
+		const chatOptions: ChatGPTChatOptions = {
+			model: 'gpt-3.5-turbo',
+			messages: [
+				{ id: uuidv4(), role: 'system', content: systemMessage },
+				...chatGPTMessages,
+				{ id: uuidv4(), role: 'user', content: userMessage },
+			],
+		};
+
+		try {
+			const assistantMessage = await chatWithBackendAPI(chatOptions);
+			setMessages((prevMessages) => [
+				...prevMessages,
+				{ id: uuidv4(), role: 'user', content: userMessage, createdAt: new Date() },
+				{ id: uuidv4(), role: 'assistant', content: assistantMessage, createdAt: new Date() },
+			]);
+		} catch (error) {
+			console.error('Error getting ChatGPT response:', error);
+		}
 	};
 
 	return (
@@ -34,3 +59,4 @@ const ChatWindow: React.FC<ChatBotProps> = ({bot}) => {
 };
 
 export default ChatWindow;
+
