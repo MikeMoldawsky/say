@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import  { Message } from './ChatMessage';
 import ChatMessages from './ChatMessages';
-import { Message } from './ChatMessage';
 import ChatInput from './ChatInput';
 
 const ChatWindow: React.FC = () => {
@@ -11,10 +11,12 @@ const ChatWindow: React.FC = () => {
 	};
 
 	return (
-		<div>
-			<h2>Chat with Bot</h2>
-			<ChatMessages messages={messages} />
-			<ChatInput onNewMessage={handleNewMessage} />
+		<div className="bg-gray-100 min-h-screen">
+			<h2 className="text-center text-3xl font-semibold pt-10 pb-5">Chat with Bot</h2>
+			<div className="bg-white max-w-md mx-auto rounded-lg shadow">
+				<ChatMessages messages={messages} />
+				<ChatInput onNewMessage={handleNewMessage} />
+			</div>
 		</div>
 	);
 };

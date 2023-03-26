@@ -8,7 +8,7 @@ interface ChatMessagesProps {
 
 const ChatMessages: React.FC<ChatMessagesProps> = ({ messages }) => {
 	return (
-		<div>
+		<div className="overflow-auto h-96">
 			{messages.map((message, index) => (
 				<ChatMessage key={index} message={message} />
 			))}
