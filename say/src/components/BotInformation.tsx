@@ -1,11 +1,21 @@
 import React from 'react';
 import { Bot } from './Bot';
+import { useRouter } from 'next/router';
 
 interface BotInformationProps {
 	bot: Bot;
 }
 
 const BotInformation: React.FC<BotInformationProps> = ({ bot }) => {
+	const router = useRouter();
+
+	const switchBot = () => {
+		const newBotId = bot.id === 1 ? 2 : 1;
+		router.push(`/chat?id=${newBotId}`);
+	};
+
+	const buttonText = bot.id === 1 ? "Change to Sad Assistant" : "Change to Happy Assistant";
+
 	return (
 		<div className="h-screen overflow-auto p-4 flex flex-col">
 			<div className="flex-grow flex flex-col items-center">
@@ -18,6 +28,12 @@ const BotInformation: React.FC<BotInformationProps> = ({ bot }) => {
 				<p className="font-semibold">System Message:</p>
 				<p className="">{bot.systemMessage}</p>
 			</div>
+			<button
+				onClick={switchBot}
+				className="bg-blue-500 text-white px-5 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+			>
+				{buttonText}
+			</button>
 		</div>
 	);
 };
