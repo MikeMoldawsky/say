@@ -1,10 +1,17 @@
+// ChatMessages.tsx
 import React from 'react';
-import ChatMessage from './ChatMessage';
+import ChatMessage, { Message } from './ChatMessage';
 
-const ChatMessages: React.FC = () => {
+interface ChatMessagesProps {
+	messages: Message[];
+}
+
+const ChatMessages: React.FC<ChatMessagesProps> = ({ messages }) => {
 	return (
 		<div>
-			{/* Add ChatMessage components here */}
+			{messages.map((message, index) => (
+				<ChatMessage key={index} message={message} />
+			))}
 		</div>
 	);
 };

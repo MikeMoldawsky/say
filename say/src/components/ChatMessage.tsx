@@ -1,11 +1,13 @@
 import React from 'react';
 
+export interface Message {
+	sender: 'user' | 'bot';
+	text: string;
+	timestamp: string;
+}
+
 interface ChatMessageProps {
-	message: {
-		sender: 'user' | 'bot';
-		text: string;
-		timestamp: string;
-	};
+	message: Message;
 }
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
@@ -13,7 +15,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
 
 	return (
 		<div className={`chat-message ${sender}`}>
-			{sender === 'bot' && <img src="/bot-avatar.png" alt="Bot Avatar" />}
+			{sender === 'bot' ? <img src="https://i.imgur.com/8Km9tLL.png" alt="Bot Avatar" /> : <img src="https://i.imgur.com/83aoGyM.gif" alt="Bot Avatar" />}
 			<div className="message-content">
 				<p>{text}</p>
 				<span className="timestamp">{timestamp}</span>

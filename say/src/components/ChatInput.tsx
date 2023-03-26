@@ -1,46 +1,48 @@
+// ChatInput.tsx
 import React, { useState } from 'react';
-import axios from 'axios';
+import { sendMessage } from '../api/chat';
+import { Message } from './ChatMessage';
 
 interface ChatInputProps {
-	onSubmit: (message: string) => void;
+	onNewMessage: (message: Message) => void;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSubmit }) => {
-	const [prompt, setPrompt] = useState('');
-	const [completion, setCompletion] = useState('');
+const ChatInput: React.FC<ChatInputProps> = ({ onNewMessage }) => {
+	const [inputValue, setInputValue] = useState('');
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		if (!inputValue) return;
 
-		try {
-			const response = await axios.post('/api/completions', { prompt });
-			setCompletion(response.data.completion);
-		} catch (error) {
-			console.error('Error fetching completion:', error);
-		}
+		const userMessage: Message = {
+			sender: 'user',
+			text: inputValue,
+			timestamp: new Date().toISOString(),
+		};
+		onNewMessage(userMessage);
+
+		const botMessageText = await sendMessage(inputValue);
+		const botMessage: Message = {
+			sender: 'bot',
+			text: botMessageText,
+			timestamp: new Date().toISOString(),
+		};
+		onNewMessage(botMessage);
+
+		setInputValue('');
 	};
 
 	return (
-		<div>
-			<h1>ChatGPT Demo</h1>
-			<form onSubmit={handleSubmit}>
-				<label>
-					Prompt:
-					<input
-						type="text"
-						value={prompt}
-						onChange={(event) => setPrompt(event.target.value)}
-						placeholder="Type your message..."
-					/>
-				</label>
-				<button type="submit">Get Completion</button>
-			</form>
-			<p>Completion: {completion}</p>
-		</div>
+		<form onSubmit={handleSubmit}>
+			<input
+				type="text"
+				value={inputValue}
+				onChange={(event) => setInputValue(event.target.value)}
+				placeholder="Type your message..."
+			/>
+			<button type="submit">Send</button>
+		</form>
 	);
 };
 
-export default ChatInput
-
-
-
+export default ChatInput;
