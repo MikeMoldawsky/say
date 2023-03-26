@@ -8,6 +8,7 @@ interface Bot {
 	behavior: string;
 	imageUrl: string;
 	description: string;
+	systemMessage: string;
 }
 
 interface BotListProps {

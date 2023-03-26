@@ -4,7 +4,7 @@ import React from 'react';
 export interface SayMessage {
 	id: string;
 	createdAt: Date;
-	role: 'user' | 'assistant' | 'system';
+	role: string;
 	content: string;
 }
 

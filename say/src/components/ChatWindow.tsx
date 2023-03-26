@@ -16,7 +16,7 @@ interface ChatBotProps {
 
 const ChatWindow: React.FC<ChatBotProps> = ({bot}) => {
 	const [messages, setMessages] = useState<SayMessage[]>([]);
-	const systemMessages = [{ id: uuidv4(), role: 'system', content: bot.systemMessage, createdAt: new Date() }];
+	const systemMessages: SayMessage[] = [{ id: uuidv4(), role: 'system', content: bot.systemMessage, createdAt: new Date() }];
 
 	const handleNewMessage = async (userContent: string) => {
 
