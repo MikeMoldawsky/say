@@ -1,34 +1,17 @@
-// ChatInput.tsx
 import React, { useState } from 'react';
-import { chatWithBackendAPI } from '../clients/sayClient';
-import { Message } from './ChatMessage';
 
 interface ChatInputProps {
-	onNewMessage: (message: Message) => void;
+	onSubmit: (text: string) => void;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onNewMessage }) => {
+const ChatInput: React.FC<ChatInputProps> = ({  onSubmit }) => {
 	const [inputValue, setInputValue] = useState('');
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		if (!inputValue) return;
 
-		const userMessage: Message = {
-			sender: 'user',
-			text: inputValue,
-			timestamp: new Date().toISOString(),
-		};
-		onNewMessage(userMessage);
-
-		const botMessageText = await sendMessage(inputValue);
-		const botMessage: Message = {
-			sender: 'bot',
-			text: botMessageText,
-			timestamp: new Date().toISOString(),
-		};
-		onNewMessage(botMessage);
-
+		onSubmit(inputValue);
 		setInputValue('');
 	};
 

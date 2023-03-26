@@ -1,9 +1,9 @@
-import { ChatGPTChatOptions } from '@/types/chatGPTOptions';
+import { ChatGPTMessage } from '../types/chatGPTOptions';
 import axios from 'axios';
 
-export async function chatWithBackendAPI(options: ChatGPTChatOptions): Promise<string> {
+export async function chatWithBackendAPI(messages: ChatGPTMessage[]): Promise<string> {
 	try {
-		const response = await axios.post('/api/chat', options);
+		const response = await axios.post('/api/chat', messages);
 		const assistantMessage = response.data.message;
 		return assistantMessage;
 	} catch (error) {

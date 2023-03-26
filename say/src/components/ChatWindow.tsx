@@ -1,40 +1,46 @@
 import React, { useState } from 'react';
-import  { Message } from './ChatMessage';
+import  { SayMessage } from './ChatMessage';
 import ChatMessages from './ChatMessages';
 import ChatInput from './ChatInput';
 import BotInformation from './BotInformation';
 import { Bot } from './Bot';
-import { ChatGPTChatOptions } from '../types/chatGPTOptions';
 import { convertChatWindowMessagesToChatGPTMessages } from "../utils/messageConverter";
-import { chatWithBackendAPI } from '@/clients/chatClient';
+import { chatWithBackendAPI } from '../clients/sayClient';
+import { v4 as uuidv4 } from 'uuid';
+import { ChatGPTMessage } from '../types/chatGPTOptions';
 
 
 interface ChatBotProps {
 	bot: Bot;
 }
 
+const systemMessage = 'Your are the happiest assistant in the world. Make sure you add happy vibe to every answer.';
 
 const ChatWindow: React.FC<ChatBotProps> = ({bot}) => {
-	const [messages, setMessages] = useState<Message[]>([]);
+	const [messages, setMessages] = useState<SayMessage[]>([{ id: uuidv4(), role: 'system', content: systemMessage, createdAt: new Date() }]);
 
-	const handleNewMessage = async (userMessage: string) => {
-		const systemMessage = 'Your assistant is a helpful bot that can answer your questions.';
-		const chatGPTMessages = convertChatWindowMessagesToChatGPTMessages(messages);
+	const handleNewMessage = async (userContent: string) => {
 
-		const chatOptions: ChatGPTChatOptions = {
-			model: 'gpt-3.5-turbo',
-			messages: [
-				{ id: uuidv4(), role: 'system', content: systemMessage },
-				...chatGPTMessages,
-				{ id: uuidv4(), role: 'user', content: userMessage },
-			],
-		};
+
+		// Make sure to use the updated messages state for the chatGPTMessages
+		const userSayMessage = { id: uuidv4(), role: 'user', content: userContent, createdAt: new Date() };
+		const updatedMessages = [
+			...messages,
+			userSayMessage
+		];
+
+		// Add user message and system message to the messages state
+		setMessages((prevMessages) => [
+			...prevMessages,
+			{ id: uuidv4(), role: 'user', content: userContent, createdAt: new Date() },
+		]);
+
 
 		try {
-			const assistantMessage = await chatWithBackendAPI(chatOptions);
+			const chatGPTMessages: ChatGPTMessage[] = convertChatWindowMessagesToChatGPTMessages(updatedMessages);
+			const assistantMessage = await chatWithBackendAPI(chatGPTMessages);
 			setMessages((prevMessages) => [
 				...prevMessages,
-				{ id: uuidv4(), role: 'user', content: userMessage, createdAt: new Date() },
 				{ id: uuidv4(), role: 'assistant', content: assistantMessage, createdAt: new Date() },
 			]);
 		} catch (error) {
@@ -51,7 +57,7 @@ const ChatWindow: React.FC<ChatBotProps> = ({bot}) => {
 				</div>
 				<div className="w-2/3 bg-white rounded-lg shadow">
 					<ChatMessages messages={messages} />
-					<ChatInput onNewMessage={handleNewMessage} />
+					<ChatInput onSubmit={handleNewMessage} />
 				</div>
 			</div>
 		</div>

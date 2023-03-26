@@ -7,7 +7,6 @@ export interface ChatGPTCompletionsOptions {
 }
 
 export interface ChatGPTMessage {
-	id: string,
 	role: string,
 	content: string
 }

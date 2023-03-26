@@ -1,9 +1,9 @@
 // ChatMessages.tsx
 import React from 'react';
-import ChatMessage, { Message } from './ChatMessage';
+import ChatMessage, { SayMessage } from './ChatMessage';
 
 interface ChatMessagesProps {
-	messages: Message[];
+	messages: SayMessage[];
 }
 
 const ChatMessages: React.FC<ChatMessagesProps> = ({ messages }) => {

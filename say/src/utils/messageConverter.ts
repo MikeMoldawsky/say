@@ -1,10 +1,9 @@
-import { Message } from "../components/ChatMessage";
+import { SayMessage } from "../components/ChatMessage";
 import { ChatGPTMessage } from "../types/chatGPTOptions";
 
-export function convertChatWindowMessagesToChatGPTMessages(messages: Message[]): ChatGPTMessage[] {
+export function convertChatWindowMessagesToChatGPTMessages(messages: SayMessage[]): ChatGPTMessage[] {
 	return messages.map((message) => ({
-		id: message.id,
-		role: message.sender === "user" ? "user" : "assistant",
-		content: message.text,
+		role: message.role,
+		content: message.content,
 	}));
 }
