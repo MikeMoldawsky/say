@@ -1,13 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-
-interface Bot {
-	id: number;
-	name: string;
-	behavior: string;
-	imageUrl: string;
-	description: string;
-}
+import { Bot } from './Bot';
 
 interface BotCardProps {
 	bot: Bot;

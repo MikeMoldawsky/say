@@ -39,7 +39,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onNewMessage }) => {
 				value={inputValue}
 				onChange={(event) => setInputValue(event.target.value)}
 				placeholder="Type your message..."
-				className="flex-grow mr-4 px-3 py-2 rounded border-2 border-gray-200 focus:outline-none focus:border-blue-400"
+				className="flex-grow mr-4 px-3 py-2 rounded border-2 border-gray-200 focus:outline-none focus:border-blue-400 min-h-[50px] max-h-[100px] resize-y overflow-auto"
 			/>
 			<button
 				type="submit"
