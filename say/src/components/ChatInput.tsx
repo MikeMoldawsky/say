@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 
 interface ChatInputProps {
 	onSubmit: (text: string) => void;
+	className?: string;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({  onSubmit }) => {
+const ChatInput: React.FC<ChatInputProps> = ({  onSubmit, className }) => {
 	const [inputValue, setInputValue] = useState('');
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -16,7 +17,7 @@ const ChatInput: React.FC<ChatInputProps> = ({  onSubmit }) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="flex items-center p-4">
+		<form onSubmit={handleSubmit} className={`flex items-center p-4  ${className}`}>
 			<input
 				type="text"
 				value={inputValue}
