@@ -1,21 +1,18 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { Chat } from '../../utils/chat';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import {ChatGPT } from '../../utils/chatGPT';
 
-const chat = new Chat();
+const chatGPT = new ChatGPT();
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
-      const { message } = req.body;
-      const responseMessage = await chat.sendMessage(message);
-      res.status(200).json({ message: responseMessage });
+      const prompt = req.body.prompt;
+      const completion = await chatGPT.chat({ prompt, model: "text-davinci-003" });
+      res.status(200).json({ completion });
     } catch (error) {
-      console.error('Error processing chat message:', error);
-      res.status(500).json({ message: 'Error processing chat message' });
+      res.status(500).json({ error: 'Error fetching ChatGPT completion' });
     }
   } else {
-    res.setHeader('Allow', 'POST');
-    res.status(405).end('Method Not Allowed');
+    res.status(405).json({ error: 'Method Not Allowed' });
   }
-};
-
+}
