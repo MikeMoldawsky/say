@@ -12,14 +12,16 @@ interface ChatMessagesProps {
 
 const ChatMessages: React.FC<ChatMessagesProps> = ({ messages, title, className, onNewMessage }) => {
 	return (
-		<div className={`flex flex-col h-screen overflow-auto ${className}`}>
+		<div className={`flex flex-col h-full ${className}`}>
 			<h2 className="text-3xl font-semibold pl-5 py-5">{title}</h2>
 			<div className="overflow-auto flex-grow">
 				{messages.map((message, index) => (
 					<ChatMessage key={index} message={message} />
 				))}
 			</div>
-			<ChatInput onSubmit={onNewMessage} className="border-t border-gray-300" />
+			<div className="border-t border-gray-300">
+				<ChatInput onSubmit={onNewMessage} />
+			</div>
 		</div>
 	);
 };

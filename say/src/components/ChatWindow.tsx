@@ -13,20 +13,15 @@ interface ChatBotProps {
 	bot: Bot;
 }
 
-const systemMessage = 'Your are the happiest assistant in the world. Make sure you add happy vibe to every answer.';
 
 const ChatWindow: React.FC<ChatBotProps> = ({bot}) => {
-	const [messages, setMessages] = useState<SayMessage[]>([{ id: uuidv4(), role: 'system', content: systemMessage, createdAt: new Date() }]);
+	const [messages, setMessages] = useState<SayMessage[]>([]);
+	const systemMessages = [{ id: uuidv4(), role: 'system', content: bot.systemMessage, createdAt: new Date() }];
 
 	const handleNewMessage = async (userContent: string) => {
 
-
 		// Make sure to use the updated messages state for the chatGPTMessages
 		const userSayMessage = { id: uuidv4(), role: 'user', content: userContent, createdAt: new Date() };
-		const updatedMessages = [
-			...messages,
-			userSayMessage
-		];
 
 		// Add user message and system message to the messages state
 		setMessages((prevMessages) => [
@@ -34,9 +29,12 @@ const ChatWindow: React.FC<ChatBotProps> = ({bot}) => {
 			{ id: uuidv4(), role: 'user', content: userContent, createdAt: new Date() },
 		]);
 
-
 		try {
-			const chatGPTMessages: ChatGPTMessage[] = convertChatWindowMessagesToChatGPTMessages(updatedMessages);
+			const chatGPTMessages: ChatGPTMessage[] = convertChatWindowMessagesToChatGPTMessages([
+				...systemMessages,
+				...messages,
+				userSayMessage
+			]);
 			const assistantMessage = await chatWithBackendAPI(chatGPTMessages);
 			setMessages((prevMessages) => [
 				...prevMessages,
@@ -48,12 +46,14 @@ const ChatWindow: React.FC<ChatBotProps> = ({bot}) => {
 	};
 
 	return (
-		<div className="bg-gray-100 min-h-screen flex">
-			<div className="w-1/3 bg-white rounded-lg shadow">
-				<BotInformation bot={bot} />
-			</div>
-			<div className="w-2/3 bg-white rounded-lg shadow">
-				<ChatMessages messages={messages} title="Your Wish Is My Command" onNewMessage={handleNewMessage} />
+		<div className="bg-gray-100 min-h-screen flex flex-col">
+			<div className="flex-grow flex">
+				<div className="w-1/3 h-screen bg-white p-4 rounded-lg shadow overflow-auto">
+					<BotInformation bot={bot} />
+				</div>
+				<div className="w-2/3 h-screen bg-white rounded-lg shadow flex flex-col">
+					<ChatMessages messages={messages} title="Your Wish Is My Command" onNewMessage={handleNewMessage} />
+				</div>
 			</div>
 		</div>
 	);
