@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ChatGPTClient } from './utils/chatGPTClient';
-import { ChatGPTMessage } from '../../types/chatGPTOptions';
+import { ChatGPTMessage } from '../../utils/chatGPTOptions';
 
 const chatGPT = new ChatGPTClient();
 
