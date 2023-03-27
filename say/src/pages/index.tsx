@@ -13,7 +13,7 @@ const IndexPage: React.FC = () => {
         <div >
             <Header />
             <div className="pt-20 px-4">
-                <BotList bots={bots} />
+                <BotList bots={bots} setBots={setBots}/>
             </div>
         </div>
     );

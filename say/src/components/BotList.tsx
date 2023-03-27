@@ -13,9 +13,22 @@ interface Bot {
 
 interface BotListProps {
 	bots: Bot[];
+	setBots: React.Dispatch<React.SetStateAction<Bot[]>>;
 }
 
-const BotList: React.FC<BotListProps> = ({ bots }) => {
+const BotList: React.FC<BotListProps> = ({ bots, setBots }) => {
+	const handleNewAssistant = () => {
+		const newAssistant = {
+			id: bots.length + 1,
+			name: `Assistant ${bots.length + 1}`,
+			behavior: 'friendly',
+			description: 'A new assistant',
+			imageUrl: 'https://via.placeholder.com/150',
+			systemMessage: 'Your new assistant is ready to chat.',
+		};
+		setBots((prevBots) => [...prevBots, newAssistant]);
+	}
+
 	return (
 		<div className="p-4">
 			<h2 className="text-2xl font-semibold mb-4 text-primary">My Bots</h2>
@@ -25,7 +38,7 @@ const BotList: React.FC<BotListProps> = ({ bots }) => {
 				))}
 			</div>
 			<div className="mt-8 w-full flex justify-center">
-				<AddBotButton />
+				<AddBotButton onClick={handleNewAssistant} />
 			</div>
 		</div>
 	);
