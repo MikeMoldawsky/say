@@ -1,5 +1,6 @@
 // ChatMessage.tsx
 import React from 'react';
+import Image from 'next/image';
 
 export interface SayMessage {
 	id: string;
@@ -24,11 +25,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
 				role === 'user' ? 'self-end' : ''
 			}`}
 		>
-			 <img
+			 <Image
 				 className="mr-4 h-10 w-10 rounded-full self-start"
 				  src={role === 'assistant' ? "https://i.imgur.com/8Km9tLL.png": "https://i.imgur.com/83aoGyM.gif"}
 				  alt="Avatar"
-			 />
+				 width={40}
+				 height={40}
+		/>
 			<div className="flex flex-col break-words">
 				<p>{content}</p>
 				<span className="text-sm text-gray-600 mt-1">{formattedTimestamp}</span>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Bot } from './BotCard';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 interface BotInformationProps {
 	bot: Bot;
@@ -19,7 +20,7 @@ const BotInformation: React.FC<BotInformationProps> = ({ bot }) => {
 	return (
 		<div className="h-screen overflow-auto p-4 flex flex-col">
 			<div className="flex-grow flex flex-col items-center">
-				<img className="w-20 h-20 object-cover rounded-full mb-4" src={bot.imageUrl} alt={bot.name} />
+				<Image className="w-20 h-20 object-cover rounded-full mb-4" src={bot.imageUrl} alt={bot.name} width={80} height={80} />
 				<h3 className="text-xl font-bold mb-2">{bot.name}</h3>
 				<p className="text-base mb-2">{bot.description}</p>
 			</div>

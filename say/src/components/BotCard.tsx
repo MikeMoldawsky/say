@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export interface Bot {
 	id: number;
@@ -16,7 +17,7 @@ interface BotCardProps {
 const BotCard: React.FC<BotCardProps> = ({ bot }) => {
 	return (
 		<div className="bg-white p-4 rounded-lg shadow-md text-center hover:shadow-lg hover:scale-105 transition-all duration-300 mb-4 flex items-center">
-			<img className="w-20 h-20 object-cover rounded-full mr-4" src={bot.imageUrl} alt={bot.name} />
+			<Image className="w-20 h-20 object-cover rounded-full mr-4" src={bot.imageUrl} alt={bot.name} width={80} height={80} />
 			<div>
 				<h3 className="text-xl font-bold mb-2">{bot.name}</h3>
 				<p className="text-sm mb-2">{bot.description}</p>

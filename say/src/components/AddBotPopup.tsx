@@ -1,5 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
+
 import React, { useState } from 'react';
 import { Bot } from './BotCard';
 import styles from '../styles/AddBotPopup.module.css';
@@ -15,6 +17,7 @@ const AddBotPopup: React.FC<AddBotPopupProps> = ({ onClose, onSave }) => {
 	const [systemMessage, setSystemMessage] = useState('');
 	const [imageUrl, setImageUrl] = useState('');
 	const [errors, setErrors] = useState({ name: '', description: '', systemMessage: '' });
+
 
 	const botImages = [
 		'https://i.imgur.com/sTgE6r6.gif',
@@ -39,14 +42,6 @@ const AddBotPopup: React.FC<AddBotPopupProps> = ({ onClose, onSave }) => {
 
 	const handleImageSelect = (url: string) => {
 		setImageUrl(url);
-	};
-
-	const handleArrowClick = (direction: number) => {
-		const carouselElement = document.getElementById("carousel");
-
-		if (carouselElement) {
-			carouselElement.scrollBy({ left: direction * 300, behavior: "smooth" });
-		}
 	};
 
 
@@ -81,13 +76,15 @@ const AddBotPopup: React.FC<AddBotPopupProps> = ({ onClose, onSave }) => {
 				</button>
 				<h2 className="text-2xl font-semibold mb-6">Add New Assistant</h2>
 				<form onSubmit={handleSubmit}>
-					<div className="mb-4">
-						<div className={styles.carousel}>
+					<div className="relative mb-4">
+						<div className={`relative ${styles.carousel}`} id="carousel">
 							{botImages.map((url, index) => (
-								<img
+								<Image
 									key={index}
 									src={url}
 									alt={`Bot Image ${index + 1}`}
+									width={80}
+									height={80}
 									className={`cursor-pointer ${imageUrl === url ? 'border-4 border-blue-500' : ''}`}
 									onClick={() => handleImageSelect(url)}
 								/>
