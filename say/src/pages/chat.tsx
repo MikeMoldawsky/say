@@ -3,13 +3,12 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import ChatWindow from '../components/ChatWindow';
-import { Bot } from '../components/Bot';
+import { Bot } from '../components/BotCard';
 
 const bots: Bot[] = [
     {
         id: 1,
         name: 'Party Time',
-        behavior: 'happy, friendly',
         description: "I'm soooo happy you're here :) ",
         imageUrl: 'https://i.imgur.com/8Km9tLL.png',
         systemMessage:
@@ -18,7 +17,6 @@ const bots: Bot[] = [
     {
         id: 2,
         name: 'Working Time',
-        behavior: 'sad, formal, professional',
         description: "You again? I'm tired...",
         imageUrl: 'https://i.imgur.com/8Km9tL2.png',
         systemMessage:

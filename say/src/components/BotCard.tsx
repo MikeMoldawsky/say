@@ -1,6 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
-import { Bot } from './Bot';
+
+export interface Bot {
+	id: number;
+	name: string;
+	imageUrl: string;
+	description: string;
+	systemMessage: string;
+}
 
 interface BotCardProps {
 	bot: Bot;
@@ -13,7 +20,6 @@ const BotCard: React.FC<BotCardProps> = ({ bot }) => {
 			<div>
 				<h3 className="text-xl font-bold mb-2">{bot.name}</h3>
 				<p className="text-sm mb-2">{bot.description}</p>
-				<p className="text-xs mb-4 italic">{bot.behavior}</p>
 				<div className="flex justify-center space-x-2 mb-4">
 					<Link href={`/configure-bot?id=${bot.id}`}>
 						<button className="bg-blue-500 text-white px-2 py-1 rounded shadow mr-1 hover:bg-blue-600 transition-all duration-300">Configure</button>

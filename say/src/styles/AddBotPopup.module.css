@@ -1,0 +1,15 @@
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    position: relative;
+}
+
+.carousel img {
+    object-fit: cover;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+}

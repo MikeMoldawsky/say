@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import  { SayMessage } from './ChatMessage';
 import ChatMessages from './ChatMessages';
 import BotInformation from './BotInformation';
-import { Bot } from './Bot';
+import { Bot } from './BotCard';
 import { convertChatWindowMessagesToChatGPTMessages } from "../utils/messageConverter";
 import { chatWithBackendAPI } from '../clients/sayClient';
 import { v4 as uuidv4 } from 'uuid';
