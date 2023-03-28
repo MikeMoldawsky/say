@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { ChatGPTMessage } from '../utils/chatGPTOptions';
-import { Bot } from '../components/BotCard';
+import { Bot } from '../../components/BotCard';
 import { v4 as uuidv4 } from 'uuid';
+import {ChatGPTMessage} from "../utils/messageConverter";
 
 export async function chatWithBackendAPI(messages: ChatGPTMessage[]): Promise<string> {
 	try {

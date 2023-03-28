@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import ChatWindow from '../components/ChatWindow';
 import { Bot } from '../components/BotCard';
-import { getBotById } from '../clients/sayClient';
+import { getBotById } from '../frontend/clients/sayClient';
 import Loader from '../components/Loader';
 
 

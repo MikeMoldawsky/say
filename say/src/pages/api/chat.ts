@@ -1,9 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { ChatGPTClient } from './utils/chatGPTClient';
-import { ChatGPTMessage } from '../../utils/chatGPTOptions';
+import { ChatGPTClient } from '../../backend/utils/chatGPTClient';
 
 import axios from 'axios';
-import { nanoid } from 'nanoid';
+import {ChatGPTMessage} from "../../frontend/utils/messageConverter";
 
 const api = axios.create({
   baseURL: 'http://localhost:3001',

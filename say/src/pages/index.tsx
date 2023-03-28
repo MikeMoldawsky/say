@@ -5,7 +5,7 @@ import AddBotButton from '../components/AddBotButton';
 import AddBotPopup from '../components/AddBotPopup';
 import { Bot } from '../components/BotCard';
 import axios from 'axios';
-import {createOrUpdateBot, fetchBots, deleteBotById } from '../clients/sayClient';
+import {createOrUpdateBot, fetchBots, deleteBotById } from '../frontend/clients/sayClient';
 import Loader from '../components/Loader';
 
 const IndexPage: React.FC = () => {

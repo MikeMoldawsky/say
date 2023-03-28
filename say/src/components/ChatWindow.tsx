@@ -3,10 +3,10 @@ import  { SayMessage } from './ChatMessage';
 import ChatMessages from './ChatMessages';
 import BotInformation from './BotInformation';
 import { Bot } from './BotCard';
-import { convertChatWindowMessagesToChatGPTMessages } from "../utils/messageConverter";
-import { chatWithBackendAPI } from '../clients/sayClient';
+import { convertChatWindowMessagesToChatGPTMessages } from "../frontend/utils/messageConverter";
+import { chatWithBackendAPI } from '../frontend/clients/sayClient';
 import { v4 as uuidv4 } from 'uuid';
-import { ChatGPTMessage } from '../types/chatGPTOptions';
+import { ChatGPTMessage } from '../frontend/utils/messageConverter';
 
 
 interface ChatBotProps {
