@@ -14,14 +14,14 @@ export async function chatWithBackendAPI(messages: ChatGPTMessage[]): Promise<st
 	}
 }
 
-export async function fetchBots(): Promise<Bot[]> {
-	const response = await fetch('/api/users/6422d27a79b10a5364ed8cd0/bots');
+export async function fetchBots(userId: string): Promise<Bot[]> {
+	const response = await fetch(`/api/users/${userId}/bots`);
 	const data = await response.json();
 	return data;
 };
 
-export async function createOrUpdateBot(bot: Bot): Promise<void> {
-	if (!bot.id) { // new bot
+export async function createOrUpdateBot(userId: string, bot: Bot): Promise<void> {
+	if (!bot._id) { // new bot
 		await axios.post('/api/bots', {...bot, id: uuidv4()});
 	}
 	else {

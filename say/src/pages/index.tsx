@@ -8,6 +8,8 @@ import {createOrUpdateBot, fetchBots, deleteBotById } from '../frontend/clients/
 import Loader from '../components/Loader';
 import {useRouter} from "next/router";
 
+const userId = '6422d27a79b10a5364ed8cd0';
+
 const IndexPage: React.FC = () => {
     const router = useRouter();
     const [showAddBotPopup, setShowAddBotPopup] = useState(false);
@@ -17,7 +19,7 @@ const IndexPage: React.FC = () => {
     useEffect(() => {
         console.log("Mike fetches bots")
         const loadBots = async () => {
-            const bots = await fetchBots();
+            const bots = await fetchBots(userId);
             setBots(bots);
         }
         loadBots();
@@ -44,7 +46,7 @@ const IndexPage: React.FC = () => {
     const addOrUpdateBot = (newOrUpdatedBot: Bot) => {
         try {
             console.log('Adding bot:', newOrUpdatedBot);
-            createOrUpdateBot(newOrUpdatedBot).then(() => fetchBots().then(bots=>setBots(bots)));
+            createOrUpdateBot(userId, newOrUpdatedBot).then(() => fetchBots(userId).then(bots=>setBots(bots)));
             toggleAddBotPopup();
         } catch (error) {
             console.error('Error adding bot:', error);
