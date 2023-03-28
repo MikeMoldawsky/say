@@ -33,21 +33,21 @@ export async function deleteBotById(id: string): Promise<void> {
 	await axios.delete('/api/bots', {data: {id}});
 };
 
-export async function getBotById(id: string): Promise<Bot | null> {
+export async function getBotById(botId: string): Promise<Bot | null> {
 	try {
-		const response = await axios.get(`/api/bots?id=${id}`);
+		const response = await axios.get(`/api/users/6422d27a79b10a5364ed8cd0/bots/${botId}`);
 
 		if (response.status === 200) {
 			return response.data;
 		} else if (response.status === 404) {
-			console.error(`Bot with id ${id} not found`);
+			console.error(`Bot with id ${botId} not found`);
 			return null;
 		} else {
-			console.error(`Failed to get bot with id ${id}: ${response.statusText}`);
+			console.error(`Failed to get bot with id ${botId}: ${response.statusText}`);
 			return null;
 		}
 	} catch (error) {
-		console.error(`Error getting bot with id ${id}: ${error.message}`);
+		console.error(`Error getting bot with id ${botId}: ${error.message}`);
 		return null;
 	}
 }

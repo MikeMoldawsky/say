@@ -2,6 +2,15 @@ import { Bot } from '../../components/BotCard';
 import { getUser, updateUser } from './users';
 import {ObjectId} from "mongodb";
 
+export async function getBot(userId: string, botId: string): Promise<Bot | null> {
+	const user = await getUser(userId);
+	if (!user) {
+		throw new Error('User not found');
+	}
+	console.log(user.bots);
+	const bot = user.bots.find(b => b._id.toString() === botId);
+	return bot || null;
+}
 
 export async function getBots(userId: string): Promise<Bot[]> {
 	const user = await getUser(userId);

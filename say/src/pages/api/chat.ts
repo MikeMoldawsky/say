@@ -1,12 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { ChatGPTClient } from '../../backend/utils/chatGPTClient';
-
-import axios from 'axios';
+import { ChatGPTClient } from '../../backend/chatGPT/chatGPTClient';
 import {ChatGPTMessage} from "../../frontend/utils/messageConverter";
-
-const api = axios.create({
-  baseURL: 'http://localhost:3001',
-});
 
 
 const chatGPT = new ChatGPTClient();

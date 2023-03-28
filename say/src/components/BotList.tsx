@@ -12,7 +12,7 @@ const BotList: React.FC<BotListProps> = ({bots, onConfigure, onDelete}) => {
 	const router = useRouter();
 
 	const handleChat = (bot: Bot) => {
-		router.push(`/chat?id=${bot.id}`);
+		router.push(`/chat?id=${bot._id}`);
 	};
 
 	return (
@@ -20,7 +20,7 @@ const BotList: React.FC<BotListProps> = ({bots, onConfigure, onDelete}) => {
 			<h2 className="text-2xl font-semibold mb-4 text-primary">My Bots</h2>
 			<div className="flex flex-wrap justify-center items-center gap-6">
 				{bots.map((bot) => (
-					<BotCard key={bot.id} bot={bot} onChat={handleChat} onConfigure={onConfigure} onDelete={onDelete} />
+					<BotCard key={bot._id} bot={bot} onChat={handleChat} onConfigure={onConfigure} onDelete={onDelete} />
 				))}
 			</div>
 		</div>
