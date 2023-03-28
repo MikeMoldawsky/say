@@ -2,9 +2,9 @@ import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import ChatWindow from '../components/chat/ChatWindow';
-import { Bot } from '../components/bot/BotCard';
 import { getBotById } from '../frontend/clients/sayClient';
 import Loader from '../components/Loader';
+import {Bot} from "../objects-api/bots";
 
 
 const userId = '6422d27a79b10a5364ed8cd0';

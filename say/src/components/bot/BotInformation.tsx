@@ -1,7 +1,7 @@
 import React from 'react';
-import { Bot } from './BotCard';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import {Bot} from "../../objects-api/bots";
 
 interface BotInformationProps {
 	bot: Bot;

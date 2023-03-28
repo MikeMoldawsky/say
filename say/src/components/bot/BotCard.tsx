@@ -1,13 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-
-export interface Bot {
-	_id?: string;
-	name: string;
-	imageUrl: string;
-	description: string;
-	systemMessage: string;
-}
+import {Bot} from "../../objects-api/bots";
 
 interface BotCardProps {
 	bot: Bot;

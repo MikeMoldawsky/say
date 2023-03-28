@@ -1,15 +1,14 @@
-import { Bot } from '../../components/bot/BotCard';
-import { getUser, updateUser } from './users';
-import {ObjectId} from "mongodb";
+import { addUserBot, removeUserBot, getUser } from './users';
+import { ObjectId } from 'mongodb';
+import { connectToDatabase } from './db';
+import {Bot, CreateBotRequest, UpdateBotRequest} from "../../objects-api/bots";
+import {fromBotDocument, toNewBotDocument} from "../converters/bot-conversion";
 
-export async function getBot(userId: string, botId: string): Promise<Bot | null> {
-	const user = await getUser(userId);
-	if (!user) {
-		throw new Error('User not found');
-	}
-	console.log(user.bots);
-	const bot = user.bots.find(b => b._id.toString() === botId);
-	return bot || null;
+
+export async function getBot(botId: string): Promise<Bot | null> {
+	const botsCollection = await getBotsCollection();
+	const bot = await botsCollection.findOne({ _id: new ObjectId(botId) });
+	return bot ? fromBotDocument(bot) : null;
 }
 
 export async function getBots(userId: string): Promise<Bot[]> {
@@ -17,52 +16,43 @@ export async function getBots(userId: string): Promise<Bot[]> {
 	if (!user) {
 		throw new Error('User not found');
 	}
-	return user.bots || [];
+
+	const botsCollection = await getBotsCollection();
+	const bots = await botsCollection.find({ _id: { $in: user.botIds } }).toArray();
+	return bots.map(bot => fromBotDocument(bot));
 }
 
-
-export async function addBot(userId: string, bot: Bot): Promise<Bot> {
-	const user = await getUser(userId);
-	if (!user) {
-		throw new Error('User not found');
-	}
-	if(!user.bots){
-		user.bots = [];
-	}
-
-	const newBot: Bot = { ...bot, _id: new ObjectId().toString() };
-	user.bots.push(newBot);
-	await updateUser(userId, user);
-	return newBot;
+export async function addBot(userId: string, bot: CreateBotRequest): Promise<Bot> {
+	const botsCollection = await getBotsCollection();
+	const newBot = toNewBotDocument(bot);
+	await botsCollection.insertOne(newBot);
+	await addUserBot(userId, newBot._id);
+	return fromBotDocument(newBot);
 }
 
-export async function addBots(userId: string, bots: Bot[]): Promise<void> {
-	const user = await getUser(userId);
-	if (!user) {
-		throw new Error('User not found');
+export async function addBots(userId: string, createBotRequests: CreateBotRequest[]): Promise<void> {
+	const botsCollection = await getBotsCollection();
+	const botDocuments = createBotRequests.map(toNewBotDocument);
+	await botsCollection.insertMany(botDocuments);
+	const botIds = botDocuments.map((bot) => bot._id);
+	for (const botId of botIds) {
+		await addUserBot(userId, botId);
 	}
-	if(!user.bots){
-		user.bots = [];
-	}
-	// Generate MongoDB ObjectIDs for each bot
-	const botsWithIds = bots.map((bot) => ({ ...bot, _id: new ObjectId() }));
-	// Add the bots to the user's bots array
-	user.bots.push(...botsWithIds);
-	// Update the user document with the new bots
-	await updateUser(userId, user);
+}
+
+export async function updateBot(botId: string, botData: UpdateBotRequest): Promise<void> {
+	const botsCollection = await getBotsCollection();
+	await botsCollection.updateOne({ _id: new ObjectId(botId) }, { $set: botData });
 }
 
 export async function deleteBot(userId: string, botId: string): Promise<void> {
-	const user = await getUser(userId);
-	if (!user) {
-		throw new Error('User not found');
-	}
-
-	// Filter out the bot with the specified botId
-	user.bots = user.bots.filter((bot: Bot) => bot._id !== botId);
-
-	// Update the user document with the remaining bots
-	await updateUser(userId, user);
+	const botsCollection = await getBotsCollection();
+	await botsCollection.deleteOne({ _id: new ObjectId(botId) });
+	await removeUserBot(userId, botId);
 }
 
+async function getBotsCollection() {
+	const db = await connectToDatabase();
+	return db.collection('bots');
+}
 

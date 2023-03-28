@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Bot } from '../../components/bot/BotCard';
 import { v4 as uuidv4 } from 'uuid';
-import {ChatGPTMessage} from "../utils/messageConverter";
+import { ChatGPTMessage } from '../utils/messageConverter';
+import { Bot } from '../../objects-api/bots';
 
 export async function chatWithBackendAPI(messages: ChatGPTMessage[]): Promise<string> {
 	try {
@@ -15,23 +15,42 @@ export async function chatWithBackendAPI(messages: ChatGPTMessage[]): Promise<st
 }
 
 export async function fetchBots(userId: string): Promise<Bot[]> {
-	const response = await fetch(`/api/users/${userId}/bots`);
-	const data = await response.json();
-	return data;
-};
+	try {
+		const response = await fetch(`/api/users/${userId}/bots`);
+		if (response.ok) {
+			const data = await response.json();
+			return data;
+		}
+		console.error('Error fetching bots:', response.statusText);
+		return [];
+	} catch (error) {
+		console.error('Error fetching bots:', error);
+		return [];
+	}
+}
 
 export async function createOrUpdateBot(userId: string, bot: Bot): Promise<void> {
-	if (!bot._id) { // new bot
-		await axios.post('/api/bots', {...bot, id: uuidv4()});
+	try {
+		if (!bot._id) {
+			// new bot
+			await axios.post('/api/bots', { ...bot, id: uuidv4() });
+		} else {
+			await axios.put('/api/bots', bot);
+		}
+	} catch (error) {
+		console.error('Error creating or updating bot:', error);
+		throw error;
 	}
-	else {
-		await axios.put('/api/bots', bot);
-	}
-};
+}
 
 export async function deleteBotById(id: string): Promise<void> {
-	await axios.delete('/api/bots', {data: {id}});
-};
+	try {
+		await axios.delete('/api/bots', { data: { id } });
+	} catch (error) {
+		console.error('Error deleting bot:', error);
+		throw error;
+	}
+}
 
 export async function getBotById(userId: string, botId: string): Promise<Bot | null> {
 	try {

@@ -1,5 +1,6 @@
 import React from 'react';
-import BotCard, { Bot } from './BotCard';
+import BotCard from './BotCard';
+import {Bot} from "../../objects-api/bots";
 
 interface BotListProps {
 	bots: Bot[];

@@ -3,10 +3,10 @@ import Header from '../components/Header';
 import BotList from '../components/bot/BotList';
 import AddBotButton from '../components/bot/AddBotButton';
 import AddBotPopup from '../components/bot/AddBotPopup';
-import { Bot } from '../components/bot/BotCard';
 import {createOrUpdateBot, fetchBots, deleteBotById } from '../frontend/clients/sayClient';
 import Loader from '../components/Loader';
 import {useRouter} from "next/router";
+import {Bot} from "../objects-api/bots";
 
 const userId = '6422d27a79b10a5364ed8cd0';
 
@@ -59,7 +59,7 @@ const IndexPage: React.FC = () => {
             if (!deletedBot.id){
                 throw new Error("Bot id is not defined");
             }
-            deleteBotById(deletedBot.id).then(() => fetchBots().then(bots=>setBots(bots)));
+            deleteBotById(deletedBot.id).then(() => fetchBots(userId).then(bots=>setBots(bots)));
         } catch (error) {
             console.error('Error deleting bot:', error);
         }
@@ -70,13 +70,14 @@ const IndexPage: React.FC = () => {
         <div>
             <Header />
             <div className="pt-20 px-4">
-                {bots === null ? < Loader/> :
+                {
+                    bots === null ? < Loader/> :
                 <div>
-                <BotList bots={bots} onChat={handleChat} onConfigure={handleConfigure} onDelete={deleteBot}/>
-                <div className="mt-8 w-full flex justify-center">
-                    <AddBotButton onClick={toggleAddBotPopup} />
-                </div>
-                {showAddBotPopup && <AddBotPopup onClose={handleClose} onSave={addOrUpdateBot} bot={selectedBot}/>}
+                    <BotList bots={bots} onChat={handleChat} onConfigure={handleConfigure} onDelete={deleteBot}/>
+                    <div className="mt-8 w-full flex justify-center">
+                        <AddBotButton onClick={toggleAddBotPopup} />
+                    </div>
+                    {showAddBotPopup && <AddBotPopup onClose={handleClose} onSave={addOrUpdateBot} bot={selectedBot}/>}
                 </div>
                 }
             </div>

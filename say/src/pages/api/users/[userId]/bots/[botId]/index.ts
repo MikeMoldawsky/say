@@ -9,7 +9,7 @@ export default async function handler(
 
 	if (req.method === 'GET') {
 		try {
-			const bot = await getBot(userId as string, botId as string);
+			const bot = await getBot(botId as string);
 			if (bot) {
 				res.status(200).json(bot);
 			} else {
