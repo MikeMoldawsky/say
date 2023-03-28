@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 
 export interface Bot {
-	id?: string;
+	_id?: string;
 	name: string;
 	imageUrl: string;
 	description: string;
