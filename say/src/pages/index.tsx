@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
-import BotList from '../components/BotList';
-import AddBotButton from '../components/AddBotButton';
-import AddBotPopup from '../components/AddBotPopup';
-import { Bot } from '../components/BotCard';
+import BotList from '../components/bot/BotList';
+import AddBotButton from '../components/bot/AddBotButton';
+import AddBotPopup from '../components/bot/AddBotPopup';
+import { Bot } from '../components/bot/BotCard';
 import {createOrUpdateBot, fetchBots, deleteBotById } from '../frontend/clients/sayClient';
 import Loader from '../components/Loader';
+import {useRouter} from "next/router";
 
 const IndexPage: React.FC = () => {
+    const router = useRouter();
     const [showAddBotPopup, setShowAddBotPopup] = useState(false);
     const [bots, setBots] = useState<Bot[]|null>(null);
     const [selectedBot, setSelectedBot] = useState<Bot|null>(null);
@@ -21,6 +23,9 @@ const IndexPage: React.FC = () => {
         loadBots();
     }, []);
 
+    const handleChat = (bot: Bot) => {
+        router.push(`/chat?id=${bot._id}`);
+    };
 
     const toggleAddBotPopup = () => {
         setShowAddBotPopup(!showAddBotPopup);
@@ -64,10 +69,8 @@ const IndexPage: React.FC = () => {
             <Header />
             <div className="pt-20 px-4">
                 {bots === null ? < Loader/> :
-
-
                 <div>
-                <BotList bots={bots} onConfigure={handleConfigure} onDelete={deleteBot}/>
+                <BotList bots={bots} onChat={handleChat} onConfigure={handleConfigure} onDelete={deleteBot}/>
                 <div className="mt-8 w-full flex justify-center">
                     <AddBotButton onClick={toggleAddBotPopup} />
                 </div>

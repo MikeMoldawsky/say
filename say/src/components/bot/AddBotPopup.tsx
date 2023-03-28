@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { v4 as uuidv4 } from 'uuid';
 import React, { useState } from 'react';
 import { Bot } from './BotCard';
-import styles from '../styles/AddBotPopup.module.css';
+import styles from '../../styles/AddBotPopup.module.css';
 
 interface AddBotPopupProps {
 	onClose: () => void;

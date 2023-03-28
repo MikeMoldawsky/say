@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Bot } from '../../components/BotCard';
+import { Bot } from '../../components/bot/BotCard';
 import { v4 as uuidv4 } from 'uuid';
 import {ChatGPTMessage} from "../utils/messageConverter";
 
@@ -33,9 +33,9 @@ export async function deleteBotById(id: string): Promise<void> {
 	await axios.delete('/api/bots', {data: {id}});
 };
 
-export async function getBotById(botId: string): Promise<Bot | null> {
+export async function getBotById(userId: string, botId: string): Promise<Bot | null> {
 	try {
-		const response = await axios.get(`/api/users/6422d27a79b10a5364ed8cd0/bots/${botId}`);
+		const response = await axios.get(`/api/users/${userId}/bots/${botId}`);
 
 		if (response.status === 200) {
 			return response.data;

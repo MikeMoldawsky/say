@@ -1,4 +1,4 @@
-import {SayMessage} from "../../components/ChatMessage";
+import {SayMessage} from "../../components/chat/ChatMessage";
 
 export interface ChatGPTMessage {
 	role: string,

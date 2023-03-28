@@ -1,4 +1,4 @@
-import { Bot } from '../../components/BotCard';
+import { Bot } from '../../components/bot/BotCard';
 import { getUser, updateUser } from './users';
 import {ObjectId} from "mongodb";
 

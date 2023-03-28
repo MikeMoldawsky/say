@@ -1,5 +1,5 @@
 import React from 'react';
-import ConfigurationForm from './ConfigurationForm';
+import ConfigurationForm from '../ConfigurationForm';
 
 const BotConfiguration: React.FC = () => {
 	return (
