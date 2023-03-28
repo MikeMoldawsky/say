@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
-
+import { v4 as uuidv4 } from 'uuid';
 import React, { useState } from 'react';
 import { Bot } from './BotCard';
 import styles from '../styles/AddBotPopup.module.css';
@@ -9,13 +9,14 @@ import styles from '../styles/AddBotPopup.module.css';
 interface AddBotPopupProps {
 	onClose: () => void;
 	onSave: (bot: Bot) => void;
+	bot: Bot | null;
 }
 
-const AddBotPopup: React.FC<AddBotPopupProps> = ({ onClose, onSave }) => {
-	const [name, setName] = useState('');
-	const [description, setDescription] = useState('');
-	const [systemMessage, setSystemMessage] = useState('');
-	const [imageUrl, setImageUrl] = useState('');
+const AddBotPopup: React.FC<AddBotPopupProps> = ({ onClose, onSave, bot }) => {
+	const [name, setName] = useState( bot?.name || '');
+	const [description, setDescription] = useState(bot?.description || '');
+	const [systemMessage, setSystemMessage] = useState(bot?.systemMessage || '');
+	const [imageUrl, setImageUrl] = useState(bot?.imageUrl || '');
 	const [errors, setErrors] = useState({ name: '', description: '', systemMessage: '' });
 
 
@@ -28,13 +29,6 @@ const AddBotPopup: React.FC<AddBotPopupProps> = ({ onClose, onSave }) => {
 		'https://i.imgur.com/SfodzO0.jpeg',
 		'https://i.imgur.com/sTgE6r6.gif',
 		'https://i.imgur.com/eN19lDx.gif',
-		'https://i.imgur.com/SfodzO0.jpeg',
-		'https://i.imgur.com/SfodzO0.jpeg',
-		'https://i.imgur.com/SfodzO0.jpeg',
-		'https://i.imgur.com/SfodzO0.jpeg',
-		'https://i.imgur.com/SfodzO0.jpeg',
-		'https://i.imgur.com/SfodzO0.jpeg',
-		'https://i.imgur.com/SfodzO0.jpeg',
 		'https://i.imgur.com/SfodzO0.jpeg',
 		'https://i.imgur.com/SfodzO0.jpeg',
 	];
@@ -56,15 +50,15 @@ const AddBotPopup: React.FC<AddBotPopupProps> = ({ onClose, onSave }) => {
 			return;
 		}
 
-		const newBot: Bot = {
-			id: Math.floor(Math.random() * 97 ) + 3,
+		const newOrUpdatedBot: Bot = {
+			id: bot?.id,
 			name,
 			description,
 			systemMessage,
 			imageUrl,
 		};
 
-		onSave(newBot);
+		onSave(newOrUpdatedBot);
 		onClose();
 	};
 

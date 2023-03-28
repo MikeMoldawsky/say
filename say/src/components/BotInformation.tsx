@@ -11,11 +11,11 @@ const BotInformation: React.FC<BotInformationProps> = ({ bot }) => {
 	const router = useRouter();
 
 	const switchBot = () => {
-		const newBotId = bot.id === 1 ? 2 : 1;
+		const newBotId = bot.id === "1" ? "2" : "1";
 		router.push(`/chat?id=${newBotId}`);
 	};
 
-	const buttonText = bot.id === 1 ? "Change to Sad Assistant" : "Change to Happy Assistant";
+	const buttonText = bot.id === "1" ? "Change to Sad Assistant" : "Change to Happy Assistant";
 
 	return (
 		<div className="h-screen overflow-auto p-4 flex flex-col">

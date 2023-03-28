@@ -1,5 +1,7 @@
-import { ChatGPTMessage } from '../types/chatGPTOptions';
 import axios from 'axios';
+import { ChatGPTMessage } from '../utils/chatGPTOptions';
+import { Bot } from '../components/BotCard';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function chatWithBackendAPI(messages: ChatGPTMessage[]): Promise<string> {
 	try {
@@ -12,3 +14,40 @@ export async function chatWithBackendAPI(messages: ChatGPTMessage[]): Promise<st
 	}
 }
 
+export async function fetchBots(): Promise<Bot[]> {
+	const response = await fetch('/api/bots');
+	const data = await response.json();
+	return data;
+};
+
+export async function createOrUpdateBot(bot: Bot): Promise<void> {
+	if (!bot.id) { // new bot
+		await axios.post('/api/bots', {...bot, id: uuidv4()});
+	}
+	else {
+		await axios.put('/api/bots', bot);
+	}
+};
+
+export async function deleteBotById(id: string): Promise<void> {
+	await axios.delete('/api/bots', {data: {id}});
+};
+
+export async function getBotById(id: string): Promise<Bot | null> {
+	try {
+		const response = await axios.get(`/api/bots?id=${id}`);
+
+		if (response.status === 200) {
+			return response.data;
+		} else if (response.status === 404) {
+			console.error(`Bot with id ${id} not found`);
+			return null;
+		} else {
+			console.error(`Failed to get bot with id ${id}: ${response.statusText}`);
+			return null;
+		}
+	} catch (error) {
+		console.error(`Error getting bot with id ${id}: ${error.message}`);
+		return null;
+	}
+}

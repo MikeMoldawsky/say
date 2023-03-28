@@ -2,6 +2,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { ChatGPTClient } from './utils/chatGPTClient';
 import { ChatGPTMessage } from '../../utils/chatGPTOptions';
 
+import axios from 'axios';
+import { nanoid } from 'nanoid';
+
+const api = axios.create({
+  baseURL: 'http://localhost:3001',
+});
+
+
 const chatGPT = new ChatGPTClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
