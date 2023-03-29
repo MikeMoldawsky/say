@@ -29,14 +29,19 @@ const BotChatInfo: React.FC<BotChatInfoProps> = ({ bot, contexts }) => {
 				<h3 className="text-xl font-bold mb-2">{bot.name}</h3>
 				<p className="text-base mb-2">{bot.description}</p>
 
+				{/* Line separator */}
+				<hr className="border-t border-gray-300 w-full mb-4" />
+
 				{/* Bot contexts */}
+
 				<div className="w-full mb-4">
-					<button onClick={() => setShowAddContextModal(true)} className="bg-blue-500 text-white px-5 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 mb-4">
+					<button onClick={() => setShowAddContextModal(true)} className="w-full bg-blue-500 text-white px-5 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 mb-4">
 						New Context
 					</button>
 					{contexts.map((context, index) => (
 						<BotChatContextCard
 							key={index}
+							index={index}
 							title={context.name}
 							isSelected={selectedContext === index}
 							onSwitchContext={() => handleSwitchContext(index)}
