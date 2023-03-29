@@ -18,7 +18,11 @@ export default async function handler(
 				res.status(404).json({ message: `User with ID ${userId} not found` });
 			}
 		} catch (error) {
-			res.status(500).json({ message: 'Error fetching user', error: error.message });
+			if (error instanceof Error) {
+				res.status(500).json({ message: 'Error fetching user', error: error.message });
+			} else {
+				res.status(500).json({ message: 'Error fetching user', error: String(error) });
+			}
 		}
 	} else {
 		res.status(405).json({ message: 'Method not allowed' });

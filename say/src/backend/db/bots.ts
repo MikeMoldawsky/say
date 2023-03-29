@@ -40,9 +40,11 @@ export async function addBots(userId: string, createBotRequests: CreateBotReques
 	}
 }
 
-export async function updateBot(botId: string, botData: UpdateBotRequest): Promise<void> {
+export async function updateBot(botData: UpdateBotRequest): Promise<void> {
 	const botsCollection = await getBotsCollection();
-	await botsCollection.updateOne({ _id: new ObjectId(botId) }, { $set: botData });
+	// Exclude _id field from botData when updating
+	const { _id, ...updateData } = botData;
+	await botsCollection.updateOne({ _id: new ObjectId(_id) }, { $set: updateData });
 }
 
 export async function deleteBot(userId: string, botId: string): Promise<void> {

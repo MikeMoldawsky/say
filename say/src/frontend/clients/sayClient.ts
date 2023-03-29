@@ -1,13 +1,11 @@
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
-import { ChatGPTMessage } from '../utils/messageConverter';
-import { Bot } from '../../objects-api/bots';
+import {ChatGPTMessage} from '../utils/messageConverter';
+import {Bot, CreateBotRequest, UpdateBotRequest} from '../../objects-api/bots';
 
 export async function chatWithBackendAPI(messages: ChatGPTMessage[]): Promise<string> {
 	try {
 		const response = await axios.post('/api/chat', messages);
-		const assistantMessage = response.data.message;
-		return assistantMessage;
+		return response.data.message;
 	} catch (error) {
 		console.error('Error fetching ChatGPT response from backend API:', error);
 		throw error;
@@ -18,8 +16,7 @@ export async function fetchBots(userId: string): Promise<Bot[]> {
 	try {
 		const response = await fetch(`/api/users/${userId}/bots`);
 		if (response.ok) {
-			const data = await response.json();
-			return data;
+			return await response.json();
 		}
 		console.error('Error fetching bots:', response.statusText);
 		return [];
@@ -29,23 +26,29 @@ export async function fetchBots(userId: string): Promise<Bot[]> {
 	}
 }
 
-export async function createOrUpdateBot(userId: string, bot: Bot): Promise<void> {
+export async function updateBot(userId: string, bot: UpdateBotRequest): Promise<void> {
 	try {
-		if (!bot._id) {
-			// new bot
-			await axios.post('/api/bots', { ...bot, id: uuidv4() });
-		} else {
-			await axios.put('/api/bots', bot);
-		}
+		console.log('Updating bot');
+		await axios.put(`/api/users/${userId}/bots/${bot._id}`, bot);
 	} catch (error) {
-		console.error('Error creating or updating bot:', error);
+		console.error('Error updating bot:', error);
 		throw error;
 	}
 }
 
-export async function deleteBotById(id: string): Promise<void> {
+export async function createBot(userId: string, bot: CreateBotRequest): Promise<void> {
 	try {
-		await axios.delete('/api/bots', { data: { id } });
+		console.log('Creating bot');
+		await axios.post(`/api/users/${userId}/bots`, bot);
+	} catch (error) {
+		console.error('Error creating bot:', error);
+		throw error;
+	}
+}
+
+export async function deleteBotById(userId: string, botId: string): Promise<void> {
+	try {
+		await axios.delete(`/api/users/${userId}/bots/${botId}`);
 	} catch (error) {
 		console.error('Error deleting bot:', error);
 		throw error;
@@ -66,7 +69,11 @@ export async function getBotById(userId: string, botId: string): Promise<Bot | n
 			return null;
 		}
 	} catch (error) {
-		console.error(`Error getting bot with id ${botId}: ${error.message}`);
+		if (error instanceof Error) {
+			console.error(`Error getting bot with id ${botId}: ${error.message}`);
+		} else {
+			console.error(`Error getting bot with id ${botId}: ${String(error)}`);
+		}
 		return null;
 	}
 }

@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
-import BotList from '../components/bot/BotList';
-import AddBotButton from '../components/bot/AddBotButton';
-import AddBotPopup from '../components/bot/AddBotPopup';
-import {createOrUpdateBot, fetchBots, deleteBotById } from '../frontend/clients/sayClient';
+import {createBot, updateBot, fetchBots, deleteBotById } from '../frontend/clients/sayClient';
 import Loader from '../components/Loader';
 import {useRouter} from "next/router";
-import {Bot} from "../objects-api/bots";
+import {Bot, CreateBotRequest, UpdateBotRequest} from "../objects-api/bots";
+import BotMain from "../components/bot/BotMain";
 
 const userId = '6422d27a79b10a5364ed8cd0';
 
+
 const IndexPage: React.FC = () => {
     const router = useRouter();
-    const [showAddBotPopup, setShowAddBotPopup] = useState(false);
     const [bots, setBots] = useState<Bot[]|null>(null);
-    const [selectedBot, setSelectedBot] = useState<Bot|null>(null);
 
     useEffect(() => {
         console.log("Mike fetches bots")
@@ -25,43 +22,35 @@ const IndexPage: React.FC = () => {
         loadBots();
     }, []);
 
-    const handleChat = (bot: Bot) => {
+    const openChat = (bot: Bot) => {
         router.push(`/chat?id=${bot._id}`);
     };
 
-    const toggleAddBotPopup = () => {
-        setShowAddBotPopup(!showAddBotPopup);
-    };
 
-    const handleConfigure = (bot: Bot) => {
-        setSelectedBot(bot);
-        toggleAddBotPopup();
-    };
-
-    const handleClose = () => {
-        setSelectedBot(null);
-        toggleAddBotPopup();
-    };
-
-    const addOrUpdateBot = (newOrUpdatedBot: Bot) => {
+    const deleteBotRefresh = (deletedBot: Bot) => {
         try {
-            console.log('Adding bot:', newOrUpdatedBot);
-            createOrUpdateBot(userId, newOrUpdatedBot).then(() => fetchBots(userId).then(bots=>setBots(bots)));
-            toggleAddBotPopup();
+            console.log('Deleting bot:', deletedBot);
+            deleteBotById(userId, deletedBot._id).then(() => fetchBots(userId).then(bots=>setBots(bots)));
         } catch (error) {
-            console.error('Error adding bot:', error);
+            console.error('Error deleting bot:', error);
         }
     };
 
-    const deleteBot = (deletedBot: Bot) => {
+    const createBotRefresh = (createReq: CreateBotRequest) => {
         try {
-            console.log('Deleting bot:', deletedBot);
-            if (!deletedBot.id){
-                throw new Error("Bot id is not defined");
-            }
-            deleteBotById(deletedBot.id).then(() => fetchBots(userId).then(bots=>setBots(bots)));
+            console.log('Creating bot:', createReq);
+            createBot(userId, createReq).then(() => fetchBots(userId).then(bots=>setBots(bots)));
         } catch (error) {
-            console.error('Error deleting bot:', error);
+            console.error('Error creating bot:', error);
+        }
+    };
+
+    const updateBotRefresh = (updateReq: UpdateBotRequest) => {
+        try {
+            console.log('Updating bot:', updateReq);
+            updateBot(userId, updateReq).then(() => fetchBots(userId).then(bots=>setBots(bots)));
+        } catch (error) {
+            console.error('Error updating bot:', error);
         }
     };
 
@@ -71,14 +60,9 @@ const IndexPage: React.FC = () => {
             <Header />
             <div className="pt-20 px-4">
                 {
-                    bots === null ? < Loader/> :
-                <div>
-                    <BotList bots={bots} onChat={handleChat} onConfigure={handleConfigure} onDelete={deleteBot}/>
-                    <div className="mt-8 w-full flex justify-center">
-                        <AddBotButton onClick={toggleAddBotPopup} />
-                    </div>
-                    {showAddBotPopup && <AddBotPopup onClose={handleClose} onSave={addOrUpdateBot} bot={selectedBot}/>}
-                </div>
+                    bots === null ?
+                        < Loader/> :
+                    <BotMain bots={bots} openChat={openChat} createBot={createBotRefresh} updateBot={updateBotRefresh} deleteBot={deleteBotRefresh}  />
                 }
             </div>
         </div>
@@ -86,3 +70,4 @@ const IndexPage: React.FC = () => {
 };
 
 export default IndexPage;
+

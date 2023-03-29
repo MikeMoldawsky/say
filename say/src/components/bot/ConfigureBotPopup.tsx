@@ -1,18 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
-import { v4 as uuidv4 } from 'uuid';
 import React, { useState } from 'react';
 import styles from '../../styles/AddBotPopup.module.css';
-import {Bot} from "../../objects-api/bots";
+import {Bot, CreateBotRequest, UpdateBotRequest } from "../../objects-api/bots";
 
-interface AddBotPopupProps {
+interface ConfigureBotPopupProps {
 	onClose: () => void;
-	onSave: (bot: Bot) => void;
+	createBot: (bot: CreateBotRequest) => void;
+	updateBot: (bot: UpdateBotRequest) => void;
 	bot: Bot | null;
 }
 
-const AddBotPopup: React.FC<AddBotPopupProps> = ({ onClose, onSave, bot }) => {
+const ConfigureBotPopup: React.FC<ConfigureBotPopupProps> = ({ onClose, createBot, updateBot, bot }) => {
 	const [name, setName] = useState( bot?.name || '');
 	const [description, setDescription] = useState(bot?.description || '');
 	const [systemMessage, setSystemMessage] = useState(bot?.systemMessage || '');
@@ -49,16 +49,22 @@ const AddBotPopup: React.FC<AddBotPopupProps> = ({ onClose, onSave, bot }) => {
 			});
 			return;
 		}
-
-		const newOrUpdatedBot: Bot = {
-			id: bot?.id,
-			name,
-			description,
-			systemMessage,
-			imageUrl,
-		};
-
-		onSave(newOrUpdatedBot);
+		if (bot) {
+			updateBot({
+				_id: bot._id,
+				name,
+				imageUrl,
+				description,
+				systemMessage,
+			});
+		} else {
+			createBot({
+				name,
+				description,
+				systemMessage,
+				imageUrl,
+			});
+		}
 		onClose();
 	};
 
@@ -123,4 +129,4 @@ const AddBotPopup: React.FC<AddBotPopupProps> = ({ onClose, onSave, bot }) => {
 	);
 };
 
-export default AddBotPopup;
+export default ConfigureBotPopup;

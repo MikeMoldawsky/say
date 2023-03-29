@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
 import {Bot} from "../../objects-api/bots";
 
@@ -8,14 +7,6 @@ interface BotInformationProps {
 }
 
 const BotInformation: React.FC<BotInformationProps> = ({ bot }) => {
-	const router = useRouter();
-
-	const switchBot = () => {
-		const newBotId = bot.id === "1" ? "2" : "1";
-		router.push(`/chat?id=${newBotId}`);
-	};
-
-	const buttonText = bot.id === "1" ? "Change to Sad Assistant" : "Change to Happy Assistant";
 
 	return (
 		<div className="h-screen overflow-auto p-4 flex flex-col">
@@ -29,10 +20,10 @@ const BotInformation: React.FC<BotInformationProps> = ({ bot }) => {
 				<p className="">{bot.systemMessage}</p>
 			</div>
 			<button
-				onClick={switchBot}
+				onClick={() => alert("This feature is not yet implemented.")}
 				className="bg-blue-500 text-white px-5 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
 			>
-				{buttonText}
+				Switch Assistant
 			</button>
 		</div>
 	);
