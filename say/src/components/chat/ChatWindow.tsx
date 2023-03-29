@@ -49,7 +49,7 @@ const ChatWindow: React.FC<ChatBotProps> = ({bot}) => {
 		<div className="bg-gray-100 min-h-screen flex flex-col">
 			<div className="flex-grow flex">
 				<div className="w-1/3 h-screen bg-white p-4 rounded-lg shadow overflow-auto">
-					<BotChatInfo bot={bot} />
+					<BotChatInfo bot={bot} contexts={[{_id: "1234567", name:"Kuku Name", message:"A blog post"}]} />
 				</div>
 				<div className="w-2/3 h-screen bg-white rounded-lg shadow flex flex-col">
 					<ChatMessages messages={messages} title="Your Wish Is My Command" onNewMessage={handleNewMessage} />
