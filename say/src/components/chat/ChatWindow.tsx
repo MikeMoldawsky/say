@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import  { SayMessage } from './ChatMessage';
 import ChatMessages from './ChatMessages';
-import BotInformation from '../bot/BotInformation';
+import BotChatInfo from './BotChatInfo';
 import { convertChatWindowMessagesToChatGPTMessages } from "../../frontend/utils/messageConverter";
 import { chatWithBackendAPI } from '../../frontend/clients/sayClient';
 import { v4 as uuidv4 } from 'uuid';
@@ -49,7 +49,7 @@ const ChatWindow: React.FC<ChatBotProps> = ({bot}) => {
 		<div className="bg-gray-100 min-h-screen flex flex-col">
 			<div className="flex-grow flex">
 				<div className="w-1/3 h-screen bg-white p-4 rounded-lg shadow overflow-auto">
-					<BotInformation bot={bot} />
+					<BotChatInfo bot={bot} />
 				</div>
 				<div className="w-2/3 h-screen bg-white rounded-lg shadow flex flex-col">
 					<ChatMessages messages={messages} title="Your Wish Is My Command" onNewMessage={handleNewMessage} />

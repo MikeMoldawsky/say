@@ -1,4 +1,3 @@
-// ChatMessages.tsx
 import React from 'react';
 import ChatMessage, { SayMessage } from './ChatMessage';
 import ChatInput from './ChatInput';

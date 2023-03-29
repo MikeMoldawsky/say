@@ -6,7 +6,7 @@ interface BotInformationProps {
 	bot: Bot;
 }
 
-const BotInformation: React.FC<BotInformationProps> = ({ bot }) => {
+const BotChatInfo: React.FC<BotInformationProps> = ({ bot }) => {
 
 	return (
 		<div className="h-screen overflow-auto p-4 flex flex-col">
@@ -29,4 +29,4 @@ const BotInformation: React.FC<BotInformationProps> = ({ bot }) => {
 	);
 };
 
-export default BotInformation;
+export default BotChatInfo;
