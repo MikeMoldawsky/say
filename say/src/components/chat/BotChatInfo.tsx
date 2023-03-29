@@ -8,17 +8,18 @@ import AddContextModal from "./AddContextModal";
 interface BotChatInfoProps {
 	bot: Bot;
 	contexts: BotContext[];
+	selectedContext: number | null;
+	switchContext: (index: number) => void;
 }
 
-const BotChatInfo: React.FC<BotChatInfoProps> = ({ bot, contexts }) => {
-	const [selectedContext, setSelectedContext] = useState<number | null>(null);
+const BotChatInfo: React.FC<BotChatInfoProps> = ({ bot, contexts, selectedContext, switchContext }) => {
 	const [showAddContextModal, setShowAddContextModal] = useState(false);
 
 	const handleSwitchContext = (index: number) => {
-		setSelectedContext(index);
+		switchContext(index);
 	}
 
-	const handleEditContext = (index: number) => {
+	const handleEditContext = (_index: number) => {
 		alert("Not implemented yet");
 	}
 
@@ -38,6 +39,9 @@ const BotChatInfo: React.FC<BotChatInfoProps> = ({ bot, contexts }) => {
 					<button onClick={() => setShowAddContextModal(true)} className="w-full bg-blue-500 text-white px-5 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 mb-4">
 						New Context
 					</button>
+					{showAddContextModal && (
+						<AddContextModal onClose={() => setShowAddContextModal(false)} />
+					)}
 					{contexts.map((context, index) => (
 						<BotChatContextCard
 							key={index}

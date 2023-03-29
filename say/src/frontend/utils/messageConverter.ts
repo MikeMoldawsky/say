@@ -5,7 +5,7 @@ export interface ChatGPTMessage {
 	content: string
 }
 
-export function convertChatWindowMessagesToChatGPTMessages(messages: SayMessage[]): ChatGPTMessage[] {
+export function toChatGPTMessages(messages: SayMessage[]): ChatGPTMessage[] {
 	return messages.map((message: SayMessage) => ({
 		role: message.role,
 		content: message.content,
