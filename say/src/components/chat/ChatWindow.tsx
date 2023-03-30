@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import  { SayMessage } from './ChatMessage';
 import ChatMessages from './ChatMessages';
 import BotChatInfo from './BotChatInfo';
 import { toChatGPTMessages } from "../../frontend/utils/messageConverter";
-import { chatWithBackendAPI } from '../../frontend/clients/sayClient';
+import {chatWithBackendAPI, getBotById} from '../../frontend/clients/sayClient';
 import { v4 as uuidv4 } from 'uuid';
 import { ChatGPTMessage } from '../../frontend/utils/messageConverter';
 import {Bot} from "../../objects-api/bots";
+import Loader from "../Loader";
+import {useUserContext} from "../react-context/UserContext";
+import {useChatBotContext} from "../react-context/ChatBotContext";
 
 
-interface ChatBotProps {
-	bot: Bot;
-}
 
 // Todo: Move to database
 const contexts = [
@@ -24,11 +24,10 @@ const contexts = [
 ];
 
 
-const ChatWindow: React.FC<ChatBotProps> = ({bot}) => {
+const ChatWindow: React.FC = () => {
+	const { bot } = useChatBotContext();
 	const [messages, setMessages] = useState<SayMessage[]>([]);
 	const [selectedContext, setSelectedContext] = useState<number | null>(null);
-
-	const systemMessages: SayMessage[] = [{ id: uuidv4(), role: 'system', content: bot.systemMessage, createdAt: new Date() }];
 
 	const switchContext = (index: number) => {
 		setSelectedContext(index);
@@ -36,6 +35,8 @@ const ChatWindow: React.FC<ChatBotProps> = ({bot}) => {
 	}
 
 	const handleNewMessage = async (userContent: string) => {
+		if(bot === null) return;
+		const systemMessages: SayMessage[] = [{ id: uuidv4(), role: 'system', content: bot.systemMessage, createdAt: new Date() }];
 
 		// Make sure to use the updated messages state for the chatGPTMessages
 		const userSayMessage = { id: uuidv4(), role: 'user', content: userContent, createdAt: new Date() };
@@ -71,16 +72,21 @@ const ChatWindow: React.FC<ChatBotProps> = ({bot}) => {
 
 
 	return (
-		<div className="bg-gray-100 min-h-screen flex flex-col">
-			<div className="flex-grow flex">
-				<div className="w-1/3 h-screen bg-white p-4 rounded-lg shadow overflow-auto">
-					<BotChatInfo bot={bot} contexts={contexts} selectedContext={selectedContext} switchContext={switchContext}/>
-				</div>
-				<div className="w-2/3 h-screen bg-white rounded-lg shadow flex flex-col">
-					<ChatMessages messages={messages} title="Your Wish Is My Command" onNewMessage={handleNewMessage} />
+		<div className="pt-20 px-4">
+			{!bot ? < Loader/> :
+			<div className="bg-gray-100 min-h-screen flex flex-col">
+				<div className="flex-grow flex">
+					<div className="w-1/3 h-screen bg-white p-4 rounded-lg shadow overflow-auto">
+						<BotChatInfo bot={bot} contexts={contexts} selectedContext={selectedContext} switchContext={switchContext}/>
+					</div>
+					<div className="w-2/3 h-screen bg-white rounded-lg shadow flex flex-col">
+						<ChatMessages messages={messages} title="Your Wish Is My Command" onNewMessage={handleNewMessage} />
+					</div>
 				</div>
 			</div>
+			}
 		</div>
+
 	);
 };
 
