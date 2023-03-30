@@ -4,11 +4,8 @@ import AddBotButton from "./AddBotButton";
 import CreateOrUpdateBotModal from "./CreateOrUpdateBotModal";
 import BotCardList from "./BotCardList";
 
-interface BotMainProps {
-	openChat: (bot: Bot) => void;
-}
 
-const BotMain: React.FC<BotMainProps> = ({ openChat }) => {
+const BotMain: React.FC = () => {
 	const [isOpenPopup, setOpenPopup] = useState(false);
 	const [selectedBot, setSelectedBot] = useState<Bot | null>(null);
 
@@ -24,7 +21,7 @@ const BotMain: React.FC<BotMainProps> = ({ openChat }) => {
 
 	return (
 		<div>
-			<BotCardList onChat={openChat} onSelect={openConfigureBot} />
+			<BotCardList onSelect={openConfigureBot} />
 			<div className="mt-8 w-full flex justify-center">
 				<AddBotButton onClick={() => setOpenPopup(true)} />
 			</div>
