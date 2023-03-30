@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useRef, useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRedo, faDownload } from "@fortawesome/free-solid-svg-icons";
 import {DiffusionSampler} from "../frontend/clients/stable-diffusion/generation/generation_pb";
@@ -12,6 +12,17 @@ const GenerateImage: React.FC = () => {
     const [userPrompt, setUserPrompt] = useState<string>(
         "A dream of a distant galaxy, by Caspar David Friedrich, matte painting trending on artstation HQ"
     );
+
+    const imageRef = useRef<HTMLImageElement | null>(null);
+
+    const downloadImage = () => {
+        if (imageRef.current && imageRef.current.src) {
+            const link = document.createElement("a");
+            link.href = imageRef.current.src;
+            link.download = "generated-image.png";
+            link.click();
+        }
+    };
 
     async function fetchImage() {
         setIsLoading(true);
@@ -51,53 +62,44 @@ const GenerateImage: React.FC = () => {
                 <h1 className="text-4xl font-bold mb-4">Image Generator</h1>
                 <div className="flex flex-grow">
                     <div className="w-1/3 pr-8 flex flex-col space-y-4">
-                        <textarea
-                            id="prompt"
-                            value={userPrompt}
-                            onChange={(e) => setUserPrompt(e.target.value)}
-                            className="mt-1 block w-full h-[60vh] p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        />
-                        <button
-                            onClick={fetchImage}
-                            className="w-full px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center justify-center"
-                        >
-                            <FontAwesomeIcon icon={faRedo} className="mr-2" />
-                            Generate Image
-                        </button>
+                              <textarea
+                                  id="prompt"
+                                  value={userPrompt}
+                                  onChange={(e) => setUserPrompt(e.target.value)}
+                                  className="mt-1 block w-full h-[60vh] p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                              />
+                        <div className="flex-grow flex flex-col">
+                            <button
+                                onClick={fetchImage}
+                                className="w-full px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded mt-4"
+                            >
+                                <FontAwesomeIcon icon={faRedo} className="mr-2" />
+                                Generate Image
+                            </button>
+                        </div>
                     </div>
-                    <div className="relative w-2/3 pl-8">
-                        <div className="absolute inset-0 h-full border-l border-gray-300" />
-                        <div className="relative h-full pl-8">
-                            <div className="w-full h-[calc(60vh-1.5rem)] border-4 border-dashed border-gray-300 rounded-md bg-gray-50 flex flex-col items-center justify-center">
-                                {isLoading ? (
-                                    <Loader />
-                                ) : imageBase64 ? (
-                                    <>
-                                        <img src={imageBase64} alt="Generated Image" className="rounded-md object-contain w-full h-[calc(60vh-3rem-1.5rem)]" />
-                                        <a
-                                            href={imageBase64}
-                                            download="generated_image.png"
-                                            className="mt-4 w-full px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center justify-center"
-                                        >
-                                            <FontAwesomeIcon icon={faDownload} className="mr-2" />
-                                            Download Image
-                                        </a>
-                                    </>
+                    <div className="relative w-2/3 border-l border-gray-300 pl-8">
+                        <div className="absolute top-0 left-0 w-full h-[calc(100%-52px)]">
+                            <div className="border h-full flex items-center justify-center">
+                                {imageBase64 ? (
+                                    <img src={imageBase64} alt="Generated Image" className="max-h-full max-w-full" />
                                 ) : (
-                                    <div className="text-gray-500">
-                                        Image will be displayed here
-                                    </div>
+                                    <Loader />
                                 )}
                             </div>
                         </div>
+                        <button
+                            className="absolute bottom-0 left-0 w-full px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded"
+                            onClick={downloadImage}
+                        >
+                            <FontAwesomeIcon icon={faDownload} className="mr-2" />
+                            Download Image
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     );
-
-
-
 };
 
 export default GenerateImage;
