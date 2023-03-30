@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRedo } from "@fortawesome/free-solid-svg-icons";
+import { faRedo, faDownload } from "@fortawesome/free-solid-svg-icons";
 import {DiffusionSampler} from "../frontend/clients/stable-diffusion/generation/generation_pb";
 import { client, metadata } from "../frontend/clients/stable-diffusion/stableDiffusionClient";
 import { buildGenerationRequest, executeGenerationRequest } from "../frontend/clients/stable-diffusion/helpers";
@@ -50,19 +50,16 @@ const GenerateImage: React.FC = () => {
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-7xl h-[90vh] flex flex-col">
                 <h1 className="text-4xl font-bold mb-4">Image Generator</h1>
                 <div className="flex flex-grow">
-                    <div className="w-1/3 pr-8 flex flex-col">
-                        <label htmlFor="prompt" className="block text-sm font-medium text-gray-700">
-                            Prompt
-                        </label>
+                    <div className="w-1/3 pr-8 flex flex-col space-y-4">
                         <textarea
                             id="prompt"
                             value={userPrompt}
                             onChange={(e) => setUserPrompt(e.target.value)}
-                            className="mt-1 block w-full h-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className="mt-1 block w-full h-[60vh] p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
                         <button
-                            onClick={() => fetchImage()}
-                            className="mt-4 w-full px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center justify-center"
+                            onClick={fetchImage}
+                            className="w-full px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center justify-center"
                         >
                             <FontAwesomeIcon icon={faRedo} className="mr-2" />
                             Generate Image
@@ -71,11 +68,21 @@ const GenerateImage: React.FC = () => {
                     <div className="relative w-2/3 pl-8">
                         <div className="absolute inset-0 h-full border-l border-gray-300" />
                         <div className="relative h-full pl-8">
-                            <div className="w-full h-full border-4 border-dashed border-gray-300 rounded-md bg-gray-50 flex items-center justify-center">
+                            <div className="w-full h-[calc(60vh-1.5rem)] border-4 border-dashed border-gray-300 rounded-md bg-gray-50 flex flex-col items-center justify-center">
                                 {isLoading ? (
                                     <Loader />
                                 ) : imageBase64 ? (
-                                    <img src={imageBase64} alt="Generated Image" className="rounded-md" />
+                                    <>
+                                        <img src={imageBase64} alt="Generated Image" className="rounded-md object-contain w-full h-[calc(60vh-3rem-1.5rem)]" />
+                                        <a
+                                            href={imageBase64}
+                                            download="generated_image.png"
+                                            className="mt-4 w-full px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center justify-center"
+                                        >
+                                            <FontAwesomeIcon icon={faDownload} className="mr-2" />
+                                            Download Image
+                                        </a>
+                                    </>
                                 ) : (
                                     <div className="text-gray-500">
                                         Image will be displayed here
@@ -88,6 +95,9 @@ const GenerateImage: React.FC = () => {
             </div>
         </div>
     );
+
+
+
 };
 
 export default GenerateImage;
