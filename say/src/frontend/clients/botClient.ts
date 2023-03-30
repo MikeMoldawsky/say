@@ -1,16 +1,5 @@
 import axios from 'axios';
-import {ChatGPTMessage} from '../utils/messageConverter';
 import {Bot, CreateBotRequest, UpdateBotRequest} from '../../objects-api/bots';
-
-export async function chatWithBackendAPI(messages: ChatGPTMessage[]): Promise<string> {
-	try {
-		const response = await axios.post('/api/chat', messages);
-		return response.data.message;
-	} catch (error) {
-		console.error('Error fetching ChatGPT response from backend API:', error);
-		throw error;
-	}
-}
 
 export async function fetchBots(userId: string): Promise<Bot[]> {
 	console.log("Fetching bots", { userId });
