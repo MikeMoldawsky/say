@@ -4,6 +4,8 @@ import {Bot} from "../../objects-api/bots";
 import {BotContext} from "../../objects-api/contexts";
 import BotChatContextCard from "./BotChatContextCard";
 import AddContextModal from "./AddContextModal";
+import {UserBotsProvider} from "../react-context/UserBotsContext";
+import SwitchBotModal from "./SwitchBotModal";
 
 interface BotChatInfoProps {
 	bot: Bot;
@@ -13,6 +15,7 @@ interface BotChatInfoProps {
 }
 
 const BotChatInfo: React.FC<BotChatInfoProps> = ({ bot, contexts, selectedContext, switchContext }) => {
+	const [showSwitchBotModal, setShowSwitchBotModal] = useState(false);
 	const [showAddContextModal, setShowAddContextModal] = useState(false);
 
 	const handleSwitchContext = (index: number) => {
@@ -62,12 +65,16 @@ const BotChatInfo: React.FC<BotChatInfoProps> = ({ bot, contexts, selectedContex
 					<p className="font-semibold">System Message:</p>
 					<p>{bot.systemMessage}</p>
 				</div>
-				<button
-					onClick={() => alert("This feature is not yet implemented.")}
-					className="bg-blue-500 text-white px-5 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-				>
-					Switch Assistant
-				</button>
+				<UserBotsProvider>
+					<button onClick={() => setShowSwitchBotModal(true)}
+							className="w-full bg-blue-500 text-white px-5 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 mb-4">
+						Switch Assistant
+					</button>
+					{showSwitchBotModal && (
+						<SwitchBotModal onClose={() => setShowSwitchBotModal(false)} />
+					)}
+				</UserBotsProvider>
+
 			</div>
 		</div>
 	);

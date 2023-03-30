@@ -6,26 +6,26 @@ import BotCardList from "./BotCardList";
 
 
 const BotMain: React.FC = () => {
-	const [isOpenPopup, setOpenPopup] = useState(false);
+	const [isOpenModal, setOpenModal] = useState(false);
 	const [selectedBot, setSelectedBot] = useState<Bot | null>(null);
 
 	const openConfigureBot = (bot: Bot) => {
 		setSelectedBot(bot);
-		setOpenPopup(true);
+		setOpenModal(true);
 	};
 
 	const closeConfigureBot = () => {
 		setSelectedBot(null);
-		setOpenPopup(false);
+		setOpenModal(false);
 	};
 
 	return (
 		<div>
 			<BotCardList onSelect={openConfigureBot} />
 			<div className="mt-8 w-full flex justify-center">
-				<AddBotButton onClick={() => setOpenPopup(true)} />
+				<AddBotButton onClick={() => setOpenModal(true)} />
 			</div>
-			{isOpenPopup &&
+			{isOpenModal &&
 			<CreateOrUpdateBotModal onClose={closeConfigureBot} bot={selectedBot} />}
 		</div>
 	);
