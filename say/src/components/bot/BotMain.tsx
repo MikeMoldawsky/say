@@ -3,11 +3,12 @@ import { Bot } from "../../objects-api/bots";
 import AddBotButton from "./AddBotButton";
 import CreateOrUpdateBotModal from "./CreateOrUpdateBotModal";
 import BotCardList from "./BotCardList";
+import {useUserBotsContext} from "../react-context/UserBotsContext";
 
 
 const BotMain: React.FC = () => {
 	const [isOpenModal, setOpenModal] = useState(false);
-	const [selectedBot, setSelectedBot] = useState<Bot | null>(null);
+	const {setSelectedBot} = useUserBotsContext();
 
 	const openConfigureBot = (bot: Bot) => {
 		setSelectedBot(bot);
@@ -21,12 +22,12 @@ const BotMain: React.FC = () => {
 
 	return (
 		<div>
-			<BotCardList onSelect={openConfigureBot} />
+			<BotCardList onConfigure={openConfigureBot} />
 			<div className="mt-8 w-full flex justify-center">
 				<AddBotButton onClick={() => setOpenModal(true)} />
 			</div>
 			{isOpenModal &&
-			<CreateOrUpdateBotModal onClose={closeConfigureBot} bot={selectedBot} />}
+			<CreateOrUpdateBotModal onClose={closeConfigureBot} />}
 		</div>
 	);
 };

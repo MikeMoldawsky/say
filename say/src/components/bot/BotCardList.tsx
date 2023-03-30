@@ -6,14 +6,17 @@ import Loader from "../Loader";
 import {useRouter} from "next/router";
 
 interface BotCardListProps {
-	onSelect: (bot: Bot) => void;
+	onConfigure: (bot: Bot) => void;
 }
 
-const BotCardList: React.FC<BotCardListProps> = ({onSelect}) => {
+const BotCardList: React.FC<BotCardListProps> = ({onConfigure}) => {
+	const {setSelectedBot} = useUserBotsContext()
 	const router = useRouter();
 
+
 	const routeToChat = (bot: Bot) => {
-		router.push(`/chat?id=${bot._id}`);
+		setSelectedBot(bot)
+		router.push(`/chat`);
 	};
 
 	const { bots } = useUserBotsContext();
@@ -24,7 +27,7 @@ const BotCardList: React.FC<BotCardListProps> = ({onSelect}) => {
 				{ bots === null ?
 					<Loader /> :
 					bots.map((bot) => (
-					<BotCard key={bot._id} bot={bot} onChat={routeToChat} onConfigure={onSelect} />
+					<BotCard key={bot._id} bot={bot} onChat={routeToChat} onConfigure={onConfigure} />
 				))}
 			</div>
 		</div>

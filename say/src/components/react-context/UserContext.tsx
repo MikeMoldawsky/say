@@ -4,11 +4,16 @@ interface UserContextType {
 	userId: string | null;
 }
 
+interface UserProviderProps {
+	children: React.ReactNode;
+}
+
+
 const UserContext = createContext<UserContextType>({
 	userId: null,
 });
 
-export const UserProvider: React.FC = ({ children }) => {
+export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 	const [userId, setUserId] = useState<string | null>(null);
 
 	useEffect(() => {

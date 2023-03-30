@@ -3,21 +3,19 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import styles from '../../styles/AddBotPopup.module.css';
-import {Bot } from "../../objects-api/bots";
 import {useUserBotsContext} from "../react-context/UserBotsContext";
 
 interface CreateOrUpdateBotModalProps {
-	bot: Bot | null;
 	onClose: () => void;
 }
 
-const CreateOrUpdateBotModal: React.FC<CreateOrUpdateBotModalProps> = ({ bot, onClose}) => {
-	const { createBot, updateBot } = useUserBotsContext();
+const CreateOrUpdateBotModal: React.FC<CreateOrUpdateBotModalProps> = ({ onClose}) => {
+	const { selectedBot, createBot, updateBot } = useUserBotsContext();
 
-	const [name, setName] = useState( bot?.name || '');
-	const [description, setDescription] = useState(bot?.description || '');
-	const [systemMessage, setSystemMessage] = useState(bot?.systemMessage || '');
-	const [imageUrl, setImageUrl] = useState(bot?.imageUrl || '');
+	const [name, setName] = useState( selectedBot?.name || '');
+	const [description, setDescription] = useState(selectedBot?.description || '');
+	const [systemMessage, setSystemMessage] = useState(selectedBot?.systemMessage || '');
+	const [imageUrl, setImageUrl] = useState(selectedBot?.imageUrl || '');
 	const [errors, setErrors] = useState({ name: '', description: '', systemMessage: '' });
 
 
@@ -39,7 +37,6 @@ const CreateOrUpdateBotModal: React.FC<CreateOrUpdateBotModalProps> = ({ bot, on
 		setImageUrl(url);
 	};
 
-
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!name || !description || !systemMessage) {
@@ -50,9 +47,9 @@ const CreateOrUpdateBotModal: React.FC<CreateOrUpdateBotModalProps> = ({ bot, on
 			});
 			return;
 		}
-		if (bot) {
+		if (selectedBot) {
 			updateBot({
-				_id: bot._id,
+				_id: selectedBot._id,
 				name,
 				imageUrl,
 				description,
