@@ -1,21 +1,24 @@
 import React from 'react';
 import BotCard from './BotCard';
 import {Bot} from "../../objects-api/bots";
+import {useUserBotsContext} from "../react-context/UserBotsContext";
+import Loader from "../Loader";
 
 interface BotListProps {
-	bots: Bot[];
 	onChat: (bot: Bot) => void;
 	onConfigure: (bot: Bot) => void;
-	onDelete: (bot: Bot) => void;
 }
 
-const BotList: React.FC<BotListProps> = ({bots, onConfigure, onDelete, onChat}) => {
+const BotList: React.FC<BotListProps> = ({ onConfigure, onChat}) => {
+	const { bots } = useUserBotsContext();
 	return (
 		<div className="p-4">
 			<h2 className="text-2xl font-semibold mb-4 text-primary">My Bots</h2>
 			<div className="flex flex-wrap justify-center items-center gap-6">
-				{bots.map((bot) => (
-					<BotCard key={bot._id} bot={bot} onChat={onChat} onConfigure={onConfigure} onDelete={onDelete} />
+				{ bots === null ?
+					<Loader /> :
+					bots.map((bot) => (
+					<BotCard key={bot._id} bot={bot} onChat={onChat} onConfigure={onConfigure} />
 				))}
 			</div>
 		</div>
