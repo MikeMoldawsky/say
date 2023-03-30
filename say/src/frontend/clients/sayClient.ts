@@ -13,6 +13,7 @@ export async function chatWithBackendAPI(messages: ChatGPTMessage[]): Promise<st
 }
 
 export async function fetchBots(userId: string): Promise<Bot[]> {
+	console.log("Fetching bots", { userId });
 	try {
 		const response = await fetch(`/api/users/${userId}/bots`);
 		if (response.ok) {

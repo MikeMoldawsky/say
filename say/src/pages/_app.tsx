@@ -1,12 +1,14 @@
 import '../styles/globals.css';
-import Header from '../components/Header';
+import {UserProvider} from '../components/react-context/UserContext';
 import type { AppProps } from 'next/app';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-      <div className="min-h-screen bg-gray-100 text-gray-900">
-        <Component {...pageProps} />
-      </div>
+      <UserProvider>
+          <div className="min-h-screen bg-gray-100 text-gray-900">
+            <Component {...pageProps} />
+          </div>
+      </UserProvider>
   );
 }
 

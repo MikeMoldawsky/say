@@ -5,22 +5,23 @@ import Loader from '../components/Loader';
 import {useRouter} from "next/router";
 import {Bot, CreateBotRequest, UpdateBotRequest} from "../objects-api/bots";
 import BotMain from "../components/bot/BotMain";
+import {useUserContext} from "../components/react-context/UserContext";
 
-const userId = '6422d27a79b10a5364ed8cd0';
 
 
 const IndexPage: React.FC = () => {
     const router = useRouter();
     const [bots, setBots] = useState<Bot[]|null>(null);
+    const { userId } = useUserContext();
 
     useEffect(() => {
-        console.log("Mike fetches bots")
+        if (userId === null) return;
         const loadBots = async () => {
             const bots = await fetchBots(userId);
             setBots(bots);
         }
         loadBots();
-    }, []);
+    }, [userId]);
 
     const openChat = (bot: Bot) => {
         router.push(`/chat?id=${bot._id}`);
@@ -29,8 +30,10 @@ const IndexPage: React.FC = () => {
 
     const deleteBotRefresh = (deletedBot: Bot) => {
         try {
-            console.log('Deleting bot:', deletedBot);
-            deleteBotById(userId, deletedBot._id).then(() => fetchBots(userId).then(bots=>setBots(bots)));
+            if(userId){
+                console.log('Deleting bot:', deletedBot);
+                deleteBotById(userId, deletedBot._id).then(() => fetchBots(userId).then(bots=>setBots(bots)));
+            }
         } catch (error) {
             console.error('Error deleting bot:', error);
         }
@@ -38,8 +41,10 @@ const IndexPage: React.FC = () => {
 
     const createBotRefresh = (createReq: CreateBotRequest) => {
         try {
-            console.log('Creating bot:', createReq);
-            createBot(userId, createReq).then(() => fetchBots(userId).then(bots=>setBots(bots)));
+            if(userId){
+                console.log('Creating bot:', createReq);
+                createBot(userId, createReq).then(() => fetchBots(userId).then(bots=>setBots(bots)));
+            }
         } catch (error) {
             console.error('Error creating bot:', error);
         }
@@ -47,8 +52,10 @@ const IndexPage: React.FC = () => {
 
     const updateBotRefresh = (updateReq: UpdateBotRequest) => {
         try {
-            console.log('Updating bot:', updateReq);
-            updateBot(userId, updateReq).then(() => fetchBots(userId).then(bots=>setBots(bots)));
+            if(userId){
+                console.log('Updating bot:', updateReq);
+                updateBot(userId, updateReq).then(() => fetchBots(userId).then(bots=>setBots(bots)));
+            }
         } catch (error) {
             console.error('Error updating bot:', error);
         }

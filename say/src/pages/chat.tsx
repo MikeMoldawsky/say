@@ -5,25 +5,25 @@ import ChatWindow from '../components/chat/ChatWindow';
 import { getBotById } from '../frontend/clients/sayClient';
 import Loader from '../components/Loader';
 import {Bot} from "../objects-api/bots";
+import {useUserContext} from "../components/react-context/UserContext";
 
-
-const userId = '6422d27a79b10a5364ed8cd0';
 
 const ChatPage: React.FC = () => {
     const router = useRouter();
-    const { id } = router.query;
+    const {userId} = useUserContext()
+    const { id: botId } = router.query;
     const [selectedBot, setSelectedBot] = useState<Bot | null>(null);
 
     useEffect(() => {
+        if (userId === null) return;
         const loadBot = async () => {
-            if (id) {
-                const bot = await getBotById(userId, id as string);
+            if (botId) {
+                const bot = await getBotById(userId, botId as string);
                 setSelectedBot(bot);
             }
         };
-
         loadBot();
-    }, [id]);
+    }, [userId, botId]);
 
 
     return (
