@@ -4,12 +4,12 @@ import {Bot} from "../../objects-api/bots";
 import {useUserBotsContext} from "../react-context/UserBotsContext";
 import Loader from "../Loader";
 
-interface BotListProps {
+interface BotCardListProps {
 	onChat: (bot: Bot) => void;
-	onConfigure: (bot: Bot) => void;
+	onSelect: (bot: Bot) => void;
 }
 
-const BotList: React.FC<BotListProps> = ({ onConfigure, onChat}) => {
+const BotCardList: React.FC<BotCardListProps> = ({ onSelect, onChat}) => {
 	const { bots } = useUserBotsContext();
 	return (
 		<div className="p-4">
@@ -18,12 +18,12 @@ const BotList: React.FC<BotListProps> = ({ onConfigure, onChat}) => {
 				{ bots === null ?
 					<Loader /> :
 					bots.map((bot) => (
-					<BotCard key={bot._id} bot={bot} onChat={onChat} onConfigure={onConfigure} />
+					<BotCard key={bot._id} bot={bot} onChat={onChat} onConfigure={onSelect} />
 				))}
 			</div>
 		</div>
 	);
 };
 
-export default BotList;
+export default BotCardList;
 

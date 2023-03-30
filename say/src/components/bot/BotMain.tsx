@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { Bot } from "../../objects-api/bots";
 import AddBotButton from "./AddBotButton";
-import ConfigureBotPopup from "./ConfigureBotPopup";
-import BotList from "./BotList";
-import { useUserBotsContext } from '../react-context/UserBotsContext';
+import CreateOrUpdateBotModal from "./CreateOrUpdateBotModal";
+import BotCardList from "./BotCardList";
 
 interface BotMainProps {
 	openChat: (bot: Bot) => void;
 }
 
 const BotMain: React.FC<BotMainProps> = ({ openChat }) => {
-	const { createBot, updateBot } = useUserBotsContext();
 	const [isOpenPopup, setOpenPopup] = useState(false);
 	const [selectedBot, setSelectedBot] = useState<Bot | null>(null);
 
@@ -26,12 +24,12 @@ const BotMain: React.FC<BotMainProps> = ({ openChat }) => {
 
 	return (
 		<div>
-			<BotList onChat={openChat} onConfigure={openConfigureBot} />
+			<BotCardList onChat={openChat} onSelect={openConfigureBot} />
 			<div className="mt-8 w-full flex justify-center">
 				<AddBotButton onClick={() => setOpenPopup(true)} />
 			</div>
 			{isOpenPopup &&
-			<ConfigureBotPopup onClose={closeConfigureBot} createBot={createBot} updateBot={updateBot} bot={selectedBot} />}
+			<CreateOrUpdateBotModal onClose={closeConfigureBot} bot={selectedBot} />}
 		</div>
 	);
 };

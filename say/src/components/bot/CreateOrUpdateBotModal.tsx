@@ -3,16 +3,17 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import styles from '../../styles/AddBotPopup.module.css';
-import {Bot, CreateBotRequest, UpdateBotRequest } from "../../objects-api/bots";
+import {Bot } from "../../objects-api/bots";
+import {useUserBotsContext} from "../react-context/UserBotsContext";
 
-interface ConfigureBotPopupProps {
-	onClose: () => void;
-	createBot: (bot: CreateBotRequest) => void;
-	updateBot: (bot: UpdateBotRequest) => void;
+interface CreateOrUpdateBotModalProps {
 	bot: Bot | null;
+	onClose: () => void;
 }
 
-const ConfigureBotPopup: React.FC<ConfigureBotPopupProps> = ({ onClose, createBot, updateBot, bot }) => {
+const CreateOrUpdateBotModal: React.FC<CreateOrUpdateBotModalProps> = ({ bot, onClose}) => {
+	const { createBot, updateBot } = useUserBotsContext();
+
 	const [name, setName] = useState( bot?.name || '');
 	const [description, setDescription] = useState(bot?.description || '');
 	const [systemMessage, setSystemMessage] = useState(bot?.systemMessage || '');
@@ -129,4 +130,4 @@ const ConfigureBotPopup: React.FC<ConfigureBotPopupProps> = ({ onClose, createBo
 	);
 };
 
-export default ConfigureBotPopup;
+export default CreateOrUpdateBotModal;
