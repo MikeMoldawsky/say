@@ -1,58 +1,57 @@
-import Header from '../components/Header';
-import { useState, useEffect } from 'react';
-import {
-    buildGenerationRequest,
-    executeGenerationRequest,
-    onGenerationComplete,
-    GenerationServiceClient,
-} from '../frontend/clients/stable-diffusion/helpers';
+import React, { useState, useEffect } from "react";
+import {DiffusionSampler} from "../frontend/clients/stable-diffusion/generation/generation_pb";
+import { client, metadata } from "../frontend/clients/stable-diffusion/stableDiffusionClient";
+import { buildGenerationRequest, executeGenerationRequest } from "../frontend/clients/stable-diffusion/helpers";
 
-import { grpc as GRPCWeb } from '@improbable-eng/grpc-web';
-
-
-const StableDiffusionPage: React.FC = () => {
-    const [generatedImageUrl, setGeneratedImageUrl] = useState('');
+const GenerateImage: React.FC = () => {
+    const [imageBase64, setImageBase64] = useState<string | null>(null);
 
     useEffect(() => {
-        async function generateImage() {
-            const generationClient = new GenerationServiceClient('<Stability_AI_Service_URL>');
-
-            const request = buildGenerationRequest('<Engine_ID>', {
-                type: 'text-to-image',
-                prompts: [{ text: '<Your_Text_Prompt>' }],
+        async function fetchImage() {
+            const request = buildGenerationRequest("stable-diffusion-512-v2-1", {
+                type: "text-to-image",
+                prompts: [
+                    {
+                        text: "A dream of a distant galaxy, by Caspar David Friedrich, matte painting trending on artstation HQ",
+                    },
+                ],
+                width: 512,
+                height: 512,
+                samples: 1,
+                cfgScale: 13,
+                steps: 25,
+                sampler: DiffusionSampler.SAMPLER_K_DPMPP_2M,
             });
 
-            const metadata = {
-                'x-api-key': '<Your_API_Key>',
-            };
-
-            const response = await executeGenerationRequest(generationClient, request, metadata);
-
-            if (response instanceof Error) {
-                console.error('Generation failed', response);
-                return;
-            }
-
-            const imageArtifacts = response.imageArtifacts;
-            if (imageArtifacts.length > 0) {
-                const artifact = imageArtifacts[0];
-                const base64Image = artifact.getBinary_asB64();
-                const imageUrl = 'data:image/png;base64,' + base64Image;
-                setGeneratedImageUrl(imageUrl);
+            try {
+                const response = await executeGenerationRequest(client, request, metadata);
+                if (response instanceof Error) {
+                    console.error("Generation failed", response);
+                    throw response;
+                } else {
+                    const imageArtifact = response.imageArtifacts[0];
+                    setImageBase64(`data:image/png;base64,${imageArtifact.getBinary_asB64()}`);
+                }
+            } catch (error) {
+                console.error("Failed to generate image", error);
             }
         }
 
-        generateImage();
+        fetchImage();
     }, []);
 
     return (
         <div>
             <h1>Generated Image</h1>
-            {generatedImageUrl && <img src={generatedImageUrl} alt="Generated" />}
+            <div>
+                {imageBase64 ? (
+                    <img src={imageBase64} alt="Generated Image" />
+                ) : (
+                    <p>Loading image...</p>
+                )}
+            </div>
         </div>
     );
 };
 
-
-export default StableDiffusionPage;
-
+export default GenerateImage;

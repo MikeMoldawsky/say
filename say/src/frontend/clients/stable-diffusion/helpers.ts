@@ -1,7 +1,6 @@
 import * as Generation from "./generation/generation_pb";
 import { GenerationServiceClient } from "./generation/generation_pb_service";
 import { grpc as GRPCWeb } from "@improbable-eng/grpc-web";
-import fs from "fs";
 import { ArtifactTypeMap, FinishReasonMap } from "./generation/generation_pb";
 
 export type GenerationTextPrompt = {
@@ -302,39 +301,16 @@ function extractArtifacts(answers: Generation.Answer[]): GenerationArtifacts {
 }
 
 /** Generation completion handler - replace this with your own logic  */
-export function onGenerationComplete(response: GenerationResponse) {
+export function onGenerationComplete(response: GenerationResponse): string | undefined {
 	if (response instanceof Error) {
 		console.error("Generation failed", response);
 		throw response;
 	}
 
-	console.log(
-		`${response.imageArtifacts.length} image${
-			response.imageArtifacts.length > 1 ? "s" : ""
-		} were successfully generated.`
-	);
-
-	// Do something with NSFW filtered artifacts
-	if (response.filteredArtifacts.length > 0) {
-		console.log(
-			`${response.filteredArtifacts.length} artifact` +
-			`${response.filteredArtifacts.length > 1 ? "s" : ""}` +
-			` were filtered by the NSFW classifier and need to be retried.`
-		);
+	// Return the base64 image string
+	if (response.imageArtifacts.length > 0) {
+		return response.imageArtifacts[0].getBinary_asB64();
 	}
 
-	// Do something with the successful image artifacts
-	response.imageArtifacts.forEach((artifact: Generation.Artifact) => {
-		try {
-			fs.writeFileSync(
-				`image-${artifact.getSeed()}.png`,
-				Buffer.from(artifact.getBinary_asU8())
-			);
-		} catch (error) {
-			console.error("Failed to write resulting image to disk", error);
-		}
-	});
-
-	// For browser implementations: you could use the `artifact.getBinary_asB64()` method to get a
-	// base64 encoded string and then create a data URL from that and display it in an <img> tag.
+	return undefined;
 }
