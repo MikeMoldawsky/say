@@ -16,8 +16,10 @@ const GenerateImage: React.FC = () => {
     const imageRef = useRef<HTMLImageElement | null>(null);
 
     const downloadImage = () => {
+        console.log("Called downloadImage")
         const src = imageRef.current?.src ?? null;
         if (src) {
+            console.log("In src")
             const link = document.createElement("a");
             link.href = src;
             link.download = "generated-image.png";
@@ -90,7 +92,7 @@ const GenerateImage: React.FC = () => {
                                 {
                                     isLoading ?
                                         <Loader /> :
-                                        <img src={imageBase64} alt="Generated Image" className="max-h-full max-w-full" />
+                                        <img ref={imageRef} src={imageBase64} alt="Generated Image" className="max-h-full max-w-full" />
                                 }
                             </div>
                         </div>
