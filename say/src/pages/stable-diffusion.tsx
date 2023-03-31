@@ -58,18 +58,20 @@ const GenerateImage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-            <div className="kuku0 bg-white p-8 rounded-lg shadow-md w-full max-w-7xl h-[90vh] flex flex-col w-full h-full">
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center overflow-auto">
+            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-7xl h-[90vh] flex flex-col w-full h-full overflow-hidden">
+            {/*<div className="bg-white p-8 rounded-lg shadow-md w-full max-w-7xl flex-1 flex flex-col w-full h-full overflow-hidden">*/}
                 <h1 className="text-4xl font-bold mb-4">Image Generator</h1>
                 <div className="flex flex-grow">
-                    <div className="kuku1 w-1/3 pr-8 flex flex-col space-y-4">
-                        <div className="w-full h-full">
-                             <textarea
-                                 id="prompt"
-                                 value={userPrompt}
-                                 onChange={(e) => setUserPrompt(e.target.value)}
-                                 className="mt-1 block w-full h-[60vh] p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
-                             />
+                    <div className="w-1/3 pr-8 flex flex-col space-y-4">
+                        <div className="w-full flex-grow flex flex-col">
+                       <textarea
+                           id="prompt"
+                           value={userPrompt}
+                           onChange={(e) => setUserPrompt(e.target.value)}
+                           className="mt-1 block w-full h-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+                       />
+
                             <div className="flex-grow flex flex-col">
                                 <button
                                     onClick={fetchImage}
@@ -82,13 +84,13 @@ const GenerateImage: React.FC = () => {
                         </div>
 
                     </div>
-                    <div className="kuku2 relative w-2/3 border-gray-300 pl-8">
+                    <div className="relative w-2/3 border-gray-300 pl-8">
                         <div className="absolute top-0 left-0 w-full h-[calc(100%-52px)]">
-                            <div className="border h-full flex items-center justify-center">
+                            <div className="border h-full flex items-center justify-center rounded-md">
                                 {
                                     isLoading ?
-                                    <Loader /> :
-                                    <img src={imageBase64} alt="Generated Image" className="max-h-full max-w-full" />
+                                        <Loader /> :
+                                        <img src={imageBase64} alt="Generated Image" className="max-h-full max-w-full" />
                                 }
                             </div>
                         </div>
