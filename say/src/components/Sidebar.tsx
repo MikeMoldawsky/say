@@ -27,12 +27,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidePanel }) => {
 						</Link>
 					</li>
 					<li className="mb-4">
-						<Link href="/about">
+						<Link href="/image-generator">
 							<div
 								onClick={toggleSidePanel}
 								className="text-lg font-semibold hover:text-blue-300 cursor-pointer"
 							>
-								About
+								Image Generator
 							</div>
 						</Link>
 					</li>

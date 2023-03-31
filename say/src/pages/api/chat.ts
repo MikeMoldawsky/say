@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ChatGPTClient } from '../../backend/chatGPT/chatGPTClient';
-import {ChatGPTMessage} from "../../frontend/utils/messageConverter";
+import {ChatCompletionRequest} from "../../objects-api/chat";
 
 
 const chatGPT = new ChatGPTClient();
@@ -8,8 +8,8 @@ const chatGPT = new ChatGPTClient();
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
-      const messages: ChatGPTMessage[] = req.body;
-      const assistantMessage = await chatGPT.createChatCompletionOfficial(messages);
+      const request: ChatCompletionRequest = req.body;
+      const assistantMessage = await chatGPT.createChatCompletionOfficial(request.messages);
       res.status(200).json({ message: assistantMessage });
     } catch (error: any) {
       console.error('Error fetching ChatGPT response:', error);

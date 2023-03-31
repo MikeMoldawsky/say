@@ -1,10 +1,12 @@
 import React, {useRef, useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRedo, faDownload } from "@fortawesome/free-solid-svg-icons";
-import {DiffusionSampler} from "../frontend/clients/stable-diffusion/generation/generation_pb";
-import { client, metadata } from "../frontend/clients/stable-diffusion/stableDiffusionClient";
-import { buildGenerationRequest, executeGenerationRequest } from "../frontend/clients/stable-diffusion/helpers";
 import Loader from "../components/Loader";
+import {
+    GenerateTextToImageRequest,
+    GenerateTextToImageResponse
+} from "../objects-api/generate-image";
+import {generateTextToImage} from "../frontend/clients/generateImageClient";
 
 const GenerateImage: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -29,30 +31,16 @@ const GenerateImage: React.FC = () => {
 
     async function fetchImage() {
         setIsLoading(true);
-        const request = buildGenerationRequest("stable-diffusion-512-v2-1", {
-            type: "text-to-image",
-            prompts: [
-                {
-                    text: userPrompt,
-                },
-            ],
-            width: 512,
+        const request: GenerateTextToImageRequest = {
+            prompt: {
+                text: userPrompt,
+            },
             height: 512,
-            samples: 1,
-            cfgScale: 13,
-            steps: 25,
-            sampler: DiffusionSampler.SAMPLER_K_DPMPP_2M,
-        });
-
+            width: 512
+        }
         try {
-            const response = await executeGenerationRequest(client, request, metadata);
-            if (response instanceof Error) {
-                console.error("Generation failed", response);
-                throw response;
-            } else {
-                const imageArtifact = response.imageArtifacts[0];
-                setImageBase64(`data:image/png;base64,${imageArtifact.getBinary_asB64()}`);
-            }
+            const response: GenerateTextToImageResponse = await generateTextToImage(request);
+            setImageBase64(`data:image/png;base64,${response.imageBase64}`);
         } catch (error) {
             console.error("Failed to generate image", error);
         }
@@ -60,9 +48,8 @@ const GenerateImage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center overflow-auto">
-            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-7xl h-[90vh] flex flex-col w-full h-full overflow-hidden">
-            {/*<div className="bg-white p-8 rounded-lg shadow-md w-full max-w-7xl flex-1 flex flex-col w-full h-full overflow-hidden">*/}
+        <div className="h-screen bg-gray-100 flex items-center justify-center overflow-auto">
+            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-7xl flex-grow flex flex-col w-full h-full overflow-hidden">
                 <h1 className="text-4xl font-bold mb-4">Image Generator</h1>
                 <div className="flex flex-grow">
                     <div className="w-1/3 pr-8 flex flex-col space-y-4">
@@ -92,7 +79,7 @@ const GenerateImage: React.FC = () => {
                                 {
                                     isLoading ?
                                         <Loader /> :
-                                        <img ref={imageRef} src={imageBase64} alt="Generated Image" className="max-h-full max-w-full" />
+                                        <img ref={imageRef} src={imageBase64 || undefined} alt="Generated Image" className="max-h-full max-w-full" />
                                 }
                             </div>
                         </div>

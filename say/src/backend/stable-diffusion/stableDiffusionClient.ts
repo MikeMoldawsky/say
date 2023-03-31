@@ -1,43 +1,40 @@
-import * as Generation from "./generation/generation_pb";
-import {GenerationServiceClient} from "./generation/generation_pb_service";
-import {grpc as GRPCWeb} from "@improbable-eng/grpc-web";
-import {NodeHttpTransport} from "@improbable-eng/grpc-web-node-http-transport";
-import {buildGenerationRequest, executeGenerationRequest, GenerationResponse} from "./helpers";
+import fetch from 'node-fetch';
 import {GenerateTextToImageRequest, GenerateTextToImageResponse} from "../../objects-api/generate-image";
 
-// TODO: move to backend and to a env variable
+
+const engineId = 'stable-diffusion-v1-5'
 const stableDiffusion_API_KEY = 'sk-GgfxT6NnD2OYk5t1WuC0vJWTH3Ry7XDzVIfvMNrPFWFTfTZR'; // TODO: move to env var
-
-// This is a NodeJS-specific requirement - browsers implementations should omit this line.
-GRPCWeb.setDefaultTransport(NodeHttpTransport());
-
-// Authenticate using your API key, don't commit your key to a public repository!
-export const metadata = new GRPCWeb.Metadata();
-metadata.set("Authorization", "Bearer " + stableDiffusion_API_KEY);
-
-// Create a generation client to use with all future requests
-export const client = new GenerationServiceClient("https://grpc.stability.ai", {});
-
+const API_HOST = "https://api.stability.ai";
+const headers = {
+	'Content-Type': 'application/json',
+	Accept: 'application/json',
+	Authorization: `Bearer ${stableDiffusion_API_KEY}`,
+}
 
 export async function generateTextToImage(params: GenerateTextToImageRequest): Promise<GenerateTextToImageResponse> {
-	const generationRequest = buildGenerationRequest("stable-diffusion-512-v2-1", {
-		type: "text-to-image",
-		prompts: [params.prompt],
-		width: params.width,
-		height: params.height,
-		samples: 1,
-		cfgScale: 13,
-		steps: 25,
-		sampler: Generation.DiffusionSampler.SAMPLER_K_DPMPP_2M,
-	});
 	try {
-		const generationResponse : GenerationResponse = await executeGenerationRequest(client, generationRequest, metadata);
-		if (generationResponse instanceof Error) {
-			console.error("Generation failed", generationResponse);
-			throw generationResponse;
+		console.error("Making text-to-image request:", params)
+		const response = await fetch(`${API_HOST}/v1/generation/stable-diffusion-512-v2-1/text-to-image`, {
+			method: 'POST',
+			headers,
+			body: JSON.stringify({
+				text_prompts: [params.prompt],
+				width: params.width,
+				height: params.height,
+				samples: 1,
+				cfg_scale: 13,
+				steps: 25,
+				sampler: 'K_DPMPP_2M',
+			}),
+		});
+		if (!response.ok) {
+			throw new Error(`Non-200 response: ${await response.text()}`);
 		}
+
+		const data = await response.json();
+
 		return {
-			imageBase64: generationResponse.imageArtifacts[0].getBinary_asB64()
+			imageBase64: data.artifacts[0].base64,
 		};
 	} catch (error) {
 		console.error("Failed to make text-to-image request:", error);

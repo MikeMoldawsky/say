@@ -1,9 +1,5 @@
 import {SayMessage} from "../../components/chat/ChatMessage";
-
-export interface ChatGPTMessage {
-	role: string,
-	content: string
-}
+import {ChatGPTMessage} from "../../objects-api/chat";
 
 export function toChatGPTMessages(messages: SayMessage[]): ChatGPTMessage[] {
 	return messages.map((message: SayMessage) => ({

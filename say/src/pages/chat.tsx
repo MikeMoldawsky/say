@@ -7,7 +7,6 @@ const ChatPage: React.FC = () => {
     // TODO: add if botId is null, redirect to index page
     return (
         <div>
-            <Header />
             <ChatWindow />
         </div>
     );

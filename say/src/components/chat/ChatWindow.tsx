@@ -4,10 +4,10 @@ import ChatMessages from './ChatMessages';
 import BotChatInfo from './BotChatInfo';
 import { toChatGPTMessages } from "../../frontend/utils/messageConverter";
 import { v4 as uuidv4 } from 'uuid';
-import { ChatGPTMessage } from '../../frontend/utils/messageConverter';
 import Loader from "../Loader";
 import {useUserBotsContext} from "../react-context/UserBotsContext";
 import {chatWithChatGPT} from "../../frontend/clients/chatClient";
+import {ChatCompletionRequest} from "../../objects-api/chat";
 
 
 
@@ -57,8 +57,8 @@ const ChatWindow: React.FC = () => {
 		}
 
 		try {
-			const chatGPTMessages: ChatGPTMessage[] = toChatGPTMessages(sayMessages);
-			const assistantMessage = await chatWithChatGPT(chatGPTMessages);
+			const chatCompletionRequest: ChatCompletionRequest =  {messages: toChatGPTMessages(sayMessages)};
+			const assistantMessage = await chatWithChatGPT(chatCompletionRequest);
 			setMessages((prevMessages) => [
 				...prevMessages,
 				{ id: uuidv4(), role: 'assistant', content: assistantMessage, createdAt: new Date() },
