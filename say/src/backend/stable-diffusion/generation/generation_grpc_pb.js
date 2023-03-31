@@ -2,9 +2,9 @@
 
 'use strict';
 var grpc = require('grpc');
-var generation_pb = require('./generation_pb.js');
+var generation_pb = require('./generation_pb.d.ts');
 var google_protobuf_struct_pb = require('google-protobuf/google/protobuf/struct_pb.js');
-var tensors_pb = require('./tensors_pb.js');
+var tensors_pb = require('./tensors_pb.d.ts');
 
 function serialize_gooseai_Answer(arg) {
   if (!(arg instanceof generation_pb.Answer)) {

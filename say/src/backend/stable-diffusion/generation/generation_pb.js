@@ -23,7 +23,7 @@ var global = (function() {
 
 var google_protobuf_struct_pb = require('google-protobuf/google/protobuf/struct_pb.js');
 goog.object.extend(proto, google_protobuf_struct_pb);
-var tensors_pb = require('./tensors_pb.js');
+var tensors_pb = require('./tensors_pb.d.ts');
 goog.object.extend(proto, tensors_pb);
 goog.exportSymbol('proto.gooseai.Action', null, global);
 goog.exportSymbol('proto.gooseai.Answer', null, global);

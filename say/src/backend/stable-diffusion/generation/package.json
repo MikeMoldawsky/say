@@ -1,0 +1,5 @@
+{
+  "name": "stable-diffusion-generation",
+  "version": "0.1.0",
+  "main": "generation_pb.js"
+}
