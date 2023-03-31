@@ -12,8 +12,6 @@
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@improbable-eng/grpc-web": "^0.15.0",
-    "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
     "@tailwindcss/forms": "^0.5.3",
     "@types/node": "^18.15.9",
     "@types/react": "^18.0.28",
@@ -21,8 +19,6 @@
     "axios": "^1.3.4",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
-    "google-protobuf": "^3.21.2",
-    "grpc": "^1.24.11",
     "mongodb": "^5.1.0",
     "next": "13.2.4",
     "node-fetch": "^3.3.1",
@@ -35,7 +31,6 @@
     "vercel": "^28.18.1"
   },
   "devDependencies": {
-    "@types/google-protobuf": "^3.15.6",
     "@types/uuid": "^9.0.1",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.21",

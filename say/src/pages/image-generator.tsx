@@ -1,4 +1,5 @@
 import React, {useRef, useState} from "react";
+import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRedo, faDownload } from "@fortawesome/free-solid-svg-icons";
 import Loader from "../components/Loader";
@@ -79,7 +80,14 @@ const GenerateImage: React.FC = () => {
                                 {
                                     isLoading ?
                                         <Loader /> :
-                                        <img ref={imageRef} src={imageBase64 || undefined} alt="Generated Image" className="max-h-full max-w-full" />
+                                        <Image
+                                            ref={imageRef}
+                                            src={imageBase64 || undefined}
+                                            alt="Generated Image"
+                                            width={512}
+                                            height={512}
+                                            className="max-h-full max-w-full"
+                                        />
                                 }
                             </div>
                         </div>
