@@ -11,6 +11,12 @@ const headers = {
 	Authorization: `Bearer ${stableDiffusion_API_KEY}`,
 }
 
+interface StableDiffusionResponse {
+	artifacts: Array<{
+		base64: string;
+	}>;
+}
+
 export async function generateTextToImage(params: GenerateTextToImageRequest): Promise<GenerateTextToImageResponse> {
 	try {
 		console.error("Making text-to-image request:", params)
@@ -32,9 +38,9 @@ export async function generateTextToImage(params: GenerateTextToImageRequest): P
 		}
 
 		const data = await response.json();
-
+		const SDresponse = data as StableDiffusionResponse;
 		return {
-			imageBase64: data.artifacts[0].base64,
+			imageBase64: SDresponse.artifacts[0].base64,
 		};
 	} catch (error) {
 		console.error("Failed to make text-to-image request:", error);

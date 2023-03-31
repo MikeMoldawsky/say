@@ -1,7 +1,7 @@
 import React, {useRef, useState} from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRedo, faDownload } from "@fortawesome/free-solid-svg-icons";
+import { faRedo, faDownload, faImage } from "@fortawesome/free-solid-svg-icons";
 import Loader from "../components/Loader";
 import {
     GenerateTextToImageRequest,
