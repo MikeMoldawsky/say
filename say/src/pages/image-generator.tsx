@@ -80,14 +80,18 @@ const GenerateImage: React.FC = () => {
                                 {
                                     isLoading ?
                                         <Loader /> :
-                                        <Image
+                                        imageBase64 ?
+                                            (<Image
                                             ref={imageRef}
-                                            src={imageBase64 || undefined}
+                                            src={imageBase64}
                                             alt="Generated Image"
                                             width={512}
                                             height={512}
                                             className="max-h-full max-w-full"
-                                        />
+                                            />
+                                            ) : (
+                                                <FontAwesomeIcon icon={faImage} className="text-gray-300" size="10x" />
+                                            )
                                 }
                             </div>
                         </div>
