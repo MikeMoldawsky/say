@@ -7,9 +7,19 @@ interface BotCardProps {
 	onDelete: (bot: Bot) => void;
 	onConfigure: (bot: Bot) => void;
 	onChat: (bot: Bot) => void;
+	onImage: (bot: Bot) => void;
 }
 
-const BotCard: React.FC<BotCardProps> = ({ bot, onConfigure, onChat, onDelete }) => {
+const BotCard: React.FC<BotCardProps> = ({ bot, onConfigure, onChat, onImage, onDelete }) => {
+	const handleAction = (bot: Bot) => {
+		if (bot.config.type === 'chat') {
+			onChat(bot);
+		} else {
+			onImage(bot);
+		}
+	}
+
+
 	return (
 		<div className="bg-white p-4 rounded-lg shadow-md text-center hover:shadow-lg hover:scale-105 transition-all duration-300 mb-4 flex items-start">
 			<div className="mr-4">
@@ -24,16 +34,16 @@ const BotCard: React.FC<BotCardProps> = ({ bot, onConfigure, onChat, onDelete })
 				<div className="mt-auto">
 					<div className="flex justify-center space-x-2 mb-4">
 						<button
+							className="bg-green-500 text-500 text-white px-2 py-1 rounded shadow mr-1 hover:bg-green-600 transition-all duration-300"
+							onClick={() => handleAction(bot)}
+						>
+							{bot.config.type === 'chat' ? 'Chat' : 'Image'}
+						</button>
+						<button
 							className="bg-blue-500 text-white px-2 py-1 rounded shadow mr-1 hover:bg-blue-600 transition-all duration-300"
 							onClick={() => onConfigure(bot)}
 						>
 							Configure
-						</button>
-						<button
-							className="bg-green-500 text-500 text-white px-2 py-1 rounded shadow mr-1 hover:bg-green-600 transition-all duration-300"
-							onClick={() => onChat(bot)}
-						>
-							Chat
 						</button>
 						<button
 							className="bg-red-500 text-white px-2 py-1 rounded shadow hover:bg-red-600 transition-all duration-300"

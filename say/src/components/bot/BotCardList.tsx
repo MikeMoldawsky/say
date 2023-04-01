@@ -30,6 +30,12 @@ const BotCardList: React.FC<BotCardListProps> = ({onConfigure}) => {
 		router.push(`/chat`);
 	};
 
+	const routeToImage = (bot: Bot) => {
+		setLoading(true);
+		setSelectedBot(bot);
+		router.push(`/image`);
+	};
+
 	return (
 		<div className="p-4">
 			<h2 className="text-2xl font-semibold mb-4 text-primary">My Bots</h2>
@@ -37,7 +43,7 @@ const BotCardList: React.FC<BotCardListProps> = ({onConfigure}) => {
 				{ (bots === null || isLoading) ?
 					<Loader /> :
 					bots.map((bot) => (
-					<BotCard key={bot._id} bot={bot} onChat={routeToChat} onConfigure={onConfigure} onDelete={handleDelete} />
+					<BotCard key={bot._id} bot={bot} onChat={routeToChat} onConfigure={onConfigure} onDelete={handleDelete} onImage={routeToImage} />
 				))}
 			</div>
 		</div>
