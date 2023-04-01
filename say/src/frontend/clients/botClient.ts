@@ -1,6 +1,5 @@
 import axios from 'axios';
-import {Bot, CreateBotRequest, UpdateBotRequest} from '../../objects-api/bots';
-import {ChatBotRequest} from "../../objects-api/chat";
+import {Bot, ChatBotRequest, CreateBotRequest, UpdateBotRequest} from '../../objects-api/bots';
 
 export async function updateBot(userId: string, botId: string, request: UpdateBotRequest): Promise<void> {
 	//TODO: add authentication

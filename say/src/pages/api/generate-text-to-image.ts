@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import {GenerateTextToImageRequest, GenerateTextToImageResponse} from "../../objects-api/generate-image";
-import {generateTextToImage} from "../../backend/stable-diffusion/stableDiffusionClient";
+import {generateTextToImage} from "../../backend/stable-diffusion/stableDiffusionManager";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

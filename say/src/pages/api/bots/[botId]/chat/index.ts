@@ -1,16 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { ChatGPTClient } from '../../../../../backend/chatGPT/chatGPTClient';
-import {ChatBotRequest, ChatBotResponse } from "../../../../../objects-api/chat";
+import { BotManager } from '../../../../../backend/bots/BotManager';
+import {ChatBotResponse, ChatBotRequest} from "../../../../../objects-api/bots";
 
 
-const chatGPT = new ChatGPTClient();
+const botManager = new BotManager();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const {query: { botId }} = req;
+  if(!botId){
+    console.error("Bad request: botId is undefined");
+    res.status(500).json({ message: 'Bad request: botId is undefined' });
+    return;
+  }
   try {
     switch (req.method) {
       case 'POST':
         const request: ChatBotRequest = req.body;
-        const assistantMessage = await chatGPT.chat(request);
+        const assistantMessage = await botManager.chat(botId as string, request);
         const response: ChatBotResponse = { message: assistantMessage };
         res.status(200).json(response);
         break;
@@ -19,9 +25,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } catch (error) {
     if (error instanceof Error) {
-      res.status(500).json({message: 'Error at answer endpoint', error: error.message});
+      res.status(500).json({message: 'Error at chat endpoint', error: error.message});
     } else {
-      res.status(500).json({message: 'Error at answer endpoint', error: String(error)});
+      res.status(500).json({message: 'Error at chat endpoint', error: String(error)});
     }
   }
 }

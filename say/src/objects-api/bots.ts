@@ -20,8 +20,21 @@ export interface UpdateBotRequest {
 	systemMessage?: string;
 }
 
-export interface DeleteBotRequest {
+
+export interface GetAnswerBotRequest {
+	content: string;
 }
 
-export interface AnswerBotRequest {
+export interface ChatBotRequest {
+	messages: ChatBotMessage[]
+}
+
+
+export interface ChatBotResponse {
+	message: string
+}
+
+export interface ChatBotMessage {
+	role: 'system' | 'user' | 'assistant',
+	content: string
 }

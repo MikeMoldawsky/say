@@ -5,10 +5,13 @@ import {Bot, CreateBotRequest, UpdateBotRequest} from "../../objects-api/bots";
 import {fromBotDocument, toNewBotDocument} from "../converters/bot-conversion";
 
 
-export async function getBot(botId: string): Promise<Bot | null> {
+export async function getBot(botId: string): Promise<Bot> {
 	const botsCollection = await getBotsCollection();
 	const bot = await botsCollection.findOne({ _id: new ObjectId(botId) });
-	return bot ? fromBotDocument(bot) : null;
+	if(!bot){
+		throw new Error('Bot not found');
+	}
+	return bot as Bot;
 }
 
 export async function getBots(userId: string): Promise<Bot[]> {

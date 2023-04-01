@@ -6,7 +6,7 @@ import { toChatCompletionRequest } from "../../frontend/utils/messageConverter";
 import { v4 as uuidv4 } from 'uuid';
 import Loader from "../Loader";
 import {useUserBotsContext} from "../react-context/UserBotsContext";
-import {ChatBotRequest} from "../../objects-api/chat";
+import {ChatBotRequest} from "../../objects-api/bots";
 
 
 
@@ -33,7 +33,6 @@ const ChatWindow: React.FC = () => {
 
 	const handleNewMessage = async (userContent: string) => {
 		if(selectedBot === null) return;
-		const systemMessages: SayMessage[] = [{ id: uuidv4(), role: 'system', content: selectedBot.systemMessage, createdAt: new Date() }];
 		const userSayMessage: SayMessage = { id: uuidv4(), role: 'user', content: userContent, createdAt: new Date() };
 
 		// Add user message and system message to the messages state
@@ -42,11 +41,7 @@ const ChatWindow: React.FC = () => {
 			{ id: uuidv4(), role: 'user', content: userContent, createdAt: new Date() },
 		]);
 
-		let sayMessages: SayMessage[] = [
-			...systemMessages,
-			...messages,
-			userSayMessage
-		];
+		let sayMessages: SayMessage[] = [...messages, userSayMessage];
 
 		if (selectedContext !== null) {
 			const contextMessage: SayMessage = { id: uuidv4(), role: 'user', content: contexts[selectedContext].message, createdAt: new Date() };

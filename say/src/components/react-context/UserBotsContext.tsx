@@ -1,9 +1,8 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import {Bot, CreateBotRequest, UpdateBotRequest} from '../../objects-api/bots';
+import {Bot, ChatBotRequest, CreateBotRequest, UpdateBotRequest} from '../../objects-api/bots';
 import {createBot, deleteBot, updateBot, chatWithBot} from '../../frontend/clients/botClient';
 import {useUserContext} from './UserContext';
 import {fetchUserBots} from "../../frontend/clients/userClient";
-import {ChatBotRequest} from "../../objects-api/chat";
 
 interface UserBotsContextType {
 	bots: Bot[] | null;

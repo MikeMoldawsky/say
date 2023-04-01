@@ -5,10 +5,7 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ): Promise<void> {
-	const {
-		query: { userId },
-	} = req;
-
+	const {query: { userId }} = req;
 	if (req.method === 'GET') {
 		try {
 			const user = await getUser(userId as string);
