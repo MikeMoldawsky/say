@@ -1,4 +1,4 @@
-import {Bot, CreateBotRequest, UpdateBotRequest} from "../../../objects-api/bots";
+import {Bot, CreateBotRequest, isChatBotConfig, isImageBotConfig, UpdateBotRequest} from "../../../objects-api/bots";
 import {ObjectId} from "mongodb";
 
 export interface BotDocument {
@@ -26,9 +26,14 @@ export type PartialBotDocument = Partial<Omit<BotDocument, '_id'>>;
 
 
 export function toBotDocument(bot: CreateBotRequest): BotDocument {
-	const config: BotConfigDocument = bot.type === 'chat'
-		? {type: 'chat', systemMessage: bot.systemMessage} as ChatBotConfigDocument
-		: {type: 'image'} as ImageBotConfigDocument;
+	let config: BotConfigDocument;
+	if(isChatBotConfig(bot.config)){
+		config = {type: 'chat', systemMessage: bot.config.systemMessage} as ChatBotConfigDocument;
+	}else if (isImageBotConfig(bot.config)){
+		config = {type: 'image'} as ImageBotConfigDocument;
+	}else {
+		throw new Error('Invalid bot config');
+	}
 	return {
 		_id: new ObjectId(),
 		name: bot.name,

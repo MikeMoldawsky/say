@@ -20,11 +20,10 @@ export interface ImageBotConfig extends BotConfig {
 }
 
 export interface CreateBotRequest {
-	type: 'chat' | 'image';
 	name: string;
 	imageUrl: string;
 	description: string;
-	systemMessage: string;
+	config: BotConfig
 }
 
 export type UpdateBotRequest = Partial<Omit<Bot, '_id'>>;
