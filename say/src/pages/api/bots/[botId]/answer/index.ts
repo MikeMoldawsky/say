@@ -16,8 +16,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (req.method) {
       case 'POST':
         const request: GetAnswerBotRequest = req.body;
-        const assistantMessage = await botManager.answer(botId as string, request);
-        const response: ChatBotResponse = { message: assistantMessage };
+        const message = await botManager.answer(botId as string, request);
+        const response: ChatBotResponse = { message };
         res.status(200).json(response);
         break;
       default:

@@ -1,7 +1,9 @@
 import {Configuration, OpenAIApi} from "openai";
 import {ChatCompletionRequestMessage} from "openai/api";
-import {Bot, ChatBotRequest, GetAnswerBotRequest, isChatBotConfig} from "../../objects-api/bots";
+import {Bot, ChatBotRequest, GetAnswerBotRequest, isChatBotConfig, isImageBotConfig} from "../../objects-api/bots";
 import {getBot} from "../db/bots";
+import {generateTextToImage} from "../stable-diffusion/stableDiffusionManager";
+import {GenerateTextToImageRequest} from "../../objects-api/generate-image";
 
 const chatGPT_API_KEY = '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'; // TODO: remove to env var
 
@@ -42,10 +44,20 @@ export class BotManager {
 
 	async answer(botId: string, request: GetAnswerBotRequest): Promise<string> {
 		const bot: Bot = await getBot(botId);
-		if(!isChatBotConfig(bot.config)) throw Error('Bot is not a chat bot');
-
-		const systemMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('system', bot.config["systemMessage"]);
-		const userMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('user', request.content);
-		return await BotManager.chatCompletion([systemMessage, userMessage]);
+		if(isChatBotConfig(bot.config)) {
+			const systemMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('system', bot.config["systemMessage"]);
+			const userMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('user', request.content);
+			return await BotManager.chatCompletion([systemMessage, userMessage]);
+		} else if (isImageBotConfig(bot.config)) {
+			const req : GenerateTextToImageRequest = {
+				prompt: {
+					text: request.content,
+				},
+				height: 512,
+				width: 512
+			};
+			return (await generateTextToImage(req)).imageBase64;
+		}
+		throw Error('Bot is not a chat bot');
 	}
 }
