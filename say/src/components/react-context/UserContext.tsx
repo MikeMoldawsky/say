@@ -13,6 +13,8 @@ const UserContext = createContext<UserContextType>({
 	userId: null,
 });
 
+const CONSTANT_USER_ID = '6422d27a79b10a5364ed8cd0';
+
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 	const [userId, setUserId] = useState<string | null>(null);
 
@@ -22,7 +24,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
 	const login = () => {
 		// TODO: replace mock login with real login
-		setUserId('6422d27a79b10a5364ed8cd0');
+		console.log("Logging in", CONSTANT_USER_ID)
+		setUserId(CONSTANT_USER_ID);
 	};
 
 	return (

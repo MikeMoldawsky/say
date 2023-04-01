@@ -20,3 +20,7 @@ export interface UpdateBotRequest {
 	description?: string;
 	systemMessage?: string;
 }
+
+export interface DeleteBotRequest {
+	_id: string;
+}

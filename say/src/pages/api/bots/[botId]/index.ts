@@ -1,12 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import {addBot, deleteBot, getBot, updateBot} from '../../../../../../backend/db/bots';
+import {addBot, deleteBot, getBot, updateBot} from '../../../../backend/db/bots';
+import {getUserIdFromHeader} from "../../../../backend/utils/requests";
 
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ): Promise<void> {
-	const { userId, botId } = req.query;
-
+	const userId = getUserIdFromHeader(req.headers);
+	if(!userId){
+		res.status(401).json({ message: 'Unauthorized' });
+		return;
+	}
+	const { botId } = req.query;
 	if (req.method === 'GET') {
 		try {
 			const bot = await getBot(botId as string);
@@ -25,7 +30,7 @@ export default async function handler(
 	} else if (req.method === 'POST') {
 		try {
 			const createBotReq = req.body;
-			const createdBot = await addBot(userId as string, createBotReq);
+			const createdBot = await addBot(userId, createBotReq);
 			res.status(201).json(createdBot);
 		} catch (error) {
 			if (error instanceof Error) {
@@ -48,7 +53,7 @@ export default async function handler(
 		}
 	} else if (req.method === 'DELETE') {
 		try {
-			await deleteBot(userId as string, botId as string);
+			await deleteBot(userId, botId as string);
 			res.status(200).json({ message: 'Bot deleted successfully' });
 		} catch (error) {
 			if (error instanceof Error) {

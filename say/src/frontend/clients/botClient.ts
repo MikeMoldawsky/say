@@ -1,53 +1,44 @@
 import axios from 'axios';
-import {Bot, CreateBotRequest, UpdateBotRequest} from '../../objects-api/bots';
+import {Bot, CreateBotRequest, DeleteBotRequest, UpdateBotRequest} from '../../objects-api/bots';
 
-export async function fetchBots(userId: string): Promise<Bot[]> {
-	console.log("Fetching bots", { userId });
+export async function updateBot(userId: string, request: UpdateBotRequest): Promise<void> {
+	//TODO: add authentication
 	try {
-		const response = await fetch(`/api/users/${userId}/bots`);
-		if (response.ok) {
-			return await response.json();
-		}
-		console.error('Error fetching bots:', response.statusText);
-		return [];
-	} catch (error) {
-		console.error('Error fetching bots:', error);
-		return [];
-	}
-}
-
-export async function updateBot(userId: string, bot: UpdateBotRequest): Promise<void> {
-	try {
-		console.log('Updating bot');
-		await axios.put(`/api/users/${userId}/bots/${bot._id}`, bot);
+		console.log('Updating bot', {userId, request});
+		await axios.put(`/api/bots/${request._id}`, request, {headers: {  'Content-Type': 'application/json', 'X-User-ID': userId}});
 	} catch (error) {
 		console.error('Error updating bot:', error);
 		throw error;
 	}
 }
 
-export async function createBot(userId: string, bot: CreateBotRequest): Promise<void> {
+export async function createBot(userId: string, request: CreateBotRequest): Promise<void> {
+	//TODO: add authentication
 	try {
-		console.log('Creating bot');
-		await axios.post(`/api/users/${userId}/bots`, bot);
+		console.log('Creating bot', {userId, request});
+		await axios.post(`/api/bots`, request, {headers: {  'Content-Type': 'application/json', 'X-User-ID': userId}});
 	} catch (error) {
-		console.error('Error creating bot:', error);
+		console.error('Error creating request:', error);
 		throw error;
 	}
 }
 
-export async function deleteBotById(userId: string, botId: string): Promise<void> {
+export async function deleteBot(userId: string, request: DeleteBotRequest): Promise<void> {
+	//TODO: add authentication
 	try {
-		await axios.delete(`/api/users/${userId}/bots/${botId}`);
+		console.log('Deleting bot', {userId, request});
+		await axios.delete(`/api/bots/${request._id}`, {headers: {  'Content-Type': 'application/json', 'X-User-ID': userId}});
 	} catch (error) {
 		console.error('Error deleting bot:', error);
 		throw error;
 	}
 }
 
-export async function getBotById(userId: string, botId: string): Promise<Bot | null> {
+export async function getBot(userId: string, botId: string): Promise<Bot | null> {
+	//TODO: add authentication
 	try {
-		const response = await axios.get(`/api/users/${userId}/bots/${botId}`);
+		console.log('Get bot', {userId, botId});
+		const response = await axios.get(`/api/bots/${botId}`, {headers: {  'Content-Type': 'application/json', 'X-User-ID': userId}});
 
 		if (response.status === 200) {
 			return response.data;

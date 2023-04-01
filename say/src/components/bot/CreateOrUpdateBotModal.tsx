@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import styles from '../../styles/AddBotPopup.module.css';
 import {useUserBotsContext} from "../react-context/UserBotsContext";
+import {useUserContext} from "../react-context/UserContext";
 
 interface CreateOrUpdateBotModalProps {
 	onClose: () => void;
@@ -47,6 +48,7 @@ const CreateOrUpdateBotModal: React.FC<CreateOrUpdateBotModalProps> = ({ onClose
 			});
 			return;
 		}
+
 		if (selectedBot) {
 			updateBot({
 				_id: selectedBot._id,

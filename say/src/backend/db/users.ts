@@ -1,9 +1,10 @@
 import {Collection, ObjectId} from 'mongodb';
 import {connectToDatabase} from './db';
+import {CreateUserRequest} from "../../objects-api/users";
 
-export async function createUser(userData: { email: string }): Promise<void> {
+export async function createUser(req: CreateUserRequest): Promise<void> {
 	const usersCollection = await getUserCollection();
-	await usersCollection.insertOne(userData);
+	await usersCollection.insertOne({email: req.email});
 }
 
 export async function getUser(userId: string): Promise<any> {
