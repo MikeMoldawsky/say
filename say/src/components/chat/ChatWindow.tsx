@@ -22,7 +22,7 @@ const contexts = [
 
 
 const ChatWindow: React.FC = () => {
-	const { selectedBot, chatWithSelectedBot } = useUserBotsContext();
+	const { selectedBot, botClient } = useUserBotsContext();
 	const [messages, setMessages] = useState<SayMessage[]>([]);
 	const [selectedContext, setSelectedContext] = useState<number | null>(null);
 
@@ -32,7 +32,7 @@ const ChatWindow: React.FC = () => {
 	}
 
 	const handleNewMessage = async (userContent: string) => {
-		if(selectedBot === null) return;
+		if(selectedBot === null || botClient === null) return;
 		const userSayMessage: SayMessage = { id: uuidv4(), role: 'user', content: userContent, createdAt: new Date() };
 
 		// Add user message and system message to the messages state
@@ -50,7 +50,7 @@ const ChatWindow: React.FC = () => {
 
 		try {
 			const chatCompletionRequest: ChatBotRequest =  toChatCompletionRequest(sayMessages);
-			const assistantMessage = await chatWithSelectedBot(chatCompletionRequest);
+			const assistantMessage = await botClient.chatWithBot(selectedBot._id, chatCompletionRequest);
 			setMessages((prevMessages) => [
 				...prevMessages,
 				{ id: uuidv4(), role: 'assistant', content: assistantMessage, createdAt: new Date() },

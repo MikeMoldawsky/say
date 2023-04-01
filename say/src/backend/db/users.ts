@@ -1,20 +1,27 @@
 import {Collection, ObjectId} from 'mongodb';
 import {connectToDatabase} from './db';
 import {CreateUserRequest} from "../../objects-api/users";
+import {
+	PartialUserDocument,
+	toPartialBotDocument,
+	UserDocument, toUserDocument
+} from "./schemas/user";
 
 export async function createUser(req: CreateUserRequest): Promise<void> {
 	const usersCollection = await getUserCollection();
 	await usersCollection.insertOne({email: req.email});
 }
 
-export async function getUser(userId: string): Promise<any> {
+export async function getUserDocument(userId: string): Promise<UserDocument | null> {
 	const usersCollection = await getUserCollection();
-	return await usersCollection.findOne({_id: new ObjectId(userId)});
+	const document = await usersCollection.findOne({_id: new ObjectId(userId)});
+	return document ? toUserDocument(document) : null;
 }
 
 export async function updateUser(userId: string, userData: any): Promise<void> {
 	const usersCollection = await getUserCollection();
-	await usersCollection.updateOne({ _id: new ObjectId(userId) }, { $set: userData });
+	const partialUserDocument: PartialUserDocument = toPartialBotDocument(userData);
+	await usersCollection.updateOne({ _id: new ObjectId(userId) }, { $set: partialUserDocument });
 }
 
 export async function addUserBot(userId: string, botId: ObjectId): Promise<void> {

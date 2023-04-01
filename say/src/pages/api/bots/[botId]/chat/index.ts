@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { BotManager } from '../../../../../backend/bots/BotManager';
+import { BotManager } from '../../../../../backend/managers/botManager';
 import {ChatBotResponse, ChatBotRequest} from "../../../../../objects-api/bots";
 
 

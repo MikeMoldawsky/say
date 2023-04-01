@@ -1,17 +1,14 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import {Bot, ChatBotRequest, CreateBotRequest, UpdateBotRequest} from '../../objects-api/bots';
-import {createBot, deleteBot, updateBot, chatWithBot} from '../../frontend/clients/botClient';
+import {Bot} from '../../objects-api/bots';
+import {BotClient} from '../../frontend/clients/botClient';
 import {useUserContext} from './UserContext';
-import {fetchUserBots} from "../../frontend/clients/userClient";
 
 interface UserBotsContextType {
 	bots: Bot[] | null;
 	selectedBot: Bot | null;
 	setSelectedBot: (bot: Bot | null) => void;
-	createBot: (createReq: CreateBotRequest) => void;
-	updateSelectedBot: (updateReq: UpdateBotRequest) => void;
-	deleteSelectedBot: (deletedBot: Bot) => void;
-	chatWithSelectedBot: (_request: ChatBotRequest) => Promise<string>;
+	botClient: BotClient | null;
+	refreshBots: () => Promise<void>;
 }
 
 interface UserBotsProviderProps {
@@ -22,68 +19,47 @@ interface UserBotsProviderProps {
 const UserBotsContext = createContext<UserBotsContextType>({
 	bots: null,
 	selectedBot: null,
-	createBot: () => {},
-	setSelectedBot: (_bot: Bot | null) => {},
-	updateSelectedBot: () => {},
-	deleteSelectedBot: () => {},
-	chatWithSelectedBot: (_request: ChatBotRequest) => Promise.reject("No bot selected")
+	setSelectedBot: () => {},
+	botClient: null,
+	refreshBots: () => Promise.reject("Not initialized"),
 });
 
 export const UserBotsProvider: React.FC<UserBotsProviderProps> = ({ children }) => {
 	const { userId } = useUserContext();
 	const [bots, setBots] = useState<Bot[] | null>(null);
 	const [selectedBot, setSelectedBot] = useState<Bot | null>(null);
+	const [botClient, setBotClient] = useState<BotClient | null>(null);
 
 	useEffect(() => {
-		if (userId === null) return;
+		if (userId === null) {
+			setBotClient(null);
+			return;
+		}
+
 		const loadBots = async (userId: string) => {
 			console.log("Loading bots in context", { userId });
-			setBots(await fetchUserBots(userId));
+			const client = new BotClient(userId);
+			setBotClient(client);
+			setBots(await client.fetchBots());
 		};
+
 		loadBots(userId);
 	}, [userId]);
 
-	const loadBots = async (userId: string) => {
+
+	const refreshBots = async () => {
 		console.log("Loading bots in context", {userId, bots, selectedBot});
-		const fetchedBots = await fetchUserBots(userId);
+		if (botClient === null) {
+			throw new Error("Bot client is null");
+		}
+		const fetchedBots = await botClient.fetchBots();
 		setBots(fetchedBots);
 	};
 
-	const createBotRefresh = async (createReq: CreateBotRequest) => {
-		console.log("Creating bot in context", {userId, bots, selectedBot});
-		if (!userId) return;
-		await createBot(userId, createReq);
-		await loadBots(userId);
-	};
-
-	const updateSelectedBot = async (updateReq: UpdateBotRequest) => {
-		console.log("Updating bots in context", {userId, bots, selectedBot});
-		if (!userId || !selectedBot) return;
-		await updateBot(userId, selectedBot._id, updateReq);
-		await loadBots(userId);
-	};
-
-	const deleteSelectedBot = async () => {
-		console.log("Updating bots in context", {userId, bots, selectedBot});
-		if (!userId || !selectedBot) return;
-		await deleteBot(userId, selectedBot._id);
-		await loadBots(userId);
-	};
-
-	const chatWithSelectedBot = async (request: ChatBotRequest) => {
-		console.log("Chatting with selected bot in context", {userId, bots, selectedBot});
-		if (!userId || !selectedBot) return;
-		return await chatWithBot(selectedBot._id, request);
-	}
-
-	const setSelectBotWrapper = (bot: Bot | null) => {
-		console.log("Setting bots with context", {userId, bots, selectedBot, newBot: bot});
-		setSelectedBot(bot);
-	}
 
 
 	return (
-		<UserBotsContext.Provider value={{ bots, selectedBot, setSelectedBot: setSelectBotWrapper, createBot: createBotRefresh, updateSelectedBot, deleteSelectedBot, chatWithSelectedBot }}>
+		<UserBotsContext.Provider value={{ bots, selectedBot, setSelectedBot, botClient, refreshBots }}>
 			{children}
 		</UserBotsContext.Provider>
 	);

@@ -1,8 +1,8 @@
-import { addUserBot, removeUserBot, getUser } from './users';
-import { ObjectId } from 'mongodb';
-import { connectToDatabase } from './db';
+import {addUserBot, getUserDocument, removeUserBot} from './users';
+import {ObjectId} from 'mongodb';
+import {connectToDatabase} from './db';
 import {Bot, CreateBotRequest, UpdateBotRequest} from "../../objects-api/bots";
-import {fromBotDocument, toNewBotDocument} from "../converters/bot-conversion";
+import {BotDocument, fromBotDocument, PartialBotDocument, toBotDocument, toPartialBotDocument} from "./schemas/bot";
 
 
 export async function getBot(botId: string): Promise<Bot> {
@@ -11,23 +11,23 @@ export async function getBot(botId: string): Promise<Bot> {
 	if(!bot){
 		throw new Error('Bot not found');
 	}
-	return bot as Bot;
+	return fromBotDocument(bot);
 }
 
 export async function getBots(userId: string): Promise<Bot[]> {
-	const user = await getUser(userId);
-	if (!user) {
+	const userDocument = await getUserDocument(userId);
+	if (!userDocument) {
 		throw new Error('User not found');
 	}
 
 	const botsCollection = await getBotsCollection();
-	const bots = await botsCollection.find({ _id: { $in: user.botIds } }).toArray();
+	const bots = await botsCollection.find({ _id: { $in: userDocument.botIds } }).toArray();
 	return bots.map(bot => fromBotDocument(bot));
 }
 
 export async function addBot(userId: string, bot: CreateBotRequest): Promise<Bot> {
 	const botsCollection = await getBotsCollection();
-	const newBot = toNewBotDocument(bot);
+	const newBot: BotDocument = toBotDocument(bot);
 	await botsCollection.insertOne(newBot);
 	await addUserBot(userId, newBot._id);
 	return fromBotDocument(newBot);
@@ -35,7 +35,7 @@ export async function addBot(userId: string, bot: CreateBotRequest): Promise<Bot
 
 export async function addBots(userId: string, createBotRequests: CreateBotRequest[]): Promise<void> {
 	const botsCollection = await getBotsCollection();
-	const botDocuments = createBotRequests.map(toNewBotDocument);
+	const botDocuments: Array<BotDocument> = createBotRequests.map(toBotDocument);
 	await botsCollection.insertMany(botDocuments);
 	const botIds = botDocuments.map((bot) => bot._id);
 	for (const botId of botIds) {
@@ -43,10 +43,10 @@ export async function addBots(userId: string, createBotRequests: CreateBotReques
 	}
 }
 
-export async function updateBot(botId: string, botData: UpdateBotRequest): Promise<void> {
+	export async function updateBot(botId: string, botUpdate: UpdateBotRequest): Promise<void> {
 	const botsCollection = await getBotsCollection();
-	// Exclude _id field from botData when updating
-	await botsCollection.updateOne({ _id: new ObjectId(botId) }, { $set: botData });
+	const updatedBot: PartialBotDocument = toPartialBotDocument(botUpdate);
+	await botsCollection.updateOne({ _id: new ObjectId(botId) }, { $set: updatedBot });
 }
 
 export async function deleteBot(userId: string, botId: string): Promise<void> {

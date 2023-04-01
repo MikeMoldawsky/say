@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getUser } from '../../../../backend/db/users';
+import { getUserDocument } from '../../../../backend/db/users';
 
 export default async function handler(
 	req: NextApiRequest,
@@ -8,7 +8,7 @@ export default async function handler(
 	const {query: { userId }} = req;
 	if (req.method === 'GET') {
 		try {
-			const user = await getUser(userId as string);
+			const user = await getUserDocument(userId as string);
 			if (user) {
 				res.status(200).json(user);
 			} else {

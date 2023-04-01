@@ -1,34 +1,67 @@
 import React, { useState } from 'react';
-import { Bot } from "../../objects-api/bots";
+import {Bot, CreateBotRequest, UpdateBotRequest} from "../../objects-api/bots";
 import AddBotButton from "./AddBotButton";
 import CreateOrUpdateBotModal from "./CreateOrUpdateBotModal";
 import BotCardList from "./BotCardList";
 import {useUserBotsContext} from "../react-context/UserBotsContext";
+import Loader from "../Loader";
 
 
 const BotMain: React.FC = () => {
 	const [isOpenModal, setOpenModal] = useState(false);
-	const {setSelectedBot} = useUserBotsContext();
+	const [isLoading, setLoading] =  useState(false)
+	const { botClient, refreshBots, setSelectedBot } = useUserBotsContext();
 
 	const openConfigureBot = (bot: Bot) => {
 		setSelectedBot(bot);
 		setOpenModal(true);
 	};
 
-	const closeConfigureBot = () => {
+	const closeConfigureBot = async () => {
 		setSelectedBot(null);
 		setOpenModal(false);
 	};
 
+	const createBot = async (req: CreateBotRequest) => {
+		if (botClient === null) {
+			throw new Error("Bot client is null");
+		}
+		setLoading(true);
+		await botClient.createBot(req);
+		setSelectedBot(null);
+		setOpenModal(false);
+		await refreshBots();
+		setLoading(false);
+	};
+
+	const updateBot = async (botId: string, req: UpdateBotRequest) => {
+		if (botClient === null) {
+			throw new Error("Bot client is null");
+		}
+		setLoading(true);
+		await botClient.updateBot(botId, req);
+		setSelectedBot(null);
+		setOpenModal(false);
+		await refreshBots();
+		setLoading(false);
+	};
+
+
+
 	return (
-		<div>
-			<BotCardList onConfigure={openConfigureBot} />
-			<div className="mt-8 w-full flex justify-center">
-				<AddBotButton onClick={() => setOpenModal(true)} />
+		<>
+		{
+		isLoading ? <Loader /> :
+			<div>
+				<BotCardList onConfigure={openConfigureBot} />
+				<div className="mt-8 w-full flex justify-center">
+					<AddBotButton onClick={() => setOpenModal(true)} />
+				</div>
+				{isOpenModal &&
+				<CreateOrUpdateBotModal onClose={closeConfigureBot} updateBot={updateBot} createBot={createBot} />}
 			</div>
-			{isOpenModal &&
-			<CreateOrUpdateBotModal onClose={closeConfigureBot} />}
-		</div>
+		}
+		</>
 	);
 };
 

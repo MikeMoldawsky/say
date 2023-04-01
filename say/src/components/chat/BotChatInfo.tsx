@@ -5,6 +5,7 @@ import {BotContext} from "../../objects-api/contexts";
 import BotChatContextCard from "./BotChatContextCard";
 import AddContextModal from "./AddContextModal";
 import SwitchBotModal from "./SwitchBotModal";
+import _ from "lodash";
 
 interface BotChatInfoProps {
 	bot: Bot;
@@ -62,7 +63,7 @@ const BotChatInfo: React.FC<BotChatInfoProps> = ({ bot, contexts, selectedContex
 				<hr className="border-t border-gray-300 mb-4" />
 				<div className="bg-gray-200 rounded-lg px-4 py-2 mb-4">
 					<p className="font-semibold">System Message:</p>
-					<p>{bot.systemMessage}</p>
+					<p>{_.get(bot, 'config.systemMessage', '')}</p>
 				</div>
 				<button onClick={() => setSwitchBotModal(true)}
 						className="w-full bg-blue-500 text-white px-5 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 mb-4">

@@ -1,0 +1,15 @@
+{
+  "name": "migrations",
+  "version": "1.0.0",
+  "description": "",
+  "main": "migrations.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrations": "node migrations.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^5.1.0"
+  }
+}

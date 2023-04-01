@@ -1,22 +1,25 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styles from '../../styles/AddBotPopup.module.css';
 import {useUserBotsContext} from "../react-context/UserBotsContext";
-import {useUserContext} from "../react-context/UserContext";
+import _ from "lodash";
+import {CreateBotRequest, UpdateBotRequest} from "../../objects-api/bots";
 
 interface CreateOrUpdateBotModalProps {
 	onClose: () => void;
+	createBot: (bot: CreateBotRequest) => void;
+	updateBot: (botId: string, bot: UpdateBotRequest) => void;
 }
 
-const CreateOrUpdateBotModal: React.FC<CreateOrUpdateBotModalProps> = ({ onClose}) => {
-	const { selectedBot, createBot, updateSelectedBot } = useUserBotsContext();
+const CreateOrUpdateBotModal: React.FC<CreateOrUpdateBotModalProps> = ({ onClose, createBot, updateBot}) => {
+	const { selectedBot } = useUserBotsContext();
 
-	const [name, setName] = useState( selectedBot?.name || '');
-	const [description, setDescription] = useState(selectedBot?.description || '');
-	const [systemMessage, setSystemMessage] = useState(selectedBot?.systemMessage || '');
-	const [imageUrl, setImageUrl] = useState(selectedBot?.imageUrl || '');
+	const [name, setName] = useState( _.get(selectedBot, 'name', ''));
+	const [description, setDescription] = useState(_.get(selectedBot, 'description', ''));
+	const [systemMessage, setSystemMessage] = useState(_.get(selectedBot, 'config.systemMessage', ''));
+	const [imageUrl, setImageUrl] = useState(_.get(selectedBot, 'imageUrl', ''));
 	const [errors, setErrors] = useState({ name: '', description: '', systemMessage: '' });
 
 
@@ -48,23 +51,18 @@ const CreateOrUpdateBotModal: React.FC<CreateOrUpdateBotModalProps> = ({ onClose
 			});
 			return;
 		}
-
+		const req = {
+			type: 'chat',
+			name,
+			imageUrl,
+			description,
+			systemMessage,
+		};
 		if (selectedBot) {
-			updateSelectedBot({
-				name,
-				imageUrl,
-				description,
-				systemMessage,
-			});
+			updateBot(selectedBot._id, req as UpdateBotRequest);
 		} else {
-			createBot({
-				name,
-				description,
-				systemMessage,
-				imageUrl,
-			});
+			createBot(req as CreateBotRequest);
 		}
-		onClose();
 	};
 
 	return (

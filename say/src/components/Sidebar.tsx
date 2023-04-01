@@ -1,6 +1,6 @@
-// components/Sidebar.tsx
-import React from 'react';
-import Link from 'next/link';
+import {useRouter} from "next/router";
+import React, {useState} from 'react';
+import Loader from "./Loader";
 
 interface SidebarProps {
 	isOpen: boolean;
@@ -8,7 +8,21 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidePanel }) => {
+	const router = useRouter();
+	const [isLoading, setLoading] =  useState(false)
+
+	const routeTo = async (path: string) => {
+		toggleSidePanel();
+		setLoading(true);
+		await router.push(`/${path}`);
+		setLoading(false);
+	};
+
 	return (
+		<>
+			{
+		isLoading ? <Loader /> :
+
 		<aside
 			className={`${
 				isOpen ? 'translate-x-0' : '-translate-x-full'
@@ -17,39 +31,29 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidePanel }) => {
 			<nav className="mt-16">
 				<ul>
 					<li className="mb-4">
-						<Link href="/">
-							<div
-								onClick={toggleSidePanel}
-								className="text-lg font-semibold hover:text-blue-300 cursor-pointer"
-							>
-								My Bots
-							</div>
-						</Link>
+
+						<div
+							onClick={() => routeTo('')}
+							className="text-lg font-semibold hover:text-blue-300 cursor-pointer"
+						>
+							My Bots
+						</div>
+
 					</li>
 					<li className="mb-4">
-						<Link href="/image-generator">
-							<div
-								onClick={toggleSidePanel}
-								className="text-lg font-semibold hover:text-blue-300 cursor-pointer"
-							>
-								Image Generator
-							</div>
-						</Link>
-					</li>
-					<li className="mb-4">
-						<Link href="/contact">
-							<div
-								onClick={toggleSidePanel}
-								className="text-lg font-semibold hover:text-blue-300 cursor-pointer"
-							>
-								Contact
-							</div>
-						</Link>
+						<div
+							onClick={() => routeTo("image-generator")}
+							className="text-lg font-semibold hover:text-blue-300 cursor-pointer"
+						>
+							Image Generator
+						</div>
 					</li>
 					{/* Add more menu items here */}
 				</ul>
 			</nav>
 		</aside>
+			}
+		</>
 	);
 };
 

@@ -1,6 +1,6 @@
 import {Configuration, OpenAIApi} from "openai";
 import {ChatCompletionRequestMessage} from "openai/api";
-import {Bot, ChatBotRequest, GetAnswerBotRequest} from "../../objects-api/bots";
+import {Bot, ChatBotRequest, GetAnswerBotRequest, isChatBotConfig} from "../../objects-api/bots";
 import {getBot} from "../db/bots";
 
 const chatGPT_API_KEY = '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'; // TODO: remove to env var
@@ -33,14 +33,18 @@ export class BotManager {
 
 	async chat(botId: string, request: ChatBotRequest): Promise<string> {
 		const bot: Bot = await getBot(botId);
-		const systemMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('system', bot.systemMessage);
+		if(!isChatBotConfig(bot.config)) throw Error('Bot is not a chat bot');
+
+		const systemMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('system', bot.config.systemMessage);
 		const messages: Array<ChatCompletionRequestMessage> = request.messages.map((msg) => BotManager.toChatCompletionMessage(msg.role, msg.content));
 		return await BotManager.chatCompletion([systemMessage, ...messages]);
 	}
 
 	async answer(botId: string, request: GetAnswerBotRequest): Promise<string> {
 		const bot: Bot = await getBot(botId);
-		const systemMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('system', bot.systemMessage);
+		if(!isChatBotConfig(bot.config)) throw Error('Bot is not a chat bot');
+
+		const systemMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('system', bot.config["systemMessage"]);
 		const userMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('user', request.content);
 		return await BotManager.chatCompletion([systemMessage, userMessage]);
 	}

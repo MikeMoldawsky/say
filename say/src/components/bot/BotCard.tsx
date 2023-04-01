@@ -1,17 +1,15 @@
 import React from 'react';
 import Image from 'next/image';
 import {Bot} from "../../objects-api/bots";
-import {useUserBotsContext} from "../react-context/UserBotsContext";
 
 interface BotCardProps {
 	bot: Bot;
+	onDelete: (bot: Bot) => void;
 	onConfigure: (bot: Bot) => void;
 	onChat: (bot: Bot) => void;
 }
 
-const BotCard: React.FC<BotCardProps> = ({ bot, onConfigure, onChat }) => {
-	const { deleteSelectedBot } = useUserBotsContext();
-
+const BotCard: React.FC<BotCardProps> = ({ bot, onConfigure, onChat, onDelete }) => {
 	return (
 		<div className="bg-white p-4 rounded-lg shadow-md text-center hover:shadow-lg hover:scale-105 transition-all duration-300 mb-4 flex items-center">
 			<Image className="w-20 h-20 object-cover rounded-full mr-4" src={bot.imageUrl} alt={bot.name} width={80} height={80} />
@@ -33,7 +31,7 @@ const BotCard: React.FC<BotCardProps> = ({ bot, onConfigure, onChat }) => {
 					</button>
 					<button
 						className="bg-red-500 text-white px-2 py-1 rounded shadow hover:bg-red-600 transition-all duration-300"
-						onClick={() => deleteSelectedBot(bot)}
+						onClick={()=>onDelete(bot) }
 					>
 						Delete
 					</button>
