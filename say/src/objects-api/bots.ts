@@ -14,7 +14,6 @@ export interface CreateBotRequest {
 }
 
 export interface UpdateBotRequest {
-	_id: string;
 	name?: string;
 	imageUrl?: string;
 	description?: string;
@@ -22,5 +21,7 @@ export interface UpdateBotRequest {
 }
 
 export interface DeleteBotRequest {
-	_id: string;
+}
+
+export interface AnswerBotRequest {
 }

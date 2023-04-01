@@ -5,7 +5,7 @@ import Image from 'next/image';
 export interface SayMessage {
 	id: string;
 	createdAt: Date;
-	role: string;
+	role: 'system' | 'user' | 'assistant';
 	content: string;
 }
 

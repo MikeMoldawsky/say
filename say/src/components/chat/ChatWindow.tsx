@@ -2,12 +2,11 @@ import React, { useState} from 'react';
 import  { SayMessage } from './ChatMessage';
 import ChatMessages from './ChatMessages';
 import BotChatInfo from './BotChatInfo';
-import { toChatGPTMessages } from "../../frontend/utils/messageConverter";
+import { toChatCompletionRequest } from "../../frontend/utils/messageConverter";
 import { v4 as uuidv4 } from 'uuid';
 import Loader from "../Loader";
 import {useUserBotsContext} from "../react-context/UserBotsContext";
-import {chatWithChatGPT} from "../../frontend/clients/chatClient";
-import {ChatCompletionRequest} from "../../objects-api/chat";
+import {ChatBotRequest} from "../../objects-api/chat";
 
 
 
@@ -23,7 +22,7 @@ const contexts = [
 
 
 const ChatWindow: React.FC = () => {
-	const { selectedBot } = useUserBotsContext();
+	const { selectedBot, chatWithSelectedBot } = useUserBotsContext();
 	const [messages, setMessages] = useState<SayMessage[]>([]);
 	const [selectedContext, setSelectedContext] = useState<number | null>(null);
 
@@ -35,9 +34,7 @@ const ChatWindow: React.FC = () => {
 	const handleNewMessage = async (userContent: string) => {
 		if(selectedBot === null) return;
 		const systemMessages: SayMessage[] = [{ id: uuidv4(), role: 'system', content: selectedBot.systemMessage, createdAt: new Date() }];
-
-		// Make sure to use the updated messages state for the chatGPTMessages
-		const userSayMessage = { id: uuidv4(), role: 'user', content: userContent, createdAt: new Date() };
+		const userSayMessage: SayMessage = { id: uuidv4(), role: 'user', content: userContent, createdAt: new Date() };
 
 		// Add user message and system message to the messages state
 		setMessages((prevMessages) => [
@@ -52,13 +49,13 @@ const ChatWindow: React.FC = () => {
 		];
 
 		if (selectedContext !== null) {
-			const contextMessage = { id: uuidv4(), role: 'user', content: contexts[selectedContext].message, createdAt: new Date() };
+			const contextMessage: SayMessage = { id: uuidv4(), role: 'user', content: contexts[selectedContext].message, createdAt: new Date() };
 			sayMessages.splice(1, 0, contextMessage);
 		}
 
 		try {
-			const chatCompletionRequest: ChatCompletionRequest =  {messages: toChatGPTMessages(sayMessages)};
-			const assistantMessage = await chatWithChatGPT(chatCompletionRequest);
+			const chatCompletionRequest: ChatBotRequest =  toChatCompletionRequest(sayMessages);
+			const assistantMessage = await chatWithSelectedBot(chatCompletionRequest);
 			setMessages((prevMessages) => [
 				...prevMessages,
 				{ id: uuidv4(), role: 'assistant', content: assistantMessage, createdAt: new Date() },

@@ -10,7 +10,7 @@ interface BotCardProps {
 }
 
 const BotCard: React.FC<BotCardProps> = ({ bot, onConfigure, onChat }) => {
-	const { deleteBot } = useUserBotsContext();
+	const { deleteSelectedBot } = useUserBotsContext();
 
 	return (
 		<div className="bg-white p-4 rounded-lg shadow-md text-center hover:shadow-lg hover:scale-105 transition-all duration-300 mb-4 flex items-center">
@@ -33,7 +33,7 @@ const BotCard: React.FC<BotCardProps> = ({ bot, onConfigure, onChat }) => {
 					</button>
 					<button
 						className="bg-red-500 text-white px-2 py-1 rounded shadow hover:bg-red-600 transition-all duration-300"
-						onClick={() => deleteBot(bot)}
+						onClick={() => deleteSelectedBot(bot)}
 					>
 						Delete
 					</button>

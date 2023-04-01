@@ -1,12 +1,12 @@
-export interface ChatGPTMessage {
+export interface ChatBotRequest {
+	messages: ChatBotMessage[]
+}
+
+export interface ChatBotMessage {
 	role: 'system' | 'user' | 'assistant',
 	content: string
 }
 
-export interface ChatCompletionRequest {
-	messages: ChatGPTMessage[]
-}
-
-export interface ChatCompletionResponse {
+export interface ChatBotResponse {
 	message: string
 }

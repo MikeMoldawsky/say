@@ -1,5 +1,5 @@
 import { Configuration, OpenAIApi } from "openai";
-import {ChatCompletionRequest, ChatGPTMessage} from "../../objects-api/chat";
+import {ChatBotRequest, ChatBotMessage} from "../../objects-api/chat";
 import {ChatCompletionRequestMessage} from "openai/api";
 
 const chatGPT_API_KEY = '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'; // TODO: remove to env var
@@ -15,8 +15,8 @@ const openai = new OpenAIApi(configuration);
 
 export class ChatGPTClient {
 
-	async chat(request: ChatCompletionRequest): Promise<string> {
-		function toChatCompletionMessage(message: ChatGPTMessage): ChatCompletionRequestMessage {
+	async chat(request: ChatBotRequest): Promise<string> {
+		function toChatCompletionMessage(message: ChatBotMessage): ChatCompletionRequestMessage {
 			return {
 				role: message.role,
 				content: message.content,

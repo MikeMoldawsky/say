@@ -1,23 +1,27 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ChatGPTClient } from '../../../../../backend/chatGPT/chatGPTClient';
-import {ChatGPTMessage} from "../../../../../objects-api/chat";
+import {ChatBotRequest, ChatBotResponse} from "../../../../../objects-api/chat";
 
 
 const chatGPT = new ChatGPTClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	switch (req.method) {
-		case 'POST':
-			try {
-				const messages: ChatGPTMessage[] = req.body;
-				const assistantMessage = await chatGPT.chat(messages);
-				res.status(200).json({ message: assistantMessage });
-			} catch (error: any) {
-				console.error('Error fetching ChatGPT response:', error);
-				res.status(500).json({ error: 'Error fetching ChatGPT response', details: error.message });
-			}
-			break;
-		default:
-			res.status(405).json({ error: 'Method Not Allowed' });
+	try {
+		switch (req.method) {
+			case 'POST':
+				const request: ChatBotRequest = req.body;
+				const assistantMessage = await chatGPT.chat(request);
+				const response: ChatBotResponse = { message: assistantMessage };
+				res.status(200).json(response);
+				break;
+			default:
+				res.status(405).json({ error: 'Method Not Allowed' });
+		}
+	} catch (error) {
+		if (error instanceof Error) {
+			res.status(500).json({message: 'Error at answer endpoint', error: error.message});
+		} else {
+			res.status(500).json({message: 'Error at answer endpoint', error: String(error)});
+		}
 	}
 }

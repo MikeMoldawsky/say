@@ -13,6 +13,10 @@ export default async function handler(
 			return;
 		}
 		const {botId} = req.query;
+		if(!botId) {
+			res.status(400).json({message: 'Bad request'});
+			return;
+		}
 		switch (req.method) {
 			case 'GET':
 				const bot = await getBot(botId as string);
@@ -29,7 +33,7 @@ export default async function handler(
 				break;
 			case 'PUT':
 				const updateBotReq = req.body;
-				await updateBot(updateBotReq);
+				await updateBot(botId as string, updateBotReq);
 				res.status(200).json({message: 'Bot updated successfully'});
 				break;
 			case 'DELETE':

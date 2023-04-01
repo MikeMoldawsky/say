@@ -11,7 +11,7 @@ interface CreateOrUpdateBotModalProps {
 }
 
 const CreateOrUpdateBotModal: React.FC<CreateOrUpdateBotModalProps> = ({ onClose}) => {
-	const { selectedBot, createBot, updateBot } = useUserBotsContext();
+	const { selectedBot, createBot, updateSelectedBot } = useUserBotsContext();
 
 	const [name, setName] = useState( selectedBot?.name || '');
 	const [description, setDescription] = useState(selectedBot?.description || '');
@@ -50,8 +50,7 @@ const CreateOrUpdateBotModal: React.FC<CreateOrUpdateBotModalProps> = ({ onClose
 		}
 
 		if (selectedBot) {
-			updateBot({
-				_id: selectedBot._id,
+			updateSelectedBot({
 				name,
 				imageUrl,
 				description,
