@@ -34,28 +34,31 @@ const BotAnswerCard: React.FC<BotAnswerCardProps> = ({ bot, input, setAnswer }) 
 	}
 
 	return (
-		<div className="bg-white p-4 rounded-lg shadow-md text-center hover:shadow-lg hover:scale-105 transition-all duration-300 mb-4 flex items-start w-1/2 mx-auto">
-			<div className="mr-4">
-				<Image className="w-20 h-20 object-cover rounded-full" src={bot.imageUrl} alt={bot.name} width={80} height={80} />
-			</div>
+		<div className="bg-gray-200 p-4 rounded-lg shadow-md text-center hover:shadow-lg hover:scale-105 transition-all duration-300 m-8 flex items-start">
 			<div className="flex flex-col flex-grow">
-				<div>
-					<h3 className="text-xl font-bold mb-2">{bot.name}</h3>
-					<p className="text-sm mb-2">{bot.description}</p>
+				<div className="flex items-center">
+					<Image className="w-10 h-10 object-cover rounded-full" src={bot.imageUrl} alt={bot.name} width={40} height={40} />
+					<div className="ml-4">
+						<h3 className="text-2xl font-bold mb-2">{bot.name}</h3>
+					</div>
 				</div>
-			<div className="mt-auto">
-				<hr className="border-t border-gray-300 mb-4" />
-				<div className="bg-gray-200 rounded-lg px-4 py-2 mb-4">
+				<div className="mt-4">
+					<hr className="border-t border-gray-300 mb-4" />
 					<p className="font-semibold">Answer:</p>
-					{loading ? (
-						<Loader />
-					) : (
-						<p className="break-words">{output}</p>
-					)}
+					<div className="bg-white rounded-lg px-4 py-2 mb-4 relative min-h-[100px]">
+						{loading ? (
+							<div className="absolute inset-0 flex items-center justify-center">
+								<Loader />
+							</div>
+						) : (
+							<div className="overflow-hidden whitespace-nowrap overflow-ellipsis">
+								<span className="absolute whitespace-normal">{output}</span>
+							</div>
+						)}
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 	);
 };
 
