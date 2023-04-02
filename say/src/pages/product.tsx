@@ -1,5 +1,3 @@
-// pages/product.tsx
-
 import React, { useState } from 'react';
 import ProductBots from '../components/product/ProductBots';
 import {useUserBotsContext} from "../components/react-context/UserBotsContext";
@@ -12,7 +10,7 @@ const stableDiffusionImageGeneratorId = '642873f53e2049ac6bc56b63';
 
 const Product: React.FC = () => {
 	const { bots } = useUserBotsContext();
-	const [chatInput, setChatInput] = useState('');
+	const [chatInput, setChatInput] = useState(null);
 	if (bots === null) {
 		return <Loader />;
 	}
@@ -27,20 +25,20 @@ const Product: React.FC = () => {
 	};
 
 	return (
-		<div>
-			<h1>Product</h1>
-			<div className="chat-input-container">
+		<div className="flex flex-col items-center">
+			<h1 className="text-3xl mb-8">Product</h1>
+			<div className="w-full max-w-md">
 				<input
-					className="chat-input"
+					className="w-full p-2 border border-gray-300 rounded"
 					type="text"
 					value={chatInput}
 					onChange={(e) => setChatInput(e.target.value)}
 				/>
-				<button className="generate-button" onClick={handleGenerate}>
+				<button className="w-full py-2 mt-4 text-white bg-blue-500 hover:bg-blue-600 rounded" onClick={handleGenerate}>
 					Generate
 				</button>
 			</div>
-			<ProductBots sentenceGenerator={motivationalSpeaker} promptGenerator={stableDiffusionPromptGenerator} imageGenerator={stableDiffusionImageGenerator} input={"What a beautiful day"} />
+			<ProductBots sentenceGenerator={motivationalSpeaker} promptGenerator={stableDiffusionPromptGenerator} imageGenerator={stableDiffusionImageGenerator} input={chatInput} />
 		</div>
 	);
 };

@@ -38,37 +38,37 @@ const ProductBots: React.FC<ProductBotsProps> = ({sentenceGenerator, promptGener
 	}
 
 	return (
-		<div>
-			<div className="bots-container">
+		<div className="flex flex-col items-center w-full">
+			<div className="w-full max-w-md mb-4">
 				<BotAnswerCard bot={sentenceGenerator} input={input} setAnswer={setAnswerSentenceGenerator}/>
 			</div>
-			<div className="bots-container">
+			<div className="w-full max-w-md mb-4">
 				<BotAnswerCard bot={promptGenerator} input={answerSentenceGenerator} setAnswer={setAnswerPromptGenerator}/>
 			</div>
-			<div className="bots-container">
+			<div className="w-full max-w-md mb-8">
 				<BotAnswerCard bot={imageGenerator} input={answerPromptGenerator} setAnswer={setAnswerImageGenerator}/>
 			</div>
-			<div className="relative w-2/3 border-gray-300 pl-8">
+			<div className="relative w-64 h-64 border border-gray-300 rounded-lg">
 				<div className="absolute top-0 left-0 w-full h-[calc(100%-52px)]">
-					<div className="border h-full flex items-center justify-center rounded-md">
+					<div className="border h-full flex items-center justify-center rounded-lg">
 						{
 							answerImageGenerator ?
-									(<Image
-											ref={imageRef}
-											src={`data:image/png;base64,${answerImageGenerator}`}
-											alt="Generated Image"
-											width={512}
-											height={512}
-											className="max-h-full max-w-full"
-										/>
-									) : (
-										<FontAwesomeIcon icon={faImage} className="text-gray-300" size="10x" />
-									)
+								(<Image
+										ref={imageRef}
+										src={`data:image/png;base64,${answerImageGenerator}`}
+										alt="Generated Image"
+										width={256}
+										height={256}
+										className="max-h-full max-w-full"
+									/>
+								) : (
+									<FontAwesomeIcon icon={faImage} className="text-gray-300" size="10x" />
+								)
 						}
 					</div>
 				</div>
 				<button
-					className="absolute bottom-0 left-0 w-full px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded"
+					className="absolute bottom-0 left-0 w-full px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-b-lg"
 					onClick={downloadImage}
 				>
 					<FontAwesomeIcon icon={faDownload} className="mr-2" />
