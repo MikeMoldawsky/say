@@ -23,13 +23,13 @@ const ProductBots: React.FC<ProductBotsProps> = ({sentenceGenerator, promptGener
 
 	return (
 		<div className="flex flex-col items-center w-full">
-			<div className="w-full max-w-md mb-4">
+			<div className="w-full mb-4">
 				<BotAnswerCard bot={sentenceGenerator} input={input} setAnswer={setAnswerSentenceGenerator}/>
 			</div>
-			<div className="w-full max-w-md mb-4">
+			<div className="w-full mb-4">
 				<BotAnswerCard bot={promptGenerator} input={answerSentenceGenerator} setAnswer={setAnswerPromptGenerator}/>
 			</div>
-			<div className="w-full max-w-md mb-8">
+			<div className="w-full mb-8">
 				<BotAnswerCard bot={imageGenerator} input={answerPromptGenerator} setAnswer={setAnswerImageGenerator}/>
 			</div>
 		</div>

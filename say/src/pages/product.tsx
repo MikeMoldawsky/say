@@ -17,7 +17,6 @@ const Product: React.FC = () => {
 	const [productOutput, setProductOutput] = useState<string | null>(null);
 	const imageRef = useRef<HTMLImageElement | null>(null);
 
-
 	if (bots === null) {
 		return <Loader />;
 	}
@@ -58,59 +57,69 @@ const Product: React.FC = () => {
 	}
 
 	return (
-		<div className="flex flex-col items-center">
+		<div className="flex flex-col items-center w-full h-full">
 			<h1 className="text-3xl mb-8">Product</h1>
-			<div className="kuku0 w-full max-w-md">
-				<h2 className="text-3xl mb-8">Input</h2>
-				<form onSubmit={handleGenerate}>
-					<input
-						className="w-full p-2 border border-gray-300 rounded"
-						type="text"
-						value={userInput}
-						onChange={onUserInputChange}
-					/>
-					<button
-						type="submit"
-						className="w-full py-2 mt-4 text-white bg-blue-500 hover:bg-blue-600 rounded"
-					>
-						Generate
-					</button>
-				</form>
-			</div>
-			<ProductBots
-				className="mt-8 kuku1"
-				sentenceGenerator={motivationalSpeaker}
-				promptGenerator={stableDiffusionPromptGenerator}
-				imageGenerator={stableDiffusionImageGenerator}
-				input={productInput}
-				setProductOutput={setProductOutput}
-			/>
-			<div className="kuku2 relative w-64 h-64 border border-gray-300 rounded-lg">
-				<div className="absolute top-0 left-0 w-full h-[calc(100%-52px)]">
-					<div className="border h-full flex items-center justify-center rounded-lg">
-						{
-							productOutput ?
-								(<Image
-										ref={imageRef}
-										src={`data:image/png;base64,${productOutput}`}
-										alt="Generated Image"
-										width={256}
-										height={256}
-										className="max-h-full max-w-full"
-									/>
-								) : (
-									<FontAwesomeIcon icon={faImage} className="text-gray-300" size="10x" />
-								)
-						}
+			<div className="kuk0 flex flex-row items-start justify-center w-full h-full">
+				<div className="w-1/4">
+					<div className="kuku0">
+
+					<h2 className="text-3xl mb-8">Input</h2>
+					<form onSubmit={handleGenerate}>
+						<input
+							className="w-full p-2 border border-gray-300 rounded"
+							type="text"
+							value={userInput}
+							onChange={onUserInputChange}
+						/>
+						<button
+							type="submit"
+							className="w-full py-2 mt-4 text-white bg-blue-500 hover:bg-blue-600 rounded"
+						>
+							Generate
+						</button>
+					</form>
 					</div>
 				</div>
-				<button
-					className="absolute bottom-0 left-0 w-full px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-b-lg"
-					onClick={downloadImage}
-				>
-					<FontAwesomeIcon icon={faDownload} className="mr-2" />
-					Download Image
-				</button>
+				<div className="kuku1 w-2/4">
+					<ProductBots
+						className="mt-8 w-full"
+						sentenceGenerator={motivationalSpeaker}
+						promptGenerator={stableDiffusionPromptGenerator}
+						imageGenerator={stableDiffusionImageGenerator}
+						input={productInput}
+						setProductOutput={setProductOutput}
+					/>
+				</div>
+				<div className="relative w-1/4 h-full">
+					<div className="kuku1">
+					<h2 className="text-3xl mb-8">Output</h2>
+					<div className="absolute top-0 left-0 w-full h-[calc(100%-52px)]">
+						<div className="border h-full flex items-center justify-center rounded-md">
+							{
+								productOutput ?
+									(<Image
+											ref={imageRef}
+											src={`data:image/png;base64,${productOutput}`}
+											alt="Generated Image"
+											width={256}
+											height={256}
+											className="max-h-full max-w-full"
+										/>
+									) : (
+										<FontAwesomeIcon icon={faImage} className="text-gray-300" size="10x" />
+									)
+							}
+						</div>
+					</div>
+					</div>
+					<button
+						className="absolute bottom-0 left-0 w-full px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded"
+						onClick={downloadImage}
+					>
+						<FontAwesomeIcon icon={faDownload} className="mr-2" />
+						Download Image
+					</button>
+				</div>
 			</div>
 		</div>
 	);
