@@ -30,9 +30,9 @@ const ProductImageOutput: React.FC<ProductImageOutputProps> = ({ productOutput }
 							ref={imageRef}
 							src={`data:image/png;base64,${productOutput}`}
 							alt="Generated Image"
-							width={256}
-							height={256}
-							className="max-h-full max-w-full"
+							width={512}
+							height={512}
+							className="max-h-full max-w-full border-2 border-gray-300"
 						/>
 					) : (
 						<FontAwesomeIcon icon={faImage} className="text-gray-300" size="10x" />

@@ -32,7 +32,7 @@ const ProductBotPipeLine: React.FC<ProductBotPipeLineProps> = ({sentenceGenerato
 					<BotAnswerCard bot={promptGenerator} input={answerSentenceGenerator} setAnswer={setAnswerPromptGenerator} />
 				</div>
 				<div className="w-full mb-8">
-					<BotAnswerCard bot={imageGenerator} input={answerPromptGenerator} setAnswer={setAnswerImageGenerator} />
+					<BotAnswerCard bot={imageGenerator} input={answerPromptGenerator} setAnswer={setAnswerImageGenerator} isImage={true}/>
 				</div>
 			</div>
 		</div>
