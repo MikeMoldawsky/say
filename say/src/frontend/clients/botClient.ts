@@ -1,5 +1,11 @@
 import axios from 'axios';
-import {Bot, ChatBotRequest, CreateBotRequest, UpdateBotRequest} from '../../objects-api/bots';
+import {
+	Bot,
+	ChatBotRequest,
+	CreateBotRequest,
+	GetAnswerBotRequest,
+	UpdateBotRequest
+} from '../../objects-api/bots';
 
 
 export class BotClient {
@@ -85,6 +91,16 @@ export class BotClient {
 	async chatWithBot(botId: string, request: ChatBotRequest): Promise<string> {
 		try {
 			const response = await axios.post(`/api/bots/${botId}/chat`, request);
+			return response.data.message;
+		} catch (error) {
+			console.error('Error chatting with bot', error);
+			throw error;
+		}
+	}
+
+	async answer(botId: string, request: GetAnswerBotRequest): Promise<string> {
+		try {
+			const response = await axios.post(`/api/bots/${botId}/answer`, request);
 			return response.data.message;
 		} catch (error) {
 			console.error('Error chatting with bot', error);
