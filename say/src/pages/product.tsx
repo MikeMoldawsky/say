@@ -32,7 +32,7 @@ const Product: React.FC = () => {
 	return (
 		<div className="flex flex-col items-center w-full h-full">
 			<h1 className="text-3xl mb-8">Product</h1>
-			<div className="flex flex-row items-stretch justify-center w-full h-full">
+			<div className="flex flex-row items-stretch justify-center w-full h-full mb-8">
 				<div className="w-1/6 ml-8 flex items-center">
 						<ProductTextInput
 							userInput={userInput}
