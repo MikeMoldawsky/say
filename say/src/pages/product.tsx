@@ -40,7 +40,7 @@ const Product: React.FC = () => {
 					Generate
 				</button>
 			</div>
-			<ProductBots sentenceGenerator={motivationalSpeaker} promptGenerator={stableDiffusionPromptGenerator} imageGenerator={stableDiffusionImageGenerator} />
+			<ProductBots sentenceGenerator={motivationalSpeaker} promptGenerator={stableDiffusionPromptGenerator} imageGenerator={stableDiffusionImageGenerator} input={"What a beautiful day"} />
 		</div>
 	);
 };
