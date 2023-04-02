@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Bot} from "../../objects-api/bots";
 import BotAnswerCard from "./BotAnswerCard";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowDown} from "@fortawesome/free-solid-svg-icons";
 
 interface ProductBotPipeLineProps {
 	input: string | null;
@@ -25,11 +27,17 @@ const ProductBotPipeLine: React.FC<ProductBotPipeLineProps> = ({sentenceGenerato
 		<div className="flex flex-col items-center w-full">
 			<div className="w-full p-4 bg-white border border-gray-200 shadow-md rounded-md">
 				<h2 className="text-2xl mb-4">Pipeline</h2>
-				<div className="w-full mb-4">
+				<div className="w-full mb-2">
 					<BotAnswerCard bot={sentenceGenerator} input={input} setAnswer={setAnswerSentenceGenerator} />
 				</div>
-				<div className="w-full mb-4">
+				<div className="flex justify-center">
+					<FontAwesomeIcon icon={faArrowDown} className="mx-4" size="lg" />
+				</div>
+				<div className="w-full mb-2">
 					<BotAnswerCard bot={promptGenerator} input={answerSentenceGenerator} setAnswer={setAnswerPromptGenerator} />
+				</div>
+				<div className="flex justify-center">
+					<FontAwesomeIcon icon={faArrowDown} className="mx-4" size="lg" />
 				</div>
 				<div className="w-full mb-8">
 					<BotAnswerCard bot={imageGenerator} input={answerPromptGenerator} setAnswer={setAnswerImageGenerator} isImage={true}/>

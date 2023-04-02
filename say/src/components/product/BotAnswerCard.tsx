@@ -43,7 +43,7 @@ const BotAnswerCard: React.FC<BotAnswerCardProps> = ({ bot, input, setAnswer, is
 	}
 
 	return (
-		<div className="bg-gray-200 p-4 rounded-lg shadow-md text-left hover:shadow-lg hover:scale-105 transition-all duration-300 m-8 flex items-start">
+		<div className="bg-gray-200 p-4 rounded-lg shadow-md text-left hover:shadow-lg hover:scale-105 transition-all duration-300 m-4 flex items-start">
 			<div className="flex flex-col flex-grow">
 				<div className="flex items-center">
 					<Image className="w-10 h-10 object-cover rounded-full" src={bot.imageUrl} alt={bot.name} width={40} height={40} />
