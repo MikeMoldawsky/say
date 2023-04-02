@@ -48,6 +48,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidePanel }) => {
 							Image Generator
 						</div>
 					</li>
+					<li className="mb-4">
+						<div
+							onClick={() => routeTo("product")}
+							className="text-lg font-semibold hover:text-blue-300 cursor-pointer"
+						>
+							Product
+						</div>
+					</li>
 					{/* Add more menu items here */}
 				</ul>
 			</nav>

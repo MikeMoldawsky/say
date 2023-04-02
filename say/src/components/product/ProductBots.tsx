@@ -18,6 +18,7 @@ const ProductBots: React.FC<ProductBotsProps> = ({sentenceGenerator, promptGener
 	const [answerSentenceGenerator, setAnswerSentenceGenerator] = useState<string | null>(null);
 	const [answerPromptGenerator, setAnswerPromptGenerator] = useState<string | null>(null);
 	const [answerImageGenerator, setAnswerImageGenerator] = useState<string | null>(null);
+
 	const imageRef = useRef<HTMLImageElement | null>(null);
 
 	const downloadImage = () => {
