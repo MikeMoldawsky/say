@@ -31,6 +31,10 @@ const Product: React.FC = () => {
 		(bot) => bot._id === stableDiffusionImageGeneratorId,
 	);
 
+	if (!motivationalSpeaker || !stableDiffusionPromptGenerator || !stableDiffusionImageGenerator) {
+		return <Loader />;
+	}
+
 	return (
 		<div className="flex flex-col items-center w-full h-full">
 			<h1 className="text-3xl mb-8">Product</h1>

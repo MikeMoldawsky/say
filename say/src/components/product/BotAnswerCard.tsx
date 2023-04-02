@@ -7,7 +7,7 @@ import Loader from '../Loader';
 interface BotAnswerCardProps {
 	bot: Bot;
 	input: string | null;
-	setAnswer: (string) => void;
+	setAnswer: (answer: string) => void;
 	isImage?: boolean;
 }
 
@@ -30,7 +30,7 @@ const BotAnswerCard: React.FC<BotAnswerCardProps> = ({ bot, input, setAnswer, is
 		getAnswer();
 	}, [botClient, bot._id, input, setAnswer]);
 
-	const truncateString = (str, maxLength) => {
+	const truncateString = (str: string, maxLength: number) => {
 		if(!str) return str;
 		if (str.length > maxLength) {
 			return str.slice(0, maxLength) + '...';
@@ -62,7 +62,7 @@ const BotAnswerCard: React.FC<BotAnswerCardProps> = ({ bot, input, setAnswer, is
 						) : (
 
 							<div className={`overflow-hidden whitespace-normal ${isImage ? "break-all": "break-words"}`}>
-								<span>{isImage? truncateString(output, 150): output}</span>
+								<span>{isImage && output ? truncateString(output, 150): output}</span>
 							</div>
 						)}
 					</div>

@@ -7,7 +7,7 @@ interface ProductTextProps {
 }
 
 const ProductTextInput: React.FC<ProductTextProps> = ({userInput, setUserInput, handleGenerate,}) => {
-	const onUserInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const onUserInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setUserInput(e.target.value);
 	};
 
