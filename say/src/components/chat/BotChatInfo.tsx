@@ -6,6 +6,7 @@ import BotChatContextCard from "./BotChatContextCard";
 import AddContextModal from "./AddContextModal";
 import SelectBotModal from "../common/SelectBotModal";
 import _ from "lodash";
+import {useUserBotsContext} from "../react-context/UserBotsContext";
 
 interface BotChatInfoProps {
 	bot: Bot;
@@ -15,6 +16,7 @@ interface BotChatInfoProps {
 }
 
 const BotChatInfo: React.FC<BotChatInfoProps> = ({ bot, contexts, selectedContext, switchContext }) => {
+	const {setSelectedBot} = useUserBotsContext();
 	const [showSwitchBotModal, setSwitchBotModal] = useState(false);
 	const [showAddContextModal, setShowAddContextModal] = useState(false);
 
@@ -70,7 +72,7 @@ const BotChatInfo: React.FC<BotChatInfoProps> = ({ bot, contexts, selectedContex
 					Switch Assistant
 				</button>
 				{showSwitchBotModal && (
-					<SelectBotModal prevSelectedBot={bot} onClose={() => setSwitchBotModal(false)} buttonText={"Switch"} />
+					<SelectBotModal setSelectedBot={setSelectedBot} prevSelectedBot={bot} onClose={() => setSwitchBotModal(false)} buttonText={"Switch"} />
 				)}
 			</div>
 		</div>

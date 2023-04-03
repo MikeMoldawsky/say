@@ -8,12 +8,13 @@ import Button from "../Button";
 interface SelectBotModalProps {
 	buttonText: string;
 	onClose: () => void;
+	setSelectedBot: (bot: Bot) => void;
 	prevSelectedBot?: Bot;
 }
 
-const SelectBotModal: React.FC<SelectBotModalProps> = ({ onClose, buttonText, prevSelectedBot }) => {
+const SelectBotModal: React.FC<SelectBotModalProps> = ({ onClose, buttonText, setSelectedBot, prevSelectedBot }) => {
 	const { userId } = useUserContext();
-	const { bots, setSelectedBot } = useUserBotsContext();
+	const { bots } = useUserBotsContext();
 
 	const handleSelectBot = (bot: Bot) => {
 		if (userId) {

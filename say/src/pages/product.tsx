@@ -9,34 +9,18 @@ import {faArrowRight, faPlus} from '@fortawesome/free-solid-svg-icons';
 import ProductCard from "../components/product/ProductCard";
 import Button from "../components/Button";
 import SelectBotModal from "../components/common/SelectBotModal";
+import {Bot} from "../objects-api/bots";
 
-const motivationalSpeakerId = '642902c79e50d4fd10a60ef4';
-const stableDiffusionPromptGeneratorId = '642903049e50d4fd10a60ef5';
-const stableDiffusionImageGeneratorId = '642873f53e2049ac6bc56b63';
 
 const Product: React.FC = () => {
-	const { bots } = useUserBotsContext();
+	const [bots, setBots] = useState<Bot[]>([]);;
 	const [isOpenBotModal, setIsOpenBotModal] = useState<>(false);
 	const [userInput, setUserInput] = useState<string>('');
 	const [productInput, setProductInput] = useState<string | null>(null);
 	const [productOutput, setProductOutput] = useState<string | null>(null);
 
-	if (bots === null) {
-		return <Loader />;
-	}
-
-	const motivationalSpeaker = bots.find(
-		(bot) => bot._id === motivationalSpeakerId,
-	);
-	const stableDiffusionPromptGenerator = bots.find(
-		(bot) => bot._id === stableDiffusionPromptGeneratorId,
-	);
-	const stableDiffusionImageGenerator = bots.find(
-		(bot) => bot._id === stableDiffusionImageGeneratorId,
-	);
-
-	if (!motivationalSpeaker || !stableDiffusionPromptGenerator || !stableDiffusionImageGenerator) {
-		return <Loader />;
+	const addBot = (bot: Bot) => {
+		setBots([...bots, bot]);
 	}
 
 	return (
@@ -57,10 +41,10 @@ const Product: React.FC = () => {
 				</div>
 				<div className="w-3/6">
 					<ProductCard title="Pipeline">
-						<PipelineBots input={productInput} bots={[]} setPipelineOutput={setProductOutput} />
+						<PipelineBots input={productInput} bots={bots} setPipelineOutput={setProductOutput} />
 						<Button text={"Add Step"} icon={faPlus} onClick={() => setIsOpenBotModal(true)}/>
 					</ProductCard>
-					{isOpenBotModal && <SelectBotModal onClose={() => setIsOpenBotModal(false)} buttonText={"Add"}/>}
+					{isOpenBotModal && <SelectBotModal setSelectedBot={addBot}  onClose={() => setIsOpenBotModal(false)} buttonText={"Add"}/>}
 				</div>
 				<div className="flex items-center">
 					<FontAwesomeIcon icon={faArrowRight} className="mx-4" size="2x"/>
