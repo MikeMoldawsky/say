@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
-import ProductBotPipeLine from '../components/product/ProductBotPipeLine';
+import PipelineBots from '../components/product/PipelineBots';
 import { useUserBotsContext } from '../components/react-context/UserBotsContext';
 import Loader from '../components/Loader';
 import ProductImageOutput from "../components/product/ProductImageOutput";
-import ProductTextInput from "../components/product/ProductTextInput";
+import PipelineInputs from "../components/product/PipelineInputs";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import {faArrowRight, faPlus} from '@fortawesome/free-solid-svg-icons';
 import ProductCard from "../components/product/ProductCard";
+import Button from "../components/Button";
 
 const motivationalSpeakerId = '642902c79e50d4fd10a60ef4';
 const stableDiffusionPromptGeneratorId = '642903049e50d4fd10a60ef5';
@@ -42,7 +43,7 @@ const Product: React.FC = () => {
 			<div className="flex flex-row items-stretch justify-center w-full h-full mb-8">
 				<div className="w-1/6 ml-8">
 					<ProductCard title="Inputs">
-						<ProductTextInput
+						<PipelineInputs
 							userInput={userInput}
 							setUserInput={setUserInput}
 							handleGenerate={setProductInput}
@@ -54,7 +55,8 @@ const Product: React.FC = () => {
 				</div>
 				<div className="w-3/6">
 					<ProductCard title="Pipeline">
-						<ProductBotPipeLine input={productInput} bots={[motivationalSpeaker, stableDiffusionPromptGenerator, stableDiffusionImageGenerator]} setProductOutput={setProductOutput} />
+						<PipelineBots input={productInput} bots={[]} setPipelineOutput={setProductOutput} />
+						<Button text={"Add Step"} icon={faPlus}/>
 					</ProductCard>
 				</div>
 				<div className="flex items-center">

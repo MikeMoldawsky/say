@@ -2,13 +2,13 @@ import React from 'react';
 import {faRedo} from "@fortawesome/free-solid-svg-icons";
 import Button from "../Button";
 
-interface ProductTextProps {
+interface PipelineInputsProps {
 	userInput: string;
 	setUserInput: (input: string) => void;
 	handleGenerate: (input: string) => void;
 }
 
-const ProductTextInput: React.FC<ProductTextProps> = ({userInput, setUserInput, handleGenerate,}) => {
+const PipelineInputs: React.FC<PipelineInputsProps> = ({userInput, setUserInput, handleGenerate,}) => {
 	const onUserInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setUserInput(e.target.value);
 	};
@@ -29,11 +29,11 @@ const ProductTextInput: React.FC<ProductTextProps> = ({userInput, setUserInput, 
 					maxLength={1000}
 					wrap="soft"
 				/>
-				<Button text={"Generate"} type="submit" icon={faRedo}/>
+				<Button disabled={userInput === ''} text={"Generate"} type="submit" icon={faRedo}/>
 			</form>
 		</>
 	);
 };
 
 
-export default ProductTextInput;
+export default PipelineInputs;

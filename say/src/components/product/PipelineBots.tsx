@@ -4,20 +4,20 @@ import BotAnswerCard from "./BotAnswerCard";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowDown} from "@fortawesome/free-solid-svg-icons";
 
-interface ProductBotPipeLineProps {
+interface PipelineBotsProps {
 	input: string | null;
 	bots: Bot[];
-	setProductOutput: (output: string) => void;
+	setPipelineOutput: (output: string) => void;
 }
 
-const ProductBotPipeLine: React.FC<ProductBotPipeLineProps> = ({bots, input, setProductOutput}) => {
+const PipelineBots: React.FC<PipelineBotsProps> = ({bots, input, setPipelineOutput}) => {
 	const [answers, setAnswers] = useState<(string | null)[]>(bots.map(() => null));
 
 	useEffect(() => {
 		if (answers[answers.length - 1] !== null) {
-			setProductOutput(answers[answers.length - 1] as string);
+			setPipelineOutput(answers[answers.length - 1] as string);
 		}
-	}, [answers, setProductOutput])
+	}, [answers, setPipelineOutput])
 
 
 	const setAnswer = (botIndex: number, answer: string) => {
@@ -53,4 +53,4 @@ const ProductBotPipeLine: React.FC<ProductBotPipeLineProps> = ({bots, input, set
 
 };
 
-export default ProductBotPipeLine;
+export default PipelineBots;

@@ -25,7 +25,8 @@ const ProductImageOutput: React.FC<ProductImageOutputProps> = ({ productOutput }
 		<>
 			<div className="flex-grow relative">
 				<div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-					{productOutput ? (
+					{productOutput &&
+					<>
 						<Image
 							ref={imageRef}
 							src={`data:image/png;base64,${productOutput}`}
@@ -34,12 +35,12 @@ const ProductImageOutput: React.FC<ProductImageOutputProps> = ({ productOutput }
 							height={512}
 							className="max-h-full max-w-full border-2 border-gray-300"
 						/>
-					) : (
 						<FontAwesomeIcon icon={faImage} className="text-gray-300" size="10x" />
-					)}
+					</>
+					}
 				</div>
 			</div>
-			<Button text={"Download Image"} onClick={downloadImage} icon={faDownload}/>
+			<Button disabled={!productOutput} text={"Download Image"} onClick={downloadImage} icon={faDownload}/>
 		</>
 	);
 };
