@@ -19,8 +19,7 @@ const ProductTextInput: React.FC<ProductTextProps> = ({userInput, setUserInput, 
 	};
 
 	return (
-		<div className="border border-gray-300 bg-white shadow-sm rounded p-4 h-full flex flex-col">
-			<h2 className="text-2xl mb-4">Input</h2>
+		<>
 			<form onSubmit={handleSubmit} className="flex flex-col h-full justify-between">
 				<textarea
 					className="p-2 border border-gray-300 rounded resize-none max-h-1/2 flex-grow"
@@ -38,7 +37,7 @@ const ProductTextInput: React.FC<ProductTextProps> = ({userInput, setUserInput, 
 					Generate
 				</button>
 			</form>
-		</div>
+		</>
 	);
 };
 

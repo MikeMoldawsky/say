@@ -6,6 +6,7 @@ import ProductImageOutput from "../components/product/ProductImageOutput";
 import ProductTextInput from "../components/product/ProductTextInput";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import ProductCard from "../components/product/ProductCard";
 
 const motivationalSpeakerId = '642902c79e50d4fd10a60ef4';
 const stableDiffusionPromptGeneratorId = '642903049e50d4fd10a60ef5';
@@ -40,23 +41,29 @@ const Product: React.FC = () => {
 			<h1 className="text-3xl mb-8">Product</h1>
 			<div className="flex flex-row items-stretch justify-center w-full h-full mb-8">
 				<div className="w-1/6 ml-8">
-					<ProductTextInput
-						userInput={userInput}
-						setUserInput={setUserInput}
-						handleGenerate={setProductInput}
-					/>
+					<ProductCard title="Inputs">
+						<ProductTextInput
+							userInput={userInput}
+							setUserInput={setUserInput}
+							handleGenerate={setProductInput}
+						/>
+					</ProductCard>
 				</div>
 				<div className="flex items-center">
 					<FontAwesomeIcon icon={faArrowRight} className="mx-4" size="2x" />
 				</div>
 				<div className="w-3/6">
-					<ProductBotPipeLine input={productInput} bots={[motivationalSpeaker, stableDiffusionPromptGenerator, stableDiffusionImageGenerator]} setProductOutput={setProductOutput} />
+					<ProductCard title="Pipeline">
+						<ProductBotPipeLine input={productInput} bots={[motivationalSpeaker, stableDiffusionPromptGenerator, stableDiffusionImageGenerator]} setProductOutput={setProductOutput} />
+					</ProductCard>
 				</div>
 				<div className="flex items-center">
 					<FontAwesomeIcon icon={faArrowRight} className="mx-4" size="2x"/>
 				</div>
 				<div className="w-2/6 mr-8">
-					<ProductImageOutput productOutput={productOutput} />
+					<ProductCard title="Outputs">
+						<ProductImageOutput productOutput={productOutput} />
+					</ProductCard>
 				</div>
 			</div>
 		</div>

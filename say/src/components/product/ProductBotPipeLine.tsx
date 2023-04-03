@@ -29,29 +29,26 @@ const ProductBotPipeLine: React.FC<ProductBotPipeLineProps> = ({bots, input, set
 	};
 
 	return (
-		<div className="flex flex-col items-center w-full">
-			<div className="w-full p-4 bg-white border border-gray-200 shadow-md rounded-md">
-				<h2 className="text-2xl mb-4">Pipeline</h2>
-				{bots.map((bot, botIndex) => {
-					return (
-						<React.Fragment key={bot._id}>
-							<div className="w-full mb-2">
-								<BotAnswerCard
-									bot={bot}
-									input={botIndex === 0 ? input : answers[botIndex - 1]}
-									setAnswer={(answer) => setAnswer(botIndex, answer)}
-								/>
+		<>
+			{bots.map((bot, botIndex) => {
+				return (
+					<React.Fragment key={bot._id}>
+						<div className="w-full mb-2">
+							<BotAnswerCard
+								bot={bot}
+								input={botIndex === 0 ? input : answers[botIndex - 1]}
+								setAnswer={(answer) => setAnswer(botIndex, answer)}
+							/>
+						</div>
+						{botIndex < bots.length - 1 && (
+							<div className="flex justify-center">
+								<FontAwesomeIcon icon={faArrowDown} className="mx-4" size="lg"/>
 							</div>
-							{botIndex < bots.length - 1 && (
-								<div className="flex justify-center">
-									<FontAwesomeIcon icon={faArrowDown} className="mx-4" size="lg"/>
-								</div>
-							)}
-						</React.Fragment>
-					);
-				})}
-			</div>
-		</div>
+						)}
+					</React.Fragment>
+				);
+			})}
+		</>
 	);
 
 };

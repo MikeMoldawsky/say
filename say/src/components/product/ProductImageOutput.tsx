@@ -21,8 +21,7 @@ const ProductImageOutput: React.FC<ProductImageOutputProps> = ({ productOutput }
 	};
 
 	return (
-		<div className="border border-gray-300 bg-white shadow-sm rounded p-4 h-full flex flex-col">
-			<h2 className="text-2xl mb-4">Output</h2>
+		<>
 			<div className="flex-grow relative">
 				<div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
 					{productOutput ? (
@@ -46,7 +45,7 @@ const ProductImageOutput: React.FC<ProductImageOutputProps> = ({ productOutput }
 				<FontAwesomeIcon icon={faDownload} className="mr-2" />
 				Download Image
 			</button>
-		</div>
+		</>
 	);
 };
 
