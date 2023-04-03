@@ -1,4 +1,6 @@
 import React from 'react';
+import {faRedo} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 interface ProductTextProps {
 	userInput: string;
@@ -32,11 +34,13 @@ const ProductTextInput: React.FC<ProductTextProps> = ({userInput, setUserInput, 
 					type="submit"
 					className="mt-8 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded"
 				>
+					<FontAwesomeIcon icon={faRedo} className="mr-2" />
 					Generate
 				</button>
 			</form>
 		</div>
 	);
 };
+
 
 export default ProductTextInput;
