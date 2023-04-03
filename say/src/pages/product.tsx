@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import PipelineBots from '../components/product/PipelineBots';
-import ProductImageOutput from "../components/product/ProductImageOutput";
 import PipelineInputs from "../components/product/PipelineInputs";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faArrowRight, faPlus} from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +7,7 @@ import ProductCard from "../components/product/ProductCard";
 import Button from "../components/Button";
 import SelectBotModal from "../components/common/SelectBotModal";
 import {Bot} from "../objects-api/bots";
+import PipelineOutputs from "../components/product/PipelineOutputs";
 
 
 const Product: React.FC = () => {
@@ -75,7 +75,11 @@ const Product: React.FC = () => {
 				</div>
 				<div className="w-2/6 mr-8">
 					<ProductCard title="Outputs">
-						<ProductImageOutput productOutput={productOutput} />
+						{
+							bots.length > 0
+								? <PipelineOutputs outputBot={bots[bots.length - 1]} productOutput={productOutput} />
+								: null
+						}
 					</ProductCard>
 				</div>
 			</div>

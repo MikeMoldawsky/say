@@ -4,11 +4,11 @@ import { faDownload, faImage } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import Button from "../Button";
 
-interface ProductImageOutputProps {
+interface ImageOutputProps {
 	productOutput: string | null;
 }
 
-const ProductImageOutput: React.FC<ProductImageOutputProps> = ({ productOutput }) => {
+const ImageOutput: React.FC<ImageOutputProps> = ({ productOutput }) => {
 	const imageRef = React.useRef<HTMLImageElement | null>(null);
 
 	const downloadImage = () => {
@@ -45,4 +45,4 @@ const ProductImageOutput: React.FC<ProductImageOutputProps> = ({ productOutput }
 	);
 };
 
-export default ProductImageOutput;
+export default ImageOutput;
