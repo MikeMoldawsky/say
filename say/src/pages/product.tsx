@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faArrowRight, faPlus} from '@fortawesome/free-solid-svg-icons';
 import ProductCard from "../components/product/ProductCard";
 import Button from "../components/Button";
+import SelectBotModal from "../components/common/SelectBotModal";
 
 const motivationalSpeakerId = '642902c79e50d4fd10a60ef4';
 const stableDiffusionPromptGeneratorId = '642903049e50d4fd10a60ef5';
@@ -15,6 +16,7 @@ const stableDiffusionImageGeneratorId = '642873f53e2049ac6bc56b63';
 
 const Product: React.FC = () => {
 	const { bots } = useUserBotsContext();
+	const [isOpenBotModal, setIsOpenBotModal] = useState<>(false);
 	const [userInput, setUserInput] = useState<string>('');
 	const [productInput, setProductInput] = useState<string | null>(null);
 	const [productOutput, setProductOutput] = useState<string | null>(null);
@@ -56,8 +58,9 @@ const Product: React.FC = () => {
 				<div className="w-3/6">
 					<ProductCard title="Pipeline">
 						<PipelineBots input={productInput} bots={[]} setPipelineOutput={setProductOutput} />
-						<Button text={"Add Step"} icon={faPlus}/>
+						<Button text={"Add Step"} icon={faPlus} onClick={() => setIsOpenBotModal(true)}/>
 					</ProductCard>
+					{isOpenBotModal && <SelectBotModal onClose={() => setIsOpenBotModal(false)} buttonText={"Add"}/>}
 				</div>
 				<div className="flex items-center">
 					<FontAwesomeIcon icon={faArrowRight} className="mx-4" size="2x"/>

@@ -4,7 +4,7 @@ import {Bot} from "../../objects-api/bots";
 import {BotContext} from "../../objects-api/contexts";
 import BotChatContextCard from "./BotChatContextCard";
 import AddContextModal from "./AddContextModal";
-import SwitchBotModal from "./SwitchBotModal";
+import SelectBotModal from "../common/SelectBotModal";
 import _ from "lodash";
 
 interface BotChatInfoProps {
@@ -70,9 +70,8 @@ const BotChatInfo: React.FC<BotChatInfoProps> = ({ bot, contexts, selectedContex
 					Switch Assistant
 				</button>
 				{showSwitchBotModal && (
-					<SwitchBotModal onClose={() => setSwitchBotModal(false)} />
+					<SelectBotModal prevSelectedBot={bot} onClose={() => setSwitchBotModal(false)} buttonText={"Switch"} />
 				)}
-
 			</div>
 		</div>
 	);

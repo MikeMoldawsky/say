@@ -8,7 +8,7 @@ interface ButtonProps {
 	type?: "submit";
 	disabled?: boolean;
 	onClick?: () => void;
-	icon: IconDefinition;
+	icon?: IconDefinition;
 
 }
 
@@ -22,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({ text, onClick, type, disabled, icon }) 
 			type={type}
 			disabled={disabled}
 		>
-			<FontAwesomeIcon icon={icon} className="mr-2 mb-1" size="xl" />
+			{icon && <FontAwesomeIcon icon={icon} className="mr-2 mb-1" size="xl" />}
 			<span className="font-semibold text-2xl">{text}</span>
 		</button>
 	);
