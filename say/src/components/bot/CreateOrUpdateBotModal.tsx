@@ -7,6 +7,7 @@ import {useUserBotsContext} from "../react-context/UserBotsContext";
 import _ from "lodash";
 import {CreateBotRequest, UpdateBotRequest} from "../../objects-api/bots";
 
+
 interface CreateOrUpdateBotModalProps {
 	onClose: () => void;
 	createBot: (bot: CreateBotRequest) => void;

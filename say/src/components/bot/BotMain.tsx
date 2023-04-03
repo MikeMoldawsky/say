@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {Bot, CreateBotRequest, UpdateBotRequest} from "../../objects-api/bots";
-import AddBotButton from "./AddBotButton";
+import Button from "../Button";
 import CreateOrUpdateBotModal from "./CreateOrUpdateBotModal";
 import BotCardList from "./BotCardList";
 import {useUserBotsContext} from "../react-context/UserBotsContext";
@@ -55,7 +56,7 @@ const BotMain: React.FC = () => {
 			<div>
 				<BotCardList onConfigure={openConfigureBot} />
 				<div className="mt-8 w-full flex justify-center">
-					<AddBotButton onClick={() => setOpenModal(true)} />
+					<Button text={"New Bot"} onClick={() => setOpenModal(true)} icon={faPlus} />
 				</div>
 				{isOpenModal &&
 				<CreateOrUpdateBotModal onClose={closeConfigureBot} updateBot={updateBot} createBot={createBot} />}
