@@ -3,15 +3,19 @@ import Image from 'next/image';
 import { Bot } from '../../objects-api/bots';
 import { useUserBotsContext } from '../react-context/UserBotsContext';
 import Loader from '../Loader';
+import Button from "../Button";
+import { faTrashAlt, faExchangeAlt } from "@fortawesome/free-solid-svg-icons";
 
 interface BotAnswerCardProps {
 	bot: Bot;
 	input: string | null;
 	setAnswer: (answer: string) => void;
+	onDelete: () => void;
+	onReplace: () => void;
 	isImage?: boolean;
 }
 
-const BotAnswerCard: React.FC<BotAnswerCardProps> = ({ bot, input, setAnswer, isImage }) => {
+const BotAnswerCard: React.FC<BotAnswerCardProps> = ({ bot, input, setAnswer, onDelete, onReplace }) => {
 	const { botClient } = useUserBotsContext();
 	const [output, setOutput] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
@@ -54,6 +58,12 @@ const BotAnswerCard: React.FC<BotAnswerCardProps> = ({ bot, input, setAnswer, is
 					<Image className="w-10 h-10 object-cover rounded-full" src={bot.imageUrl} alt={bot.name} width={40} height={40} />
 					<div className="ml-4">
 						<h3 className="text-2xl font-bold mb-2">{bot.name}</h3>
+					</div>
+					<div className="ml-auto flex">
+							<Button onClick={onReplace} backgroundColor={"gray"} icon={faExchangeAlt}/>
+						<div className="ml-4">
+							<Button onClick={onDelete} backgroundColor={"gray"}  icon={faTrashAlt}/>
+						</div>
 					</div>
 				</div>
 				<div className="mt-4">

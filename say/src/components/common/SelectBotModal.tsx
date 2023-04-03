@@ -4,6 +4,7 @@ import { useUserBotsContext } from '../react-context/UserBotsContext';
 import { useUserContext } from '../react-context/UserContext';
 import { Bot } from '../../objects-api/bots';
 import Button from "../Button";
+import {createComputedPropertyName} from "@ts-morph/common/lib/typescript";
 
 interface SelectBotModalProps {
 	buttonText: string;
@@ -22,6 +23,7 @@ const SelectBotModal: React.FC<SelectBotModalProps> = ({ onClose, buttonText, se
 			onClose();
 		}
 	};
+	console.log("prevSelectedBot", prevSelectedBot);
 
 	return (
 		<div className="fixed inset-0 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50">
