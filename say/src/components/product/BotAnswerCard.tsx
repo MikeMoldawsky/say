@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import Image from 'next/image';
 import { Bot } from '../../objects-api/bots';
 import { useUserBotsContext } from '../react-context/UserBotsContext';
@@ -16,18 +16,23 @@ const BotAnswerCard: React.FC<BotAnswerCardProps> = ({ bot, input, setAnswer, is
 	const [output, setOutput] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 
-	useEffect(() => {
-		const getAnswer = async () => {
-			if (botClient !== null && input !== null) {
-				setLoading(true);
-				const response = await botClient.answer(bot._id, { content: input });
-				setOutput(response);
-				setAnswer(response);
-				setLoading(false);
-			}
-		};
+	const prevInputRef = useRef(input);
 
-		getAnswer();
+	useEffect(() => {
+		if (prevInputRef.current !== input) {
+			prevInputRef.current = input;
+			const getAnswer = async () => {
+				if (botClient !== null && input !== null) {
+					setLoading(true);
+					const response = await botClient.answer(bot._id, {content: input});
+					setOutput(response);
+					setAnswer(response);
+					setLoading(false);
+				}
+			};
+
+			getAnswer();
+		}
 	}, [botClient, bot._id, input, setAnswer]);
 
 	const truncateString = (str: string, maxLength: number) => {
@@ -61,8 +66,8 @@ const BotAnswerCard: React.FC<BotAnswerCardProps> = ({ bot, input, setAnswer, is
 							</div>
 						) : (
 
-							<div className={`overflow-hidden whitespace-normal ${isImage ? "break-all": "break-words"}`}>
-								<span>{isImage && output ? truncateString(output, 150): output}</span>
+							<div className={`overflow-hidden whitespace-normal ${(bot.config.type === 'image') ? "break-all": "break-words"}`}>
+								<span>{(bot.config.type === 'image') && output ? truncateString(output, 150): output}</span>
 							</div>
 						)}
 					</div>

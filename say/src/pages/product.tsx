@@ -50,13 +50,7 @@ const Product: React.FC = () => {
 					<FontAwesomeIcon icon={faArrowRight} className="mx-4" size="2x" />
 				</div>
 				<div className="w-3/6">
-					<ProductBotPipeLine
-						sentenceGenerator={motivationalSpeaker}
-						promptGenerator={stableDiffusionPromptGenerator}
-						imageGenerator={stableDiffusionImageGenerator}
-						input={productInput}
-						setProductOutput={setProductOutput}
-					/>
+					<ProductBotPipeLine input={productInput} bots={[motivationalSpeaker, stableDiffusionPromptGenerator, stableDiffusionImageGenerator]} setProductOutput={setProductOutput} />
 				</div>
 				<div className="flex items-center">
 					<FontAwesomeIcon icon={faArrowRight} className="mx-4" size="2x"/>
