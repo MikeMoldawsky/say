@@ -1,6 +1,6 @@
 import React from 'react';
 import {faRedo} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import Button from "../Button";
 
 interface ProductTextProps {
 	userInput: string;
@@ -22,20 +22,14 @@ const ProductTextInput: React.FC<ProductTextProps> = ({userInput, setUserInput, 
 		<>
 			<form onSubmit={handleSubmit} className="flex flex-col h-full justify-between">
 				<textarea
-					className="p-2 border border-gray-300 rounded resize-none max-h-1/2 flex-grow"
+					className="p-2 border border-gray-300 rounded resize-none max-h-1/2 flex-grow mb-4"
 					value={userInput}
 					onChange={onUserInputChange}
 					rows={1}
 					maxLength={1000}
 					wrap="soft"
 				/>
-				<button
-					type="submit"
-					className="mt-8 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded"
-				>
-					<FontAwesomeIcon icon={faRedo} className="mr-2" />
-					Generate
-				</button>
+				<Button text={"Generate"} type="submit" icon={faRedo}/>
 			</form>
 		</>
 	);

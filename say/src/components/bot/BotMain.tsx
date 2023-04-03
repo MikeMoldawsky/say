@@ -56,7 +56,7 @@ const BotMain: React.FC = () => {
 			<div>
 				<BotCardList onConfigure={openConfigureBot} />
 				<div className="mt-8 w-full flex justify-center">
-					<Button text={"New Bot"} onClick={() => setOpenModal(true)} icon={faPlus} />
+					<Button text={"Add Bot"} onClick={() => setOpenModal(true)} icon={faPlus} />
 				</div>
 				{isOpenModal &&
 				<CreateOrUpdateBotModal onClose={closeConfigureBot} updateBot={updateBot} createBot={createBot} />}

@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faImage } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import Button from "../Button";
 
 interface ProductImageOutputProps {
 	productOutput: string | null;
@@ -38,13 +39,7 @@ const ProductImageOutput: React.FC<ProductImageOutputProps> = ({ productOutput }
 					)}
 				</div>
 			</div>
-			<button
-				className="mt-auto py-2 text-white bg-blue-500 hover:bg-blue-600 rounded"
-				onClick={downloadImage}
-			>
-				<FontAwesomeIcon icon={faDownload} className="mr-2" />
-				Download Image
-			</button>
+			<Button text={"Download Image"} onClick={downloadImage} icon={faDownload}/>
 		</>
 	);
 };

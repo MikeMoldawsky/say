@@ -5,18 +5,24 @@ import {IconDefinition} from "@fortawesome/fontawesome-common-types";
 
 interface ButtonProps {
 	text: string;
-	onClick: () => void;
+	type?: "submit";
+	onClick?: () => void;
 	icon: IconDefinition;
 
 }
 
-const Button: React.FC<ButtonProps> = ({text, onClick, icon}) => {
+const Button: React.FC<ButtonProps> = ({ text, onClick, type, icon }) => {
 	return (
-			<button onClick={onClick} className="bg-blue-500 text-white px-2 py-2 rounded-full flex items-center space-x-2 hover:bg-blue-600 transition-all duration-300 cursor-pointer">
-				<FontAwesomeIcon icon={icon} className="" size="xl" />
-				<span>{text}</span>
-			</button>
+		<button
+			className="mt-auto py-2 text-white bg-blue-500 hover:bg-blue-600 rounded shadow-md px-6 py-3"
+			onClick={onClick}
+			type={type}
+		>
+			<FontAwesomeIcon icon={icon} className="mr-2 mb-1" size="xl" />
+			<span className="font-semibold text-2xl">{text}</span>
+		</button>
 	);
 };
+
 
 export default Button;
