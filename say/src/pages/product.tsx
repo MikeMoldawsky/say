@@ -54,6 +54,14 @@ const Product: React.FC = () => {
 		toast.success("Bot deleted");
 	};
 
+	const setBotAnswer = (botIndex: number, answer: string) => {
+		setPipelineBots((prevBotAnswers: PipelineBot[]) => {
+			const newBotAnswers = [...prevBotAnswers];
+			newBotAnswers[botIndex] = { ...newBotAnswers[botIndex], answer };
+			return newBotAnswers;
+		});
+	};
+
 
 	return (
 		<div className="flex flex-col items-center w-full h-full">
@@ -78,7 +86,7 @@ const Product: React.FC = () => {
 				</div>
 				<div className="w-3/6">
 					<ProductCard title="Pipeline">
-						<PipelineBots input={pipelineInput} pipelineBots={pipelineBots} setBotAnswers={setPipelineBots} onDelete={deleteBot} onReplace={replaceBot}/>
+						<PipelineBots input={pipelineInput} pipelineBots={pipelineBots} setBotAnswer={setBotAnswer} onDelete={deleteBot} onReplace={replaceBot}/>
 						<Button text={"Add Step"} icon={faPlus} onClick={() => setIsOpenBotModal(true)}/>
 					</ProductCard>
 					{isOpenBotModal &&
