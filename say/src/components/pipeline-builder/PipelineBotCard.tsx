@@ -3,8 +3,9 @@ import Image from 'next/image';
 import { useUserBotsContext } from '../react-context/UserBotsContext';
 import Loader from '../Loader';
 import Button from "../Button";
-import {faTrashAlt, faExchangeAlt, faToggleOff, faToggleOn} from "@fortawesome/free-solid-svg-icons";
+import {faTrashAlt, faExchangeAlt} from "@fortawesome/free-solid-svg-icons";
 import {PipelineBot} from "./PipelineBots";
+import Switch from "react-switch";
 
 interface PipelineBotCardProps {
 	pipelineBot: PipelineBot;
@@ -12,9 +13,10 @@ interface PipelineBotCardProps {
 	onDelete: () => void;
 	onReplace: () => void;
 	onUpdate: (pipelineBot: PipelineBot) => void;
+	isLastBot: boolean
 }
 
-const PipelineBotCard: React.FC<PipelineBotCardProps> = ({ pipelineBot, input, onDelete, onReplace, onUpdate }) => {
+const PipelineBotCard: React.FC<PipelineBotCardProps> = ({ pipelineBot, input, onDelete, onReplace, onUpdate, isLastBot }) => {
 	const { botClient } = useUserBotsContext();
 	const [loading, setLoading] = useState(false);
 	const prevInputRef = useRef(input);
@@ -63,12 +65,18 @@ const PipelineBotCard: React.FC<PipelineBotCardProps> = ({ pipelineBot, input, o
 						<h3 className="text-2xl font-bold mb-2">{pipelineBot.bot.name}</h3>
 					</div>
 					<div className="ml-auto flex">
-						<Button onClick={toggleOutput} backgroundColor={"gray"} icon={pipelineBot.isOutputBot ? faToggleOn : faToggleOff} />
-						<div className="ml-4">
-							<Button onClick={onReplace} backgroundColor={"gray"} icon={faExchangeAlt}/>
-						</div>
+						<Button onClick={onReplace} backgroundColor={"gray"} icon={faExchangeAlt}/>
 						<div className="ml-4">
 							<Button onClick={onDelete} backgroundColor={"gray"}  icon={faTrashAlt}/>
+						</div>
+						<div className="ml-4 flex">
+								<Switch
+									checked={pipelineBot.isOutputBot}
+									onChange={toggleOutput}
+									offColor="#6B7280"
+									onColor="#3B82F6"
+									disabled={isLastBot}
+								/>
 						</div>
 					</div>
 				</div>

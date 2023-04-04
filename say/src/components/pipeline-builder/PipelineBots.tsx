@@ -24,24 +24,24 @@ const PipelineBots: React.FC<PipelineBotsProps> = ({input, pipelineBots, onDelet
 		<>
 			{
 				pipelineBots.map((pipelineBot, botIndex) => {
-				console.log("[PipelineBots]: Pipeline bot rendered", {pipelineBot, botIndex});
-				return (
-					<React.Fragment key={botIndex}>
-						<div className="w-full mb-2">
-							<PipelineBotCard
-								pipelineBot={pipelineBot}
-								input={botIndex === 0 ? input : pipelineBots[botIndex - 1].answer}
-								onDelete={() => onDelete(botIndex)}
-								onReplace={() => onReplace(botIndex)}
-								onUpdate={(pipelineBot: PipelineBot) => onUpdate(botIndex, pipelineBot)}
-							/>
-						</div>
-						{botIndex < pipelineBots.length - 1 && (
-							<div className="flex justify-center">
-								<FontAwesomeIcon icon={faArrowDown} className="mx-4" size="lg"/>
+					return (
+						<React.Fragment key={botIndex}>
+							<div className="w-full mb-2">
+								<PipelineBotCard
+									pipelineBot={pipelineBot}
+									input={botIndex === 0 ? input : pipelineBots[botIndex - 1].answer}
+									onDelete={() => onDelete(botIndex)}
+									onReplace={() => onReplace(botIndex)}
+									onUpdate={(pipelineBot: PipelineBot) => onUpdate(botIndex, pipelineBot)}
+									isLastBot={(pipelineBots.length - 1) === botIndex}
+								/>
 							</div>
-						)}
-					</React.Fragment>
+							{botIndex < pipelineBots.length - 1 && (
+								<div className="flex justify-center">
+									<FontAwesomeIcon icon={faArrowDown} className="mx-4" size="lg"/>
+								</div>
+							)}
+						</React.Fragment>
 				);
 			})}
 		</>

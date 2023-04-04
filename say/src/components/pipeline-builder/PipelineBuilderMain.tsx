@@ -34,7 +34,7 @@ const PipelineBuilderMain: React.FC = () => {
 			setReplaceBotIndex(null);
 			toast.success("Bot replaced");
 		} else {
-			setPipelineBots([...pipelineBots, { bot, answer: null, isOutputBot: false }]);
+			setPipelineBots([...pipelineBots, { bot, answer: null, isOutputBot: true }]);
 			toast.success("Bot added");
 		}
 	};
@@ -46,7 +46,14 @@ const PipelineBuilderMain: React.FC = () => {
 	};
 
 	const deleteBot = (index: number) => {
-		setPipelineBots((prevPipelineBot) => prevPipelineBot.filter((_, i) => i !== index));
+		setPipelineBots((prevPipelineBot) => {
+			const newPipelineBot = prevPipelineBot.filter((_, i) => i !== index);
+			if (newPipelineBot.length > 0 && index === prevPipelineBot.length - 1) {
+				// If the deleted bot was the last element, set the new last element's isOutputBot to true
+				newPipelineBot[newPipelineBot.length - 1].isOutputBot = true;
+			}
+			return newPipelineBot;
+		});
 		toast.success("Bot deleted");
 	};
 
