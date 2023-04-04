@@ -96,7 +96,7 @@ const PipelineBuilderMain: React.FC = () => {
 					<PipelineCard title="Outputs">
 						{
 							pipelineBots.length > 0
-								? <PipelineOutputs outputBots={pipelineBots.map((ba) => ba.bot)} outputAnswers={pipelineBots.map((ba) => ba.answer)} />
+								? <PipelineOutputs outputPipelineBots={pipelineBots} />
 								: null
 						}
 					</PipelineCard>
