@@ -11,8 +11,12 @@ import PipelineOutputs from "../../components/pipeline-builder/PipelineOutputs";
 import {toast} from "react-toastify";
 
 
-const PipelineBuilderMain: React.FC = () => {
-	const [pipelineBots, setPipelineBots] = useState<PipelineBot[]>([]);
+export interface PipelineBuilderMainProps{
+	pipelineBots: PipelineBot[];
+	setPipelineBots: (pipelineBots: PipelineBot[]) => void;
+}
+
+const PipelineBuilderMain: React.FC<PipelineBuilderMainProps> = ({pipelineBots, setPipelineBots}) => {
 	const [replaceBotIndex, setReplaceBotIndex] = useState<number | null>(null);
 	const [isOpenBotModal, setIsOpenBotModal] = useState(false);
 	const [userInput, setUserInput] = useState<string>('');
@@ -25,11 +29,9 @@ const PipelineBuilderMain: React.FC = () => {
 
 	const addOrReplaceBot = (bot: Bot) => {
 		if (replaceBotIndex !== null) {
-			setPipelineBots(prevPipelineBot => {
-				const newPipelineBot = [...prevPipelineBot];
-				newPipelineBot[replaceBotIndex] = { bot, answer: null, isOutputBot: newPipelineBot[replaceBotIndex].isOutputBot };
-				return newPipelineBot;
-			});
+			const newPipelineBot = [...pipelineBots];
+			newPipelineBot[replaceBotIndex] = { bot, answer: null, isOutputBot: newPipelineBot[replaceBotIndex].isOutputBot };
+			setPipelineBots(newPipelineBot);
 			setReplaceBotIndex(null);
 			toast.success("Bot replaced");
 		} else {
@@ -45,23 +47,19 @@ const PipelineBuilderMain: React.FC = () => {
 	};
 
 	const deleteBot = (index: number) => {
-		setPipelineBots((prevPipelineBot) => {
-			const newPipelineBot = prevPipelineBot.filter((_, i) => i !== index);
-			if (newPipelineBot.length > 0 && index === prevPipelineBot.length - 1) {
-				// If the deleted bot was the last element, set the new last element's isOutputBot to true
-				newPipelineBot[newPipelineBot.length - 1].isOutputBot = true;
-			}
-			return newPipelineBot;
-		});
+		const newPipelineBots = pipelineBots.filter((_, i) => i !== index);
+		if (newPipelineBots.length > 0 && index === newPipelineBots.length - 1) {
+			// If the deleted bot was the last element, set the new last element's isOutputBot to true
+			newPipelineBots[newPipelineBots.length - 1].isOutputBot = true;
+		}
+		setPipelineBots(newPipelineBots);
 		toast.success("Bot deleted");
 	};
 
 	const onUpdate = (botIndex: number, pipelineBot: PipelineBot) => {
-		setPipelineBots((prevBotAnswers: PipelineBot[]) => {
-			const newBotAnswers = [...prevBotAnswers];
-			newBotAnswers[botIndex] = pipelineBot;
-			return newBotAnswers;
-		});
+		const newPipelineBots = [...pipelineBots];
+		newPipelineBots[botIndex] = pipelineBot;
+		setPipelineBots(newPipelineBots);
 	};
 
 	return (
