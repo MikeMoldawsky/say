@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
-import PipelineBots, {PipelineBot} from '../../components/product/PipelineBots';
-import PipelineInputs from "../../components/product/PipelineInputs";
+import PipelineBots, {PipelineBot} from '../../components/pipeline-builder/PipelineBots';
+import PipelineInputs from "../../components/pipeline-builder/PipelineInputs";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faArrowRight, faPlus, faRedo} from '@fortawesome/free-solid-svg-icons';
-import PipelineCard from "../../components/product/PipelineCard";
+import PipelineCard from "../../components/pipeline-builder/PipelineCard";
 import Button from "../../components/Button";
 import SelectBotModal from "../../components/common/SelectBotModal";
 import {Bot} from "../../objects-api/bots";
-import PipelineOutputs from "../../components/product/PipelineOutputs";
+import PipelineOutputs from "../../components/pipeline-builder/PipelineOutputs";
 import {toast} from "react-toastify";
 
 

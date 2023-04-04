@@ -1,5 +1,5 @@
 import React from 'react';
-import PipelineBuilderMain from "../components/product/PipelineBuilderMain";
+import PipelineBuilderMain from "../components/pipeline-builder/PipelineBuilderMain";
 
 
 
