@@ -2,11 +2,30 @@ import React, {useState} from 'react';
 import PipelineBuilderMain from "../components/pipeline-builder/PipelineBuilderMain";
 import Button from "../components/Button";
 import {PipelineBot} from "../components/pipeline-builder/PipelineBots";
-
+import {Pipeline} from "../objects-api/pipelines";
 
 
 const PipelineBuilder: React.FC = () => {
 	const [pipelineBots, setPipelineBots] = useState<PipelineBot[]>([]);
+	const [pipelineName, setPipelineName] = useState('');
+	const [pipelineDescription, setPipelineDescription] = useState('');
+
+	const isPublishDisabled = () => {
+		return !pipelineName || !pipelineDescription || pipelineBots.length === 0 || !pipelineBots.some(bot => bot.isOutputBot);
+	};
+
+	const publishProduct = () => {
+		if(isPublishDisabled()){
+			throw Error("Cannot publish pipeline");
+		}
+		const pipeline: Pipeline = {
+			name: pipelineName,
+			description: pipelineDescription,
+			pipelineBotIds: pipelineBots.map(bot => bot.bot._id),
+			outputBotIds: pipelineBots.filter(bot => bot.isOutputBot).map(bot => bot.bot._id),
+		}
+		alert(JSON.stringify(pipeline, null, 2));
+	};
 
 	return (
 		<div className="flex flex-col items-center w-full h-full mb-8">
@@ -22,6 +41,8 @@ const PipelineBuilder: React.FC = () => {
 								type="text"
 								name="pipelineName"
 								id="pipelineName"
+								value={pipelineName}
+								onChange={(e) => setPipelineName(e.target.value)}
 								className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 								placeholder="Enter pipeline name"
 							/>
@@ -34,12 +55,14 @@ const PipelineBuilder: React.FC = () => {
 								type="text"
 								name="pipelineDescription"
 								id="pipelineDescription"
+								value={pipelineDescription}
+								onChange={(e) => setPipelineDescription(e.target.value)}
 								className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 								placeholder="Enter pipeline description"
 							/>
 						</div>
 						<div className={"ml-4 self-end"}>
-							<Button text={"Publish"} disabled={true}/>
+							<Button text={"Publish"} onClick={publishProduct} disabled={isPublishDisabled()}/>
 						</div>
 					</div>
 				</div>
