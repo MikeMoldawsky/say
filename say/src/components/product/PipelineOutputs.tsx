@@ -4,19 +4,21 @@ import TextOutput from "./TextOutput";
 import {Bot} from "../../objects-api/bots";
 
 interface PipelineOutputsProps {
-	outputBot: Bot;
-	productOutput: string | null;
+	outputBots: Bot[];
+	outputAnswers: Array<string | null>;
 }
 
-const PipelineOutputs: React.FC<PipelineOutputsProps> = ({ outputBot, productOutput }) => {
-
+const PipelineOutputs: React.FC<PipelineOutputsProps> = ({ outputBots, outputAnswers }) => {
 	return (
 		<>
-			{
-			outputBot.config.type === "image" ?
-				<ImageOutput productOutput={productOutput}/> :
-				<TextOutput output={productOutput}/>
-			}
+			{outputBots.map((bot, index) => {
+				const outputAnswer = outputAnswers[index];
+				return bot.config.type === "image" ? (
+					<ImageOutput key={index} productOutput={outputAnswer} />
+				) : (
+					<TextOutput key={index} output={outputAnswer} />
+				);
+			})}
 		</>
 	);
 };

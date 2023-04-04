@@ -17,7 +17,7 @@ const Product: React.FC = () => {
 	const [isOpenBotModal, setIsOpenBotModal] = useState<>(false);
 	const [userInput, setUserInput] = useState<string>('');
 	const [pipelineInput, setPipelineInput] = useState<string | null>(null);
-	const [pipelineOutput, setPipelineOutput] = useState<string | null>(null);
+	const [pipelineOutputs, setPipelineOutputs] = useState<Array<string | null>>([]);
 
 	const startPipeline = () => {
 		setPipelineInput(userInput);
@@ -74,7 +74,7 @@ const Product: React.FC = () => {
 				</div>
 				<div className="w-3/6">
 					<ProductCard title="Pipeline">
-						<PipelineBots input={pipelineInput} bots={bots} setPipelineOutput={setPipelineOutput} onDelete={deleteBot} onReplace={replaceBot}/>
+						<PipelineBots input={pipelineInput} bots={bots} setPipelineOutput={setPipelineOutputs} onDelete={deleteBot} onReplace={replaceBot}/>
 						<Button text={"Add Step"} icon={faPlus} onClick={() => setIsOpenBotModal(true)}/>
 					</ProductCard>
 					{isOpenBotModal &&
@@ -91,7 +91,7 @@ const Product: React.FC = () => {
 					<ProductCard title="Outputs">
 						{
 							bots.length > 0
-								? <PipelineOutputs outputBot={bots[bots.length - 1]} productOutput={pipelineOutput} />
+								? <PipelineOutputs outputBots={bots} outputAnswers={pipelineOutputs} />
 								: null
 						}
 					</ProductCard>

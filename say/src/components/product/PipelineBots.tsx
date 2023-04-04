@@ -7,19 +7,19 @@ import {faArrowDown} from "@fortawesome/free-solid-svg-icons";
 interface PipelineBotsProps {
 	input: string | null;
 	bots: Bot[];
+	setPipelineOutputs: (outputs: Array<string | null>) => void;
 	onDelete: (index: number) => void;
 	onReplace: (index: number) => void;
-	setPipelineOutput: (output: string) => void;
 }
 
-const PipelineBots: React.FC<PipelineBotsProps> = ({bots, input, onDelete, onReplace, setPipelineOutput}) => {
+const PipelineBots: React.FC<PipelineBotsProps> = ({input, bots,setPipelineOutputs, onDelete, onReplace}) => {
 	const [answers, setAnswers] = useState<(string | null)[]>(bots.map(() => null));
 
 	useEffect(() => {
 		if (answers[answers.length - 1] !== null) {
-			setPipelineOutput(answers[answers.length - 1] as string);
+			setPipelineOutputs(answers[answers.length - 1] as string);
 		}
-	}, [answers, setPipelineOutput])
+	}, [answers, setPipelineOutputs])
 
 
 	const setAnswer = (botIndex: number, answer: string) => {
