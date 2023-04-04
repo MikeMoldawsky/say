@@ -13,10 +13,14 @@ const PipelineOutputs: React.FC<PipelineOutputsProps> = ({ outputBots, outputAns
 		<>
 			{outputBots.map((bot, index) => {
 				const outputAnswer = outputAnswers[index];
-				return bot.config.type === "image" ? (
-					<ImageOutput key={index} productOutput={outputAnswer} />
-				) : (
-					<TextOutput key={index} output={outputAnswer} />
+				return (
+					<div key={index} className="w-px-512 mb-8 border border-gray-300 p-4 shadow-sm">
+						{bot.config.type === "image" ? (
+							<ImageOutput productOutput={outputAnswer} />
+						) : (
+							<TextOutput output={outputAnswer} />
+						)}
+					</div>
 				);
 			})}
 		</>

@@ -21,19 +21,14 @@ const TextOutput: React.FC<TextOutputProps> = ({ output }) => {
 	};
 
 	return (
-		<>
-			<div className="flex-grow relative">
-				<div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-					{output &&
-						<>
-						<div className={"text-4xl"}>{output}</div>
-						</>
-					}
-				</div>
+		<div className="flex flex-col items-center">
+			<div className="w-full h-512 flex items-center justify-center mb-4">
+				{output && <div className={"text-4xl"}>{output}</div>}
 			</div>
-			<Button disabled={!output} text={"Copy"} onClick={copyToClipboard} icon={faCopy}/>
-		</>
+			<Button disabled={!output} text={"Copy"} onClick={copyToClipboard} icon={faCopy} />
+		</div>
 	);
 };
+
 
 export default TextOutput;
