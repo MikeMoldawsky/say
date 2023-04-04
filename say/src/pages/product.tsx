@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PipelineBots from '../components/product/PipelineBots';
 import PipelineInputs from "../components/product/PipelineInputs";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faArrowRight, faPlus} from '@fortawesome/free-solid-svg-icons';
+import {faArrowRight, faPlus, faRedo} from '@fortawesome/free-solid-svg-icons';
 import ProductCard from "../components/product/ProductCard";
 import Button from "../components/Button";
 import SelectBotModal from "../components/common/SelectBotModal";
@@ -17,6 +17,10 @@ const Product: React.FC = () => {
 	const [userInput, setUserInput] = useState<string>('');
 	const [pipelineInput, setPipelineInput] = useState<string | null>(null);
 	const [pipelineOutput, setPipelineOutput] = useState<string | null>(null);
+
+	const startPipeline = () => {
+		setPipelineInput(userInput);
+	};
 
 	const addOrReplaceBot = (bot: Bot) => {
 		if (replaceBotIndex !== null) {
@@ -51,6 +55,12 @@ const Product: React.FC = () => {
 							userInput={userInput}
 							setUserInput={setUserInput}
 							onStartPipeline={setPipelineInput}
+						/>
+						<Button
+							disabled={bots.length === 0 || userInput === ''}
+							text={"Generate"}
+							onClick={startPipeline}
+							icon={faRedo}
 						/>
 					</ProductCard>
 				</div>
