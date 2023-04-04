@@ -11,13 +11,18 @@ import PipelineOutputs from "../components/product/PipelineOutputs";
 import {toast} from "react-toastify";
 
 
+export interface PipelineBot {
+	bot: Bot;
+	answer: string | null;
+}
+
+
 const Product: React.FC = () => {
-	const [bots, setBots] = useState<Bot[]>([]);;
+	const [pipelineBots, setPipelineBots] = useState<PipelineBot[]>([]);
 	const [replaceBotIndex, setReplaceBotIndex] = useState<number | null>(null);
-	const [isOpenBotModal, setIsOpenBotModal] = useState<>(false);
+	const [isOpenBotModal, setIsOpenBotModal] = useState(false);
 	const [userInput, setUserInput] = useState<string>('');
 	const [pipelineInput, setPipelineInput] = useState<string | null>(null);
-	const [pipelineOutputs, setPipelineOutputs] = useState<Array<string | null>>([]);
 
 	const startPipeline = () => {
 		setPipelineInput(userInput);
@@ -26,15 +31,15 @@ const Product: React.FC = () => {
 
 	const addOrReplaceBot = (bot: Bot) => {
 		if (replaceBotIndex !== null) {
-			setBots(prevBots => {
-				const newBots = [...prevBots];
-				newBots[replaceBotIndex] = bot;
-				return newBots;
+			setPipelineBots(prevPipelineBot => {
+				const newPipelineBot = [...prevPipelineBot];
+				newPipelineBot[replaceBotIndex] = { bot, answer: null };
+				return newPipelineBot;
 			});
 			setReplaceBotIndex(null);
 			toast.success("Bot replaced");
 		} else {
-			setBots([...bots, bot]);
+			setPipelineBots([...pipelineBots, { bot, answer: null }]);
 			toast.success("Bot added");
 		}
 	};
@@ -44,11 +49,11 @@ const Product: React.FC = () => {
 		setIsOpenBotModal(true);
 	};
 
-
 	const deleteBot = (index: number) => {
-		setBots(prevBots => prevBots.filter((_, i) => i !== index));
+		setPipelineBots((prevPipelineBot) => prevPipelineBot.filter((_, i) => i !== index));
 		toast.success("Bot deleted");
 	};
+
 
 	return (
 		<div className="flex flex-col items-center w-full h-full">
@@ -59,10 +64,9 @@ const Product: React.FC = () => {
 						<PipelineInputs
 							userInput={userInput}
 							setUserInput={setUserInput}
-							onStartPipeline={setPipelineInput}
 						/>
 						<Button
-							disabled={bots.length === 0 || userInput === ''}
+							disabled={pipelineBots.length === 0 || userInput === ''}
 							text={"Generate"}
 							onClick={startPipeline}
 							icon={faRedo}
@@ -74,15 +78,15 @@ const Product: React.FC = () => {
 				</div>
 				<div className="w-3/6">
 					<ProductCard title="Pipeline">
-						<PipelineBots input={pipelineInput} bots={bots} setPipelineOutput={setPipelineOutputs} onDelete={deleteBot} onReplace={replaceBot}/>
+						<PipelineBots input={pipelineInput} pipelineBots={pipelineBots} setBotAnswers={setPipelineBots} onDelete={deleteBot} onReplace={replaceBot}/>
 						<Button text={"Add Step"} icon={faPlus} onClick={() => setIsOpenBotModal(true)}/>
 					</ProductCard>
 					{isOpenBotModal &&
-						<SelectBotModal
-							prevSelectedBot={replaceBotIndex !== null ? bots[replaceBotIndex]: null}
-							setSelectedBot={addOrReplaceBot}
-						    onClose={() => setIsOpenBotModal(false)}
-						    buttonText={replaceBotIndex !== null ? "Change" : "Add"}/>}
+					<SelectBotModal
+						prevSelectedBot={replaceBotIndex !== null ? pipelineBots[replaceBotIndex].bot : null}
+						setSelectedBot={addOrReplaceBot}
+						onClose={() => setIsOpenBotModal(false)}
+						buttonText={replaceBotIndex !== null ? "Change" : "Add"}/>}
 				</div>
 				<div className="flex items-center">
 					<FontAwesomeIcon icon={faArrowRight} className="mx-4" size="2x"/>
@@ -90,8 +94,8 @@ const Product: React.FC = () => {
 				<div className="w-2/6 mr-8">
 					<ProductCard title="Outputs">
 						{
-							bots.length > 0
-								? <PipelineOutputs outputBots={bots} outputAnswers={pipelineOutputs} />
+							pipelineBots.length > 0
+								? <PipelineOutputs outputBots={pipelineBots.map((ba) => ba.bot)} outputAnswers={pipelineBots.map((ba) => ba.answer)} />
 								: null
 						}
 					</ProductCard>
@@ -102,3 +106,4 @@ const Product: React.FC = () => {
 };
 
 export default Product;
+

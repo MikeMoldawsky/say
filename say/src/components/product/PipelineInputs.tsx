@@ -1,6 +1,4 @@
 import React from 'react';
-import {faRedo} from "@fortawesome/free-solid-svg-icons";
-import Button from "../Button";
 
 interface PipelineInputsProps {
 	userInput: string;

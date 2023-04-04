@@ -1,50 +1,48 @@
 import React, {useEffect, useState} from 'react';
-import {Bot} from "../../objects-api/bots";
 import BotAnswerCard from "./BotAnswerCard";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowDown} from "@fortawesome/free-solid-svg-icons";
+import {PipelineBot} from "../../pages/product";
 
 interface PipelineBotsProps {
 	input: string | null;
-	bots: Bot[];
-	setPipelineOutputs: (outputs: Array<string | null>) => void;
+	pipelineBots: PipelineBot[];
+	setBotAnswers: (updateFn: (prevBotAnswers: PipelineBot[]) => PipelineBot[]) => void;
 	onDelete: (index: number) => void;
 	onReplace: (index: number) => void;
 }
 
-const PipelineBots: React.FC<PipelineBotsProps> = ({input, bots,setPipelineOutputs, onDelete, onReplace}) => {
-	const [answers, setAnswers] = useState<(string | null)[]>(bots.map(() => null));
+const PipelineBots: React.FC<PipelineBotsProps> = ({input, pipelineBots, setBotAnswers, onDelete, onReplace}) => {
+	const [localBotAnswers, setLocalBotAnswers] = useState<Array<string | null>>([]);
 
 	useEffect(() => {
-		if (answers[answers.length - 1] !== null) {
-			setPipelineOutputs(answers[answers.length - 1] as string);
-		}
-	}, [answers, setPipelineOutputs])
-
+		const newBotAnswers = pipelineBots.map(bot => bot.answer);
+		setLocalBotAnswers(newBotAnswers);
+	}, [pipelineBots]);
 
 	const setAnswer = (botIndex: number, answer: string) => {
-		setAnswers(prevAnswers => {
-			const newAnswers = [...prevAnswers];
-			newAnswers[botIndex] = answer;
-			return newAnswers;
+		setBotAnswers((prevBotAnswers: PipelineBot[]) => {
+			const newBotAnswers = [...prevBotAnswers];
+			newBotAnswers[botIndex] = { ...newBotAnswers[botIndex], answer };
+			return newBotAnswers;
 		});
 	};
 
 	return (
 		<>
-			{bots.map((bot, botIndex) => {
+			{pipelineBots.map((botAnswer, botIndex) => {
 				return (
-					<React.Fragment key={bot._id}>
+					<React.Fragment key={botAnswer.bot._id}>
 						<div className="w-full mb-2">
 							<BotAnswerCard
-								bot={bot}
-								input={botIndex === 0 ? input : answers[botIndex - 1]}
+								bot={botAnswer.bot}
+								input={botIndex === 0 ? input : localBotAnswers[botIndex - 1]}
 								setAnswer={(answer) => setAnswer(botIndex, answer)}
 								onDelete={() => onDelete(botIndex)}
 								onReplace={() => onReplace(botIndex)}
 							/>
 						</div>
-						{botIndex < bots.length - 1 && (
+						{botIndex < pipelineBots.length - 1 && (
 							<div className="flex justify-center">
 								<FontAwesomeIcon icon={faArrowDown} className="mx-4" size="lg"/>
 							</div>
@@ -54,7 +52,6 @@ const PipelineBots: React.FC<PipelineBotsProps> = ({input, bots,setPipelineOutpu
 			})}
 		</>
 	);
-
 };
 
 export default PipelineBots;
