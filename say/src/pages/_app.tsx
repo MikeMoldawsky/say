@@ -4,6 +4,8 @@ import type { AppProps } from 'next/app';
 import {UserBotsProvider} from "../components/react-context/UserBotsContext";
 import React from "react";
 import Header from "../components/Header";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

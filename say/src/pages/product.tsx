@@ -15,8 +15,8 @@ const Product: React.FC = () => {
 	const [replaceBotIndex, setReplaceBotIndex] = useState<number | null>(null);
 	const [isOpenBotModal, setIsOpenBotModal] = useState<>(false);
 	const [userInput, setUserInput] = useState<string>('');
-	const [productInput, setProductInput] = useState<string | null>(null);
-	const [productOutput, setProductOutput] = useState<string | null>(null);
+	const [pipelineInput, setPipelineInput] = useState<string | null>(null);
+	const [pipelineOutput, setPipelineOutput] = useState<string | null>(null);
 
 	const addOrReplaceBot = (bot: Bot) => {
 		if (replaceBotIndex !== null) {
@@ -32,7 +32,6 @@ const Product: React.FC = () => {
 	};
 
 	const replaceBot = (index: number) => {
-		console.log("Replace bot", index, bots);
 		setReplaceBotIndex(index);
 		setIsOpenBotModal(true);
 	};
@@ -47,11 +46,11 @@ const Product: React.FC = () => {
 			<h1 className="text-3xl mb-8">Product</h1>
 			<div className="flex flex-row items-stretch justify-center w-full h-full mb-8">
 				<div className="w-1/6 ml-8">
-					<ProductCard title="Inputs">
+					<ProductCard title="Input">
 						<PipelineInputs
 							userInput={userInput}
 							setUserInput={setUserInput}
-							handleGenerate={setProductInput}
+							onStartPipeline={setPipelineInput}
 						/>
 					</ProductCard>
 				</div>
@@ -60,7 +59,7 @@ const Product: React.FC = () => {
 				</div>
 				<div className="w-3/6">
 					<ProductCard title="Pipeline">
-						<PipelineBots input={productInput} bots={bots} setPipelineOutput={setProductOutput} onDelete={deleteBot} onReplace={replaceBot}/>
+						<PipelineBots input={pipelineInput} bots={bots} setPipelineOutput={setPipelineOutput} onDelete={deleteBot} onReplace={replaceBot}/>
 						<Button text={"Add Step"} icon={faPlus} onClick={() => setIsOpenBotModal(true)}/>
 					</ProductCard>
 					{isOpenBotModal &&
@@ -77,7 +76,7 @@ const Product: React.FC = () => {
 					<ProductCard title="Outputs">
 						{
 							bots.length > 0
-								? <PipelineOutputs outputBot={bots[bots.length - 1]} productOutput={productOutput} />
+								? <PipelineOutputs outputBot={bots[bots.length - 1]} productOutput={pipelineOutput} />
 								: null
 						}
 					</ProductCard>

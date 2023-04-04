@@ -5,17 +5,13 @@ import Button from "../Button";
 interface PipelineInputsProps {
 	userInput: string;
 	setUserInput: (input: string) => void;
-	handleGenerate: (input: string) => void;
+	onStartPipeline: (input: string) => void;
 }
 
-const PipelineInputs: React.FC<PipelineInputsProps> = ({userInput, setUserInput, handleGenerate,}) => {
-	const onUserInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-		setUserInput(e.target.value);
-	};
-
+const PipelineInputs: React.FC<PipelineInputsProps> = ({userInput, setUserInput, onStartPipeline,}) => {
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		handleGenerate(userInput);
+		onStartPipeline(userInput);
 	};
 
 	return (
@@ -24,7 +20,7 @@ const PipelineInputs: React.FC<PipelineInputsProps> = ({userInput, setUserInput,
 				<textarea
 					className="p-2 border border-gray-300 rounded resize-none max-h-1/2 flex-grow mb-4"
 					value={userInput}
-					onChange={onUserInputChange}
+					onChange={(e) => setUserInput(e.target.value)}
 					rows={1}
 					maxLength={1000}
 					wrap="soft"

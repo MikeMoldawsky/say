@@ -12,7 +12,7 @@ interface PipelineBotsProps {
 	setPipelineOutput: (output: string) => void;
 }
 
-const PipelineBots: React.FC<PipelineBotsProps> = ({bots, input, setPipelineOutput, onDelete, onReplace}) => {
+const PipelineBots: React.FC<PipelineBotsProps> = ({bots, input, onDelete, onReplace, setPipelineOutput}) => {
 	const [answers, setAnswers] = useState<(string | null)[]>(bots.map(() => null));
 
 	useEffect(() => {
