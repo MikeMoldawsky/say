@@ -1,26 +1,24 @@
 import React, {useState, useEffect, useRef} from 'react';
 import Image from 'next/image';
-import { Bot } from '../../objects-api/bots';
 import { useUserBotsContext } from '../react-context/UserBotsContext';
 import Loader from '../Loader';
 import Button from "../Button";
-import { faTrashAlt, faExchangeAlt } from "@fortawesome/free-solid-svg-icons";
+import {faTrashAlt, faExchangeAlt, faToggleOff, faToggleOn} from "@fortawesome/free-solid-svg-icons";
+import {PipelineBot} from "./PipelineBots";
 
 interface PipelineBotCardProps {
-	bot: Bot;
+	pipelineBot: PipelineBot;
 	input: string | null;
-	setAnswer: (answer: string) => void;
 	onDelete: () => void;
 	onReplace: () => void;
-	isImage?: boolean;
+	onUpdate: (pipelineBot: PipelineBot) => void;
 }
 
-const PipelineBotCard: React.FC<PipelineBotCardProps> = ({ bot, input, setAnswer, onDelete, onReplace }) => {
+const PipelineBotCard: React.FC<PipelineBotCardProps> = ({ pipelineBot, input, onDelete, onReplace, onUpdate }) => {
 	const { botClient } = useUserBotsContext();
-	const [output, setOutput] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
-
 	const prevInputRef = useRef(input);
+
 
 	useEffect(() => {
 		if (prevInputRef.current !== input) {
@@ -28,16 +26,21 @@ const PipelineBotCard: React.FC<PipelineBotCardProps> = ({ bot, input, setAnswer
 			const getAnswer = async () => {
 				if (botClient !== null && input !== null) {
 					setLoading(true);
-					const response = await botClient.answer(bot._id, {content: input});
-					setOutput(response);
-					setAnswer(response);
+					const answer = await botClient.answer(pipelineBot.bot._id, {content: input});
+					const newPipelineBot = {...pipelineBot, answer: answer}
+					onUpdate(newPipelineBot);
 					setLoading(false);
 				}
 			};
 
 			getAnswer();
 		}
-	}, [botClient, bot._id, input, setAnswer]);
+	}, [botClient, pipelineBot, input, onUpdate]);
+
+	const toggleOutput = () => {
+		const newPipelineBot = {...pipelineBot, isOutputBot: !pipelineBot.isOutputBot}
+		onUpdate(newPipelineBot);
+	}
 
 	const truncateString = (str: string, maxLength: number) => {
 		if(!str) return str;
@@ -50,17 +53,21 @@ const PipelineBotCard: React.FC<PipelineBotCardProps> = ({ bot, input, setAnswer
 	if (botClient === null) {
 		return <Loader />;
 	}
+	console.log("Mike", {pipelineBot, input});
 
 	return (
 		<div className="bg-gray-200 p-4 rounded-lg shadow-md text-left hover:shadow-lg hover:scale-105 transition-all duration-300 m-4 flex items-start">
 			<div className="flex flex-col flex-grow">
 				<div className="flex items-center">
-					<Image className="w-10 h-10 object-cover rounded-full" src={bot.imageUrl} alt={bot.name} width={40} height={40} />
+					<Image className="w-10 h-10 object-cover rounded-full" src={pipelineBot.bot.imageUrl} alt={pipelineBot.bot.name} width={40} height={40} />
 					<div className="ml-4">
-						<h3 className="text-2xl font-bold mb-2">{bot.name}</h3>
+						<h3 className="text-2xl font-bold mb-2">{pipelineBot.bot.name}</h3>
 					</div>
 					<div className="ml-auto flex">
+						<Button onClick={toggleOutput} backgroundColor={"gray"} icon={pipelineBot.isOutputBot ? faToggleOn : faToggleOff} />
+						<div className="ml-4">
 							<Button onClick={onReplace} backgroundColor={"gray"} icon={faExchangeAlt}/>
+						</div>
 						<div className="ml-4">
 							<Button onClick={onDelete} backgroundColor={"gray"}  icon={faTrashAlt}/>
 						</div>
@@ -76,8 +83,8 @@ const PipelineBotCard: React.FC<PipelineBotCardProps> = ({ bot, input, setAnswer
 							</div>
 						) : (
 
-							<div className={`overflow-hidden whitespace-normal ${(bot.config.type === 'image') ? "break-all": "break-words"}`}>
-								<span>{(bot.config.type === 'image') && output ? truncateString(output, 150): output}</span>
+							<div className={`overflow-hidden whitespace-normal ${(pipelineBot.bot.config.type === 'image') ? "break-all": "break-words"}`}>
+								<span>{(pipelineBot.bot.config.type === 'image') && pipelineBot.answer ? truncateString(pipelineBot.answer, 150): pipelineBot.answer}</span>
 							</div>
 						)}
 					</div>

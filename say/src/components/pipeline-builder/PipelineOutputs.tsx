@@ -1,16 +1,18 @@
 import React from "react";
 import PipelineImageOutput from "./PipelineImageOutput";
 import PipelineTextOutput from "./PipelineTextOutput";
-import {PipelineBot} from "./PipelineBots";
+import { PipelineBot } from "./PipelineBots";
 
 interface PipelineOutputsProps {
 	outputPipelineBots: PipelineBot[];
 }
 
 const PipelineOutputs: React.FC<PipelineOutputsProps> = ({ outputPipelineBots }) => {
+	const filteredOutputBots = outputPipelineBots.filter((bot) => bot.isOutputBot);
+
 	return (
 		<>
-			{outputPipelineBots.map((pipelineBot, index) => {
+			{filteredOutputBots.map((pipelineBot, index) => {
 				return (
 					<div key={index} className="w-px-512 mb-8 border border-gray-300 p-4 shadow-sm">
 						{pipelineBot.bot.config.type === "image" ? (

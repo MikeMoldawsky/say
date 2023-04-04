@@ -28,16 +28,17 @@ const PipelineBuilderMain: React.FC = () => {
 		if (replaceBotIndex !== null) {
 			setPipelineBots(prevPipelineBot => {
 				const newPipelineBot = [...prevPipelineBot];
-				newPipelineBot[replaceBotIndex] = { bot, answer: null };
+				newPipelineBot[replaceBotIndex] = { bot, answer: null, isOutputBot: newPipelineBot[replaceBotIndex].isOutputBot };
 				return newPipelineBot;
 			});
 			setReplaceBotIndex(null);
 			toast.success("Bot replaced");
 		} else {
-			setPipelineBots([...pipelineBots, { bot, answer: null }]);
+			setPipelineBots([...pipelineBots, { bot, answer: null, isOutputBot: false }]);
 			toast.success("Bot added");
 		}
 	};
+
 
 	const replaceBot = (index: number) => {
 		setReplaceBotIndex(index);
@@ -49,14 +50,13 @@ const PipelineBuilderMain: React.FC = () => {
 		toast.success("Bot deleted");
 	};
 
-	const setBotAnswer = (botIndex: number, answer: string) => {
+	const onUpdate = (botIndex: number, pipelineBot: PipelineBot) => {
 		setPipelineBots((prevBotAnswers: PipelineBot[]) => {
 			const newBotAnswers = [...prevBotAnswers];
-			newBotAnswers[botIndex] = { ...newBotAnswers[botIndex], answer };
+			newBotAnswers[botIndex] = pipelineBot;
 			return newBotAnswers;
 		});
 	};
-
 
 	return (
 		<div className="flex flex-row items-stretch justify-center w-full h-full mb-8">
@@ -79,7 +79,7 @@ const PipelineBuilderMain: React.FC = () => {
 				</div>
 				<div className="w-3/6">
 					<PipelineCard title="Pipeline">
-						<PipelineBots input={pipelineInput} pipelineBots={pipelineBots} setBotAnswer={setBotAnswer} onDelete={deleteBot} onReplace={replaceBot}/>
+						<PipelineBots input={pipelineInput} pipelineBots={pipelineBots} onUpdate={onUpdate} onDelete={deleteBot} onReplace={replaceBot}/>
 						<Button text={"Add Step"} icon={faPlus} onClick={() => setIsOpenBotModal(true)}/>
 					</PipelineCard>
 					{isOpenBotModal &&

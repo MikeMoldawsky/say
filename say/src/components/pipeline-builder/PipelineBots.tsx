@@ -8,31 +8,32 @@ import {Bot} from "../../objects-api/bots";
 export interface PipelineBot {
 	bot: Bot;
 	answer: string | null;
+	isOutputBot: boolean;
 }
 
 interface PipelineBotsProps {
 	input: string | null;
 	pipelineBots: PipelineBot[];
-	setBotAnswer: (botIndex: number, answer: string) => void;
 	onDelete: (index: number) => void;
 	onReplace: (index: number) => void;
+	onUpdate: (index: number, pipelineBot: PipelineBot) => void;
 }
 
-const PipelineBots: React.FC<PipelineBotsProps> = ({input, pipelineBots, setBotAnswer, onDelete, onReplace}) => {
-	useEffect(() => {}, [pipelineBots]);
+const PipelineBots: React.FC<PipelineBotsProps> = ({input, pipelineBots, onDelete, onReplace, onUpdate}) => {
+	useEffect(() => {}, [pipelineBots]); // TODO: check if needed
 
 	return (
 		<>
-			{pipelineBots.map((botAnswer, botIndex) => {
+			{pipelineBots.map((pipelineBot, botIndex) => {
 				return (
-					<React.Fragment key={botAnswer.bot._id}>
+					<React.Fragment key={botIndex}>
 						<div className="w-full mb-2">
 							<PipelineBotCard
-								bot={botAnswer.bot}
+								pipelineBot={pipelineBot}
 								input={botIndex === 0 ? input : pipelineBots[botIndex - 1].answer}
-								setAnswer={(answer) => setBotAnswer(botIndex, answer)}
 								onDelete={() => onDelete(botIndex)}
 								onReplace={() => onReplace(botIndex)}
+								onUpdate={(pipelineBot: PipelineBot) => onUpdate(botIndex, pipelineBot)}
 							/>
 						</div>
 						{botIndex < pipelineBots.length - 1 && (
