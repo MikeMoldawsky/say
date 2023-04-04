@@ -22,7 +22,6 @@ const TextOutput: React.FC<TextOutputProps> = ({ output }) => {
 
 	return (
 		<>
-			<ToastContainer />
 			<div className="flex-grow relative">
 				<div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
 					{output &&

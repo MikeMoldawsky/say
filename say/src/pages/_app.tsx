@@ -5,6 +5,7 @@ import {UserBotsProvider} from "../components/react-context/UserBotsContext";
 import React from "react";
 import Header from "../components/Header";
 import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from "react-toastify";
 
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -16,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <Header />
                   </div>
                 <Component {...pageProps} />
+                <ToastContainer />
               </div>
           </UserBotsProvider>
       </UserProvider>

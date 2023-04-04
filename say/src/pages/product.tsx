@@ -8,6 +8,7 @@ import Button from "../components/Button";
 import SelectBotModal from "../components/common/SelectBotModal";
 import {Bot} from "../objects-api/bots";
 import PipelineOutputs from "../components/product/PipelineOutputs";
+import {toast} from "react-toastify";
 
 
 const Product: React.FC = () => {
@@ -20,6 +21,7 @@ const Product: React.FC = () => {
 
 	const startPipeline = () => {
 		setPipelineInput(userInput);
+		toast.success("Pipeline started");
 	};
 
 	const addOrReplaceBot = (bot: Bot) => {
@@ -30,8 +32,10 @@ const Product: React.FC = () => {
 				return newBots;
 			});
 			setReplaceBotIndex(null);
+			toast.success("Bot replaced");
 		} else {
 			setBots([...bots, bot]);
+			toast.success("Bot added");
 		}
 	};
 
@@ -43,6 +47,7 @@ const Product: React.FC = () => {
 
 	const deleteBot = (index: number) => {
 		setBots(prevBots => prevBots.filter((_, i) => i !== index));
+		toast.success("Bot deleted");
 	};
 
 	return (
