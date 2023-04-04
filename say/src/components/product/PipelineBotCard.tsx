@@ -6,7 +6,7 @@ import Loader from '../Loader';
 import Button from "../Button";
 import { faTrashAlt, faExchangeAlt } from "@fortawesome/free-solid-svg-icons";
 
-interface BotAnswerCardProps {
+interface PipelineBotCardProps {
 	bot: Bot;
 	input: string | null;
 	setAnswer: (answer: string) => void;
@@ -15,7 +15,7 @@ interface BotAnswerCardProps {
 	isImage?: boolean;
 }
 
-const BotAnswerCard: React.FC<BotAnswerCardProps> = ({ bot, input, setAnswer, onDelete, onReplace }) => {
+const PipelineBotCard: React.FC<PipelineBotCardProps> = ({ bot, input, setAnswer, onDelete, onReplace }) => {
 	const { botClient } = useUserBotsContext();
 	const [output, setOutput] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
@@ -87,4 +87,4 @@ const BotAnswerCard: React.FC<BotAnswerCardProps> = ({ bot, input, setAnswer, on
 	);
 };
 
-export default BotAnswerCard;
+export default PipelineBotCard;

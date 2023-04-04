@@ -1,6 +1,6 @@
 import React from "react";
-import ImageOutput from "./ImageOutput";
-import TextOutput from "./TextOutput";
+import PipelineImageOutput from "./PipelineImageOutput";
+import PipelineTextOutput from "./PipelineTextOutput";
 import {Bot} from "../../objects-api/bots";
 
 interface PipelineOutputsProps {
@@ -16,9 +16,9 @@ const PipelineOutputs: React.FC<PipelineOutputsProps> = ({ outputBots, outputAns
 				return (
 					<div key={index} className="w-px-512 mb-8 border border-gray-300 p-4 shadow-sm">
 						{bot.config.type === "image" ? (
-							<ImageOutput productOutput={outputAnswer} />
+							<PipelineImageOutput productOutput={outputAnswer} />
 						) : (
-							<TextOutput output={outputAnswer} />
+							<PipelineTextOutput output={outputAnswer} />
 						)}
 					</div>
 				);

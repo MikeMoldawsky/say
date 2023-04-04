@@ -1,23 +1,18 @@
 import React, {useState} from 'react';
-import PipelineBots from '../components/product/PipelineBots';
-import PipelineInputs from "../components/product/PipelineInputs";
+import PipelineBots, {PipelineBot} from '../../components/product/PipelineBots';
+import PipelineInputs from "../../components/product/PipelineInputs";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faArrowRight, faPlus, faRedo} from '@fortawesome/free-solid-svg-icons';
-import ProductCard from "../components/product/ProductCard";
-import Button from "../components/Button";
-import SelectBotModal from "../components/common/SelectBotModal";
-import {Bot} from "../objects-api/bots";
-import PipelineOutputs from "../components/product/PipelineOutputs";
+import PipelineCard from "../../components/product/PipelineCard";
+import Button from "../../components/Button";
+import SelectBotModal from "../../components/common/SelectBotModal";
+import {Bot} from "../../objects-api/bots";
+import PipelineOutputs from "../../components/product/PipelineOutputs";
 import {toast} from "react-toastify";
 
 
-export interface PipelineBot {
-	bot: Bot;
-	answer: string | null;
-}
 
-
-const Product: React.FC = () => {
+const PipelineBuilderMain: React.FC = () => {
 	const [pipelineBots, setPipelineBots] = useState<PipelineBot[]>([]);
 	const [replaceBotIndex, setReplaceBotIndex] = useState<number | null>(null);
 	const [isOpenBotModal, setIsOpenBotModal] = useState(false);
@@ -64,11 +59,9 @@ const Product: React.FC = () => {
 
 
 	return (
-		<div className="flex flex-col items-center w-full h-full">
-			<h1 className="text-3xl mb-8">Product</h1>
-			<div className="flex flex-row items-stretch justify-center w-full h-full mb-8">
+		<div className="flex flex-row items-stretch justify-center w-full h-full mb-8">
 				<div className="w-1/6 ml-8">
-					<ProductCard title="Input">
+					<PipelineCard title="Input">
 						<PipelineInputs
 							userInput={userInput}
 							setUserInput={setUserInput}
@@ -79,16 +72,16 @@ const Product: React.FC = () => {
 							onClick={startPipeline}
 							icon={faRedo}
 						/>
-					</ProductCard>
+					</PipelineCard>
 				</div>
 				<div className="flex items-center">
 					<FontAwesomeIcon icon={faArrowRight} className="mx-4" size="2x" />
 				</div>
 				<div className="w-3/6">
-					<ProductCard title="Pipeline">
+					<PipelineCard title="Pipeline">
 						<PipelineBots input={pipelineInput} pipelineBots={pipelineBots} setBotAnswer={setBotAnswer} onDelete={deleteBot} onReplace={replaceBot}/>
 						<Button text={"Add Step"} icon={faPlus} onClick={() => setIsOpenBotModal(true)}/>
-					</ProductCard>
+					</PipelineCard>
 					{isOpenBotModal &&
 					<SelectBotModal
 						prevSelectedBot={replaceBotIndex !== null ? pipelineBots[replaceBotIndex].bot : null}
@@ -100,18 +93,17 @@ const Product: React.FC = () => {
 					<FontAwesomeIcon icon={faArrowRight} className="mx-4" size="2x"/>
 				</div>
 				<div className="w-2/6 mr-8">
-					<ProductCard title="Outputs">
+					<PipelineCard title="Outputs">
 						{
 							pipelineBots.length > 0
 								? <PipelineOutputs outputBots={pipelineBots.map((ba) => ba.bot)} outputAnswers={pipelineBots.map((ba) => ba.answer)} />
 								: null
 						}
-					</ProductCard>
+					</PipelineCard>
 				</div>
 			</div>
-		</div>
 	);
 };
 
-export default Product;
+export default PipelineBuilderMain;
 

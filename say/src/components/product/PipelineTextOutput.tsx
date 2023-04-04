@@ -3,11 +3,11 @@ import { faCopy } from "@fortawesome/free-solid-svg-icons";
 import { toast, ToastContainer } from "react-toastify";
 import Button from "../Button";
 
-interface TextOutputProps {
+interface PipelineTextOutputProps {
 	output: string | null;
 }
 
-const TextOutput: React.FC<TextOutputProps> = ({ output }) => {
+const PipelineTextOutput: React.FC<PipelineTextOutputProps> = ({ output }) => {
 	const copyToClipboard = async () => {
 		if (output) {
 			try {
@@ -31,4 +31,4 @@ const TextOutput: React.FC<TextOutputProps> = ({ output }) => {
 };
 
 
-export default TextOutput;
+export default PipelineTextOutput;
