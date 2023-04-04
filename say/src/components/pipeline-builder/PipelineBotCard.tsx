@@ -53,7 +53,6 @@ const PipelineBotCard: React.FC<PipelineBotCardProps> = ({ pipelineBot, input, o
 	if (botClient === null) {
 		return <Loader />;
 	}
-	console.log("Mike", {pipelineBot, input});
 
 	return (
 		<div className="bg-gray-200 p-4 rounded-lg shadow-md text-left hover:shadow-lg hover:scale-105 transition-all duration-300 m-4 flex items-start">

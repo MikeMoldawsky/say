@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import PipelineBotCard from "./PipelineBotCard";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowDown} from "@fortawesome/free-solid-svg-icons";
@@ -20,11 +20,11 @@ interface PipelineBotsProps {
 }
 
 const PipelineBots: React.FC<PipelineBotsProps> = ({input, pipelineBots, onDelete, onReplace, onUpdate}) => {
-	useEffect(() => {}, [pipelineBots]); // TODO: check if needed
-
 	return (
 		<>
-			{pipelineBots.map((pipelineBot, botIndex) => {
+			{
+				pipelineBots.map((pipelineBot, botIndex) => {
+				console.log("[PipelineBots]: Pipeline bot rendered", {pipelineBot, botIndex});
 				return (
 					<React.Fragment key={botIndex}>
 						<div className="w-full mb-2">
