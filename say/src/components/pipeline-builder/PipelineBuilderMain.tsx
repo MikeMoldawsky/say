@@ -90,7 +90,7 @@ const PipelineBuilderMain: React.FC = () => {
 					</PipelineCard>
 					{isOpenBotModal &&
 					<SelectBotModal
-						prevSelectedBot={replaceBotIndex !== null ? pipelineBots[replaceBotIndex].bot : null}
+						prevSelectedBot={replaceBotIndex !== null ? pipelineBots[replaceBotIndex].bot : undefined}
 						setSelectedBot={addOrReplaceBot}
 						onClose={() => setIsOpenBotModal(false)}
 						buttonText={replaceBotIndex !== null ? "Change" : "Add"}/>}
