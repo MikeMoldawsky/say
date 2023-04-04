@@ -19,7 +19,7 @@ const Header: React.FC = () => {
 					>
 						{isOpen ? '×' : '☰'}
 					</button>
-					<span className="text-2xl font-bold">AI Bot Assistant</span>
+					<span className="text-4xl font-bold">Say</span>
 				</div>
 			</header>
 			<Sidebar isOpen={isOpen} toggleSidePanel={toggleSidePanel} />

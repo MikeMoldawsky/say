@@ -11,7 +11,6 @@ import PipelineOutputs from "../../components/pipeline-builder/PipelineOutputs";
 import {toast} from "react-toastify";
 
 
-
 const PipelineBuilderMain: React.FC = () => {
 	const [pipelineBots, setPipelineBots] = useState<PipelineBot[]>([]);
 	const [replaceBotIndex, setReplaceBotIndex] = useState<number | null>(null);

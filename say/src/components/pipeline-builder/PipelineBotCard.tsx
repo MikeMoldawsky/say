@@ -57,33 +57,34 @@ const PipelineBotCard: React.FC<PipelineBotCardProps> = ({ pipelineBot, input, o
 	}
 
 	return (
-		<div className="bg-gray-200 p-4 rounded-lg shadow-md text-left hover:shadow-lg hover:scale-105 transition-all duration-300 m-4 flex items-start">
+		<div className="bg-gray-200 p-4 rounded-lg shadow-md text-left hover:shadow-lg hover:scale-105 transition-all duration-300  flex items-start mt-1">
 			<div className="flex flex-col flex-grow">
 				<div className="flex items-center">
 					<Image className="w-10 h-10 object-cover rounded-full" src={pipelineBot.bot.imageUrl} alt={pipelineBot.bot.name} width={40} height={40} />
-					<div className="ml-4">
-						<h3 className="text-2xl font-bold mb-2">{pipelineBot.bot.name}</h3>
-					</div>
-					<div className="ml-auto flex">
-						<Button onClick={onReplace} backgroundColor={"gray"} icon={faExchangeAlt}/>
-						<div className="ml-4">
-							<Button onClick={onDelete} backgroundColor={"gray"}  icon={faTrashAlt}/>
+						<div className="ml-2">
+							<h3 className="text-lg font-bold mb-2">{truncateString(pipelineBot.bot.name, 15)}</h3>
 						</div>
-						<div className="ml-4 flex">
-								<Switch
-									checked={pipelineBot.isOutputBot}
-									onChange={toggleOutput}
-									offColor="#6B7280"
-									onColor="#3B82F6"
-									disabled={isLastBot}
-								/>
+						<div className="flex flex-row ml-auto">
+							<div >
+								<Button onClick={onReplace} backgroundColor={"gray"} icon={faExchangeAlt}/>
+							</div>
+							<div className="ml-1">
+								<Button onClick={onDelete} backgroundColor={"gray"}  icon={faTrashAlt}/>
+							</div>
+							<div className="ml-1">
+									<Switch
+										checked={pipelineBot.isOutputBot}
+										onChange={toggleOutput}
+										offColor="#6B7280"
+										onColor="#3B82F6"
+										disabled={isLastBot}
+									/>
+							</div >
 						</div>
-					</div>
 				</div>
-				<div className="mt-4">
-					<hr className="border-t border-gray-300 mb-4" />
-					<p className="font-semibold">Output:</p>
-					<div className="bg-white rounded-lg px-4 py-2 mb-4 relative min-h-[100px]">
+				<div className="mt-2">
+					<hr className="border-t border-gray-300 mb-2" />
+					<div className="bg-white rounded-lg px-4 relative min-h-[100px]">
 						{loading ? (
 							<div className="absolute inset-0 flex items-center justify-center">
 								<Loader />
