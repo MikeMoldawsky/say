@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
+}
+
+enum BotType {
+  STABLE_DIFFUSION_IMAGE
+  OPENAI_CHAT_COMPLETION
+}
+
+model User {
+  id    String  @id @unique @default(cuid())
+  email String  @unique
+  bots  Bot[]
+  pipelines Pipeline[]
+}
+
+model Bot {
+  id          String                @id @unique @default(cuid())
+  name        String
+  image       String?
+  description String?
+  ownerId      String
+  owner        User               @relation(fields: [ownerId], references: [id])
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  configuration  BotConfiguration @relation(fields: [configurationId], references: [id])
+  configurationId  String  @unique
+  pipelines     PipelineBot[]
+}
+
+model BotConfiguration {
+  id          String                @id @unique @default(cuid())
+  type        BotType
+  data        Json
+  bot         Bot?
+  pipelineBot PipelineBot?
+}
+
+model Pipeline {
+  id          String       @id @unique @default(cuid())
+  name        String
+  description String?
+  ownerId      String
+  owner        User         @relation(fields: [ownerId], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  bots        PipelineBot[]
+}
+
+model PipelineBot {
+  id              String   @id @unique @default(cuid())
+  botId           String
+  bot             Bot      @relation(fields: [botId], references: [id])
+  pipelineId      String
+  pipeline        Pipeline @relation(fields: [pipelineId], references: [id])
+  configurationId String    @unique
+  configuration   BotConfiguration @relation(fields: [configurationId], references: [id])
+  isOutputBot     Boolean  @default(false)
+}
