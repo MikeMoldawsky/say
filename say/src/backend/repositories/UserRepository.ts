@@ -1,5 +1,5 @@
 import { PrismaClient, User } from "@prisma/client";
-import { IUserRepository } from "./IUserRepository";
+import { CreateUser, IUserRepository } from "./IUserRepository";
 
 export class UserRepository implements IUserRepository {
   private prisma: PrismaClient;
@@ -8,7 +8,7 @@ export class UserRepository implements IUserRepository {
     this.prisma = prisma;
   }
 
-  createUser(user: User): Promise<User> {
+  createUser(user: CreateUser): Promise<User> {
     return this.prisma.user.create({ data: user });
   }
 
