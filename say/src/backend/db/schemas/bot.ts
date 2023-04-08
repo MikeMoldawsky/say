@@ -1,4 +1,4 @@
-import {Bot, CreateBotRequest, isChatBotConfig, isImageBotConfig, UpdateBotRequest} from "../../../objects-api/bots";
+import {BotResult, CreateBotRequest, isChatBotConfig, isImageBotConfig, UpdateBotRequest} from "../../../objects-api/bots";
 import {ObjectId} from "mongodb";
 
 export interface BotDocument {
@@ -43,7 +43,7 @@ export function toBotDocument(bot: CreateBotRequest): BotDocument {
 	};
 }
 
-export function fromBotDocument(botDocument: any): Bot {
+export function fromBotDocument(botDocument: any): BotResult {
 	return {
 		...botDocument,
 		_id: botDocument._id.toString(),

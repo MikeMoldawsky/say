@@ -1,8 +1,8 @@
 import { PrismaClient, BotConfiguration, User, Bot, Pipeline, BotType } from "@prisma/client";
 import {describe, expect, test, beforeEach, beforeAll, afterAll} from '@jest/globals';
-import { PipelineBotRepository } from "../src/backend/repositories/pipelines/PipelineBotRepository";
+import { PipelineBotRepository } from "../src/backend/db/repositories/pipelines/PipelineBotRepository";
 import { nanoid } from 'nanoid';
-import { CreatePipelineBot } from "../src/backend/repositories/pipelines/IPipelineBotRepository";
+import { CreatePipelineBot } from "../src/backend/db/repositories/pipelines/IPipelineBotRepository";
 
 describe("PipelineBotRepository", () => {
   let pipelineBotRepository: PipelineBotRepository;

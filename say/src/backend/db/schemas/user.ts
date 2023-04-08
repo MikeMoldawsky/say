@@ -1,5 +1,5 @@
 import {ObjectId} from "mongodb";
-import {CreateUserRequest, UpdateUserRequest, User} from "../../../objects-api/users";
+import {CreateUserRequest, UpdateUserRequest, UserResult} from "../../../objects-api/users";
 
 export interface UserDocument {
 	_id: ObjectId
@@ -26,7 +26,7 @@ export function toUserDocument(userDocument: any): UserDocument {
 	};
 }
 
-export function fromUserDocument(userDocument: any): User {
+export function fromUserDocument(userDocument: any): UserResult {
 	return {
 		_id: userDocument._id.toString(),
 		email: userDocument.email,

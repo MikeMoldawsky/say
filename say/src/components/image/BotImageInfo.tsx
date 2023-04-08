@@ -1,9 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
-import {Bot} from "../../objects-api/bots";
+import {BotResult} from "../../objects-api/bots";
 
 interface BotImageInfoProps {
-	bot: Bot;
+	bot: BotResult;
 }
 
 const BotImageInfo: React.FC<BotImageInfoProps> = ({ bot }) => {

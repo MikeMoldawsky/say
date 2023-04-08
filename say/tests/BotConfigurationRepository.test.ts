@@ -1,8 +1,8 @@
 import {describe, expect, test, beforeEach, beforeAll, afterAll} from '@jest/globals';
 import { PrismaClient, BotType } from '@prisma/client';
-import { BotConfigurationRepository } from "../src/backend/repositories/configurations/BotConfigurationRepository";
-import { StableDiffusionTextToImageBotConfig } from '../src/backend/repositories/configurations/stable-diffusion/StableDiffusionTextToImageConfig';
-import { OpenAIChatCompletionBotConfig } from '../src/backend/repositories/configurations/openai/OpenAIChatCompletionConfig';
+import { BotConfigurationRepository } from "../src/backend/db/repositories/configurations/BotConfigurationRepository";
+import { StableDiffusionTextToImageBotConfig } from '../src/backend/db/repositories/configurations/stable-diffusion/StableDiffusionTextToImageConfig';
+import { OpenAIChatCompletionBotConfig } from '../src/backend/db/repositories/configurations/openai/OpenAIChatCompletionConfig';
 
 describe("BotConfigurationRepository", () => {
   let prisma: PrismaClient;

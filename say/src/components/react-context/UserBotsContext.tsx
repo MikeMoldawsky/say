@@ -1,12 +1,12 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import {Bot} from '../../objects-api/bots';
+import {BotResult} from '../../objects-api/bots';
 import {BotClient} from '../../frontend/clients/botClient';
 import {useUserContext} from './UserContext';
 
 interface UserBotsContextType {
-	bots: Bot[] | null;
-	selectedBot: Bot | null;
-	setSelectedBot: (bot: Bot | null) => void;
+	bots: BotResult[] | null;
+	selectedBot: BotResult | null;
+	setSelectedBot: (bot: BotResult | null) => void;
 	botClient: BotClient | null;
 	refreshBots: () => Promise<void>;
 }
@@ -26,8 +26,8 @@ const UserBotsContext = createContext<UserBotsContextType>({
 
 export const UserBotsProvider: React.FC<UserBotsProviderProps> = ({ children }) => {
 	const { userId } = useUserContext();
-	const [bots, setBots] = useState<Bot[] | null>(null);
-	const [selectedBot, setSelectedBot] = useState<Bot | null>(null);
+	const [bots, setBots] = useState<BotResult[] | null>(null);
+	const [selectedBot, setSelectedBot] = useState<BotResult | null>(null);
 	const [botClient, setBotClient] = useState<BotClient | null>(null);
 
 	useEffect(() => {

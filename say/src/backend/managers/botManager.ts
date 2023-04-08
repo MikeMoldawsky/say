@@ -1,6 +1,6 @@
 import {Configuration, OpenAIApi} from "openai";
 import {ChatCompletionRequestMessage} from "openai/api";
-import {Bot, ChatBotRequest, GetAnswerBotRequest, isChatBotConfig, isImageBotConfig} from "../../objects-api/bots";
+import {BotResult, ChatBotRequest, GetAnswerBotRequest, isChatBotConfig, isImageBotConfig} from "../../objects-api/bots";
 import {getBot} from "../db/bots";
 import {generateTextToImage} from "../stable-diffusion/stableDiffusionManager";
 import {GenerateTextToImageRequest} from "../../objects-api/generate-image";
@@ -34,7 +34,7 @@ export class BotManager {
 	}
 
 	async chat(botId: string, request: ChatBotRequest): Promise<string> {
-		const bot: Bot = await getBot(botId);
+		const bot: BotResult = await getBot(botId);
 		if(!isChatBotConfig(bot.config)) throw Error('Bot is not a chat bot');
 
 		const systemMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('system', bot.config.systemMessage);
@@ -43,7 +43,7 @@ export class BotManager {
 	}
 
 	async answer(botId: string, request: GetAnswerBotRequest): Promise<string> {
-		const bot: Bot = await getBot(botId);
+		const bot: BotResult = await getBot(botId);
 		if(isChatBotConfig(bot.config)) {
 			const systemMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('system', bot.config["systemMessage"]);
 			const userMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('user', request.content);

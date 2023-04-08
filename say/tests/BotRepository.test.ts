@@ -1,5 +1,5 @@
-import { BotRepository } from '../src/backend/repositories/bots/BotRepository';
-import { CreateBot } from '../src/backend/repositories/bots/IBotRepository';
+import { BotRepository } from '../src/backend/db/repositories/bots/BotRepository';
+import { CreateBot } from '../src/backend/db/repositories/bots/IBotRepository';
 import {describe, expect, test, beforeEach, beforeAll, afterAll} from '@jest/globals';
 import { BotConfiguration, PrismaClient, User } from "@prisma/client";
 import { BotType } from "@prisma/client";

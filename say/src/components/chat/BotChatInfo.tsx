@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Image from 'next/image';
-import {Bot} from "../../objects-api/bots";
+import {BotResult} from "../../objects-api/bots";
 import {BotContext} from "../../objects-api/contexts";
 import BotChatContextCard from "./BotChatContextCard";
 import AddContextModal from "./AddContextModal";
@@ -9,7 +9,7 @@ import _ from "lodash";
 import {useUserBotsContext} from "../react-context/UserBotsContext";
 
 interface BotChatInfoProps {
-	bot: Bot;
+	bot: BotResult;
 	contexts: BotContext[];
 	selectedContext: number | null;
 	switchContext: (index: number) => void;

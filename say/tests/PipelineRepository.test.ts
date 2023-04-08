@@ -1,8 +1,8 @@
 import { PrismaClient, Pipeline, User } from "@prisma/client";
 import {describe, expect, test, beforeEach, beforeAll, afterAll} from '@jest/globals';
-import { PipelineRepository } from "../src/backend/repositories/pipelines/PipelineRepository";
+import { PipelineRepository } from "../src/backend/db/repositories/pipelines/PipelineRepository";
 import { nanoid } from "nanoid";
-import { CreatePipeline } from "../src/backend/repositories/pipelines/IPipelineRepository";
+import { CreatePipeline } from "../src/backend/db/repositories/pipelines/IPipelineRepository";
 
 describe("PipelineRepository", () => {
   let pipelineRepository: PipelineRepository;

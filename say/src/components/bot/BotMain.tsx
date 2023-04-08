@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
-import {Bot, CreateBotRequest, UpdateBotRequest} from "../../objects-api/bots";
+import {BotResult, CreateBotRequest, UpdateBotRequest} from "../../objects-api/bots";
 import Button from "../Button";
 import CreateOrUpdateBotModal from "./CreateOrUpdateBotModal";
 import BotCardList from "./BotCardList";
@@ -13,7 +13,7 @@ const BotMain: React.FC = () => {
 	const [isLoading, setLoading] =  useState(false)
 	const { botClient, refreshBots, setSelectedBot } = useUserBotsContext();
 
-	const openConfigureBot = (bot: Bot) => {
+	const openConfigureBot = (bot: BotResult) => {
 		setSelectedBot(bot);
 		setOpenModal(true);
 	};

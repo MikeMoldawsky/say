@@ -1,11 +1,11 @@
 import {addUserBot, getUserDocument, removeUserBot} from './users';
 import {ObjectId} from 'mongodb';
 import {connectToDatabase} from './db';
-import {Bot, CreateBotRequest, UpdateBotRequest} from "../../objects-api/bots";
+import {BotResult, CreateBotRequest, UpdateBotRequest} from "../../objects-api/bots";
 import {BotDocument, fromBotDocument, PartialBotDocument, toBotDocument, toPartialBotDocument} from "./schemas/bot";
 
 
-export async function getBot(botId: string): Promise<Bot> {
+export async function getBot(botId: string): Promise<BotResult> {
 	const botsCollection = await getBotsCollection();
 	const bot = await botsCollection.findOne({ _id: new ObjectId(botId) });
 	if(!bot){
@@ -14,7 +14,7 @@ export async function getBot(botId: string): Promise<Bot> {
 	return fromBotDocument(bot);
 }
 
-export async function getBots(userId: string): Promise<Bot[]> {
+export async function getBots(userId: string): Promise<BotResult[]> {
 	const userDocument = await getUserDocument(userId);
 	if (!userDocument) {
 		throw new Error('User not found');
@@ -25,7 +25,7 @@ export async function getBots(userId: string): Promise<Bot[]> {
 	return bots.map(bot => fromBotDocument(bot));
 }
 
-export async function addBot(userId: string, bot: CreateBotRequest): Promise<Bot> {
+export async function addBot(userId: string, bot: CreateBotRequest): Promise<BotResult> {
 	const botsCollection = await getBotsCollection();
 	const newBot: BotDocument = toBotDocument(bot);
 	await botsCollection.insertOne(newBot);
