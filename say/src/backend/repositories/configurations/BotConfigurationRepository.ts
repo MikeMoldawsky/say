@@ -1,13 +1,12 @@
-import { plainToClass } from "class-transformer";
-import { validate } from "class-validator";
 import { BotConfiguration, BotType, Prisma, PrismaClient } from "@prisma/client";
-import { IBotConfigurationRepository } from "./IBotConfigurationRepository";
+import { BotConfigInternal, IBotConfigurationRepository } from "./IBotConfigurationRepository";
 
 
 export class BotConfigurationRepository implements IBotConfigurationRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async createBotConfiguration(type: BotType, configuration: object): Promise<BotConfiguration> {
+  async createBotConfiguration(botConfiguration: BotConfigInternal): Promise<BotConfiguration> {
+    const { type, configuration } = botConfiguration;
     if (!this.validateConfiguration(type, configuration)) {
       throw new Error(`Invalid configuration for BotType: ${type}`);
     }
@@ -27,12 +26,17 @@ export class BotConfigurationRepository implements IBotConfigurationRepository {
     return this.prisma.botConfiguration.findUnique({ where: { id } });
   }
 
-  updateBotConfiguration(configuration: BotConfiguration): Promise<BotConfiguration> {
+  updateBotConfiguration(id: string, botConfiguration: BotConfigInternal): Promise<BotConfiguration> {
+    const { type, configuration } = botConfiguration;
+    if (!this.validateConfiguration(type, configuration)) {
+      throw new Error(`Invalid configuration for BotType: ${type}`);
+    }
+
     return this.prisma.botConfiguration.update({ 
-      where: { id: configuration.id }, 
+      where: { id }, 
       data: {
-        type: configuration.type,
-        data: configuration.data as Prisma.InputJsonValue,
+        type,
+        data: JSON.stringify(configuration),
       }
     });
   }
@@ -42,20 +46,7 @@ export class BotConfigurationRepository implements IBotConfigurationRepository {
   }
 
   private validateConfiguration(type: BotType, configuration: object): boolean {
-    // let config: OpenAiChatCompletionConfig;
-
-    // if (type === BotType.OPENAI_CHAT_COMPLETION) {
-    //   config = plainToClass(OpenAiChatCompletionConfig, configuration);
-    // } else {
-    //   throw new Error(`Unsupported BotType: ${type}`);
-    // }
-
-    // const errors = validate(config);
-    // if (errors.length > 0) {
-    //   throw new Error(`Validation failed: ${JSON.stringify(errors)}`);
-    // }
-
-    // return config;
+    
     return true;
   }
 }

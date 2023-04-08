@@ -9,7 +9,7 @@ datasource db {
 }
 
 enum BotType {
-  STABLE_DIFFUSION_IMAGE
+  STABLE_DIFFUSION_TEXT_TO_IMAGE
   OPENAI_CHAT_COMPLETION
 }
 
