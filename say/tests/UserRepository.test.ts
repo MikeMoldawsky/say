@@ -1,5 +1,5 @@
-import { CreateUser } from '../src/backend/repositories/IUserRepository';
-import { UserRepository } from '../src/backend/repositories/UserRepository';
+import { CreateUser } from '../src/backend/repositories/users/IUserRepository';
+import { UserRepository } from '../src/backend/repositories/users/UserRepository';
 import {describe, expect, test, beforeEach, beforeAll, afterAll} from '@jest/globals';
 import { PrismaClient, User } from "@prisma/client";
 

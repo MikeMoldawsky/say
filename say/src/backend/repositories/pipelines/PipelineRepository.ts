@@ -1,20 +1,15 @@
 import { PrismaClient, Pipeline } from "@prisma/client";
-import { IPipelineRepository } from "./IPipelineRepository";
-import { PipelineBotRepository } from "./PipelineBotRepository";
-import { IPipelineBotRepository } from "./IPipelineBotRepository";
+import { CreatePipeline, IPipelineRepository } from "./IPipelineRepository";
 
 export class PipelineRepository implements IPipelineRepository {
-  private pipelineBotRepository: IPipelineBotRepository;
 
-  constructor(private prisma: PrismaClient) {
-    this.pipelineBotRepository = new PipelineBotRepository(prisma);
-  }
+  constructor(private prisma: PrismaClient) {}
 
-  async createPipeline(pipeline: Pipeline, ownerId: string): Promise<Pipeline> {
+  async createPipeline(createPipeline: CreatePipeline): Promise<Pipeline> {
     return this.prisma.pipeline.create({
       data: {
-        ...pipeline,
-        ownerId,
+        ...createPipeline,
+        ownerId: createPipeline.ownerId,
       },
     });
   }
