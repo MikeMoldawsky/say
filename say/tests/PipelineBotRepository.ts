@@ -34,6 +34,7 @@ describe("PipelineBotRepository", () => {
         name: "TestBot",
         description: "A test bot",
         configurationId: testConfig.id,
+        ownerId: testUser.id,
       },
     });
 
