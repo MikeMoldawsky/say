@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { BotManager } from '../../../../../backend/managers/botManager';
+import { ArtificialIntelligenceManager } from '../../../../../backend/managers/ArtificialIntelligenceManager';
 import {ChatBotResponse, GetAnswerBotRequest} from "../../../../../objects-api/bots";
 
 
-const botManager = new BotManager();
+const aiManager = new ArtificialIntelligenceManager();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {query: { botId }} = req;
@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (req.method) {
       case 'POST':
         const request: GetAnswerBotRequest = req.body;
-        const message = await botManager.answer(botId as string, request);
+        const message = await aiManager.answer(botId as string, request);
         const response: ChatBotResponse = { message };
         res.status(200).json(response);
         break;

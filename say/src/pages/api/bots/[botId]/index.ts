@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { deleteBot, updateBot} from '../../../../backend/db/bots';
 import {getUserIdFromHeader} from "../../../../backend/utils/requests";
 import { botManager } from '../../../..//backend/db/db';
 
