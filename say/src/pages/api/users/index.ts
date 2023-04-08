@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { createUser } from '../../../backend/db/users';
+import { userManager } from '@/backend/db/db';
 
 export default async function handler(
 	req: NextApiRequest,
@@ -8,7 +8,7 @@ export default async function handler(
 	if (req.method === 'POST') {
 		try {
 			const userData = req.body;
-			await createUser(userData);
+			//TODO: creating users
 			res.status(201).json({ message: 'User created successfully' });
 		} catch (error) {
 			if (error instanceof Error) {

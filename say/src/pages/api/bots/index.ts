@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { addBot, addBots } from '../../../backend/db/bots';
 import {getUserIdFromHeader} from "../../../backend/utils/requests";
+import { botManager } from '../../../backend/db/db';
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
 	const userId = getUserIdFromHeader(req.headers);
@@ -19,11 +20,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			console.log('req.body:', createBotReq);
 			if (Array.isArray(createBotReq)) {
 				// If the request body is an array of bots, call addBots
-				await addBots(userId, createBotReq);
-				res.status(201).json({ message: 'Bots added successfully' });
+				const newBots = await botManager.createBots(userId, createBotReq);
+				res.status(201).json({ message: 'Bots added successfully', newBots });
 			} else {
 				// If the request body is a single bot object, call addBot
-				const newBot = await addBot(userId, createBotReq);
+				const newBot = await botManager.createBot(userId, createBotReq);
 				res.status(201).json(newBot);
 			}
 		} catch (error) {

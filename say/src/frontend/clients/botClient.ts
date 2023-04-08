@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {
-	Bot,
+	BotResult,
 	ChatBotRequest,
 	CreateBotRequest,
 	GetAnswerBotRequest,
@@ -48,7 +48,7 @@ export class BotClient {
 		}
 	}
 
-	async  getBot(botId: string): Promise<Bot | null> {
+	async  getBot(botId: string): Promise<BotResult | null> {
 		//TODO: add authentication
 		try {
 			console.log('Get bot', {userId: this.userId, botId});
@@ -72,7 +72,7 @@ export class BotClient {
 		}
 	}
 
-	async fetchBots(): Promise<Bot[]> {
+	async fetchBots(): Promise<BotResult[]> {
 		//TODO: add authentication
 		console.log("Fetching bots", {userId: this.userId});
 		try {

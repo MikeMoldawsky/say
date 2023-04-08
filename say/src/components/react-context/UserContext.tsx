@@ -13,7 +13,9 @@ const UserContext = createContext<UserContextType>({
 	userId: null,
 });
 
-const CONSTANT_USER_ID = '6422d27a79b10a5364ed8cd0';
+// const CONSTANT_USER_ID = '6422d27a79b10a5364ed8cd0';
+
+const CONSTANT_USER_ID = 'clg7yl6o00000ur08dp9a1bek';
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 	const [userId, setUserId] = useState<string | null>(null);

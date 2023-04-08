@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import BotCard from './BotCard';
-import {Bot} from "../../objects-api/bots";
+import {BotResult} from "../../objects-api/bots";
 import {useUserBotsContext} from "../react-context/UserBotsContext";
 import Loader from "../Loader";
 import {useRouter} from "next/router";
 
 interface BotCardListProps {
-	onConfigure: (bot: Bot) => void;
+	onConfigure: (bot: BotResult) => void;
 }
 
 const BotCardList: React.FC<BotCardListProps> = ({onConfigure}) => {
@@ -14,7 +14,7 @@ const BotCardList: React.FC<BotCardListProps> = ({onConfigure}) => {
 	const [isLoading, setLoading] =  useState(false)
 	const router = useRouter();
 
-	const handleDelete = async (bot: Bot) => {
+	const handleDelete = async (bot: BotResult) => {
 		setLoading(true);
 		if (botClient === null) {
 			throw new Error("Bot client is null");
@@ -24,13 +24,13 @@ const BotCardList: React.FC<BotCardListProps> = ({onConfigure}) => {
 		setLoading(false);
 	}
 
-	const routeToChat = (bot: Bot) => {
+	const routeToChat = (bot: BotResult) => {
 		setLoading(true);
 		setSelectedBot(bot);
 		router.push(`/chat`);
 	};
 
-	const routeToImage = (bot: Bot) => {
+	const routeToImage = (bot: BotResult) => {
 		setLoading(true);
 		setSelectedBot(bot);
 		router.push(`/image`);

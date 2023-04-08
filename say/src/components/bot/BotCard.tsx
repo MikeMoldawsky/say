@@ -1,17 +1,17 @@
 import React from 'react';
 import Image from 'next/image';
-import { Bot } from '../../objects-api/bots';
+import { BotResult } from '../../objects-api/bots';
 
 interface BotCardProps {
-	bot: Bot;
-	onDelete: (bot: Bot) => void;
-	onConfigure: (bot: Bot) => void;
-	onChat: (bot: Bot) => void;
-	onImage: (bot: Bot) => void;
+	bot: BotResult;
+	onDelete: (bot: BotResult) => void;
+	onConfigure: (bot: BotResult) => void;
+	onChat: (bot: BotResult) => void;
+	onImage: (bot: BotResult) => void;
 }
 
 const BotCard: React.FC<BotCardProps> = ({ bot, onConfigure, onChat, onImage, onDelete }) => {
-	const handleAction = (bot: Bot) => {
+	const handleAction = (bot: BotResult) => {
 		if (bot.config.type === 'chat') {
 			onChat(bot);
 		} else {

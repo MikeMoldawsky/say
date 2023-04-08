@@ -1,21 +1,21 @@
-export interface Bot {
+export interface BotResult {
 	_id: string;
 	name: string;
 	imageUrl: string;
 	description: string;
-	config: BotConfig;
+	config: BotConfigRequest;
 }
 
-export interface BotConfig {
+export interface BotConfigRequest {
 	type: 'chat' | 'image';
 }
 
-export interface ChatBotConfig extends BotConfig {
+export interface ChatBotConfig extends BotConfigRequest {
 	type: 'chat';
 	systemMessage: string;
 }
 
-export interface ImageBotConfig extends BotConfig {
+export interface ImageBotConfig extends BotConfigRequest {
 	type: 'image';
 }
 
@@ -23,10 +23,10 @@ export interface CreateBotRequest {
 	name: string;
 	imageUrl: string;
 	description: string;
-	config: BotConfig
+	config: BotConfigRequest
 }
 
-export type UpdateBotRequest = Partial<Omit<Bot, '_id'>>;
+export type UpdateBotRequest = Partial<Omit<BotResult, '_id'>>;
 
 
 export interface GetAnswerBotRequest {
@@ -42,11 +42,11 @@ export interface ChatBotResponse {
 }
 
 
-export function isChatBotConfig(config: BotConfig): config is ChatBotConfig {
+export function isChatBotConfig(config: BotConfigRequest): config is ChatBotConfig {
 	return config.type === 'chat';
 }
 
-export function isImageBotConfig(config: BotConfig): config is ImageBotConfig {
+export function isImageBotConfig(config: BotConfigRequest): config is ImageBotConfig {
 	return config.type === 'image';
 }
 

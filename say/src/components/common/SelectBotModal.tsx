@@ -2,22 +2,22 @@ import React from 'react';
 import Image from 'next/image';
 import { useUserBotsContext } from '../react-context/UserBotsContext';
 import { useUserContext } from '../react-context/UserContext';
-import { Bot } from '../../objects-api/bots';
+import { BotResult } from '../../objects-api/bots';
 import Button from "../Button";
 import {createComputedPropertyName} from "@ts-morph/common/lib/typescript";
 
 interface SelectBotModalProps {
 	buttonText: string;
 	onClose: () => void;
-	setSelectedBot: (bot: Bot) => void;
-	prevSelectedBot?: Bot;
+	setSelectedBot: (bot: BotResult) => void;
+	prevSelectedBot?: BotResult;
 }
 
 const SelectBotModal: React.FC<SelectBotModalProps> = ({ onClose, buttonText, setSelectedBot, prevSelectedBot }) => {
 	const { userId } = useUserContext();
 	const { bots } = useUserBotsContext();
 
-	const handleSelectBot = (bot: Bot) => {
+	const handleSelectBot = (bot: BotResult) => {
 		if (userId) {
 			setSelectedBot(bot);
 			onClose();
@@ -35,7 +35,7 @@ const SelectBotModal: React.FC<SelectBotModalProps> = ({ onClose, buttonText, se
 					</button>
 				</div>
 				<ul>
-					{bots && bots.map((bot: Bot) => (
+					{bots && bots.map((bot: BotResult) => (
 						<li key={bot._id} className="flex items-center justify-between p-2 mb-2 border border-gray-300 rounded-md hover:bg-gray-100">
 							<div className="flex items-center">
 								<Image src={bot.imageUrl} alt={bot.name} className="w-12 h-12 object-cover rounded mr-4" width={80} height={80} />

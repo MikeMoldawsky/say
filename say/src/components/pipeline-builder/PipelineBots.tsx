@@ -2,11 +2,11 @@ import React from 'react';
 import PipelineBotCard from "./PipelineBotCard";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowDown} from "@fortawesome/free-solid-svg-icons";
-import {Bot} from "../../objects-api/bots";
+import {BotResult} from "../../objects-api/bots";
 
 
 export interface PipelineBot {
-	bot: Bot;
+	bot: BotResult;
 	answer: string | null;
 	isOutputBot: boolean;
 }

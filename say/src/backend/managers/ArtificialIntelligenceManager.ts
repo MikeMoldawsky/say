@@ -1,9 +1,9 @@
 import {Configuration, OpenAIApi} from "openai";
 import {ChatCompletionRequestMessage} from "openai/api";
-import {Bot, ChatBotRequest, GetAnswerBotRequest, isChatBotConfig, isImageBotConfig} from "../../objects-api/bots";
-import {getBot} from "../db/bots";
+import {BotResult, ChatBotRequest, GetAnswerBotRequest, isChatBotConfig, isImageBotConfig} from "../../objects-api/bots";
 import {generateTextToImage} from "../stable-diffusion/stableDiffusionManager";
 import {GenerateTextToImageRequest} from "../../objects-api/generate-image";
+import { botManager } from "../db/db";
 
 const chatGPT_API_KEY = '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'; // TODO: remove to env var
 
@@ -16,7 +16,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 
-export class BotManager {
+export class ArtificialIntelligenceManager {
 	static toChatCompletionMessage(role: 'system' | 'user' | 'assistant', content: string): ChatCompletionRequestMessage {
 		return {role, content}
 	}
@@ -34,20 +34,20 @@ export class BotManager {
 	}
 
 	async chat(botId: string, request: ChatBotRequest): Promise<string> {
-		const bot: Bot = await getBot(botId);
+		const bot: BotResult = await botManager.getBotById(botId);
 		if(!isChatBotConfig(bot.config)) throw Error('Bot is not a chat bot');
 
-		const systemMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('system', bot.config.systemMessage);
-		const messages: Array<ChatCompletionRequestMessage> = request.messages.map((msg) => BotManager.toChatCompletionMessage(msg.role, msg.content));
-		return await BotManager.chatCompletion([systemMessage, ...messages]);
+		const systemMessage: ChatCompletionRequestMessage = ArtificialIntelligenceManager.toChatCompletionMessage('system', bot.config.systemMessage);
+		const messages: Array<ChatCompletionRequestMessage> = request.messages.map((msg) => ArtificialIntelligenceManager.toChatCompletionMessage(msg.role, msg.content));
+		return await ArtificialIntelligenceManager.chatCompletion([systemMessage, ...messages]);
 	}
 
 	async answer(botId: string, request: GetAnswerBotRequest): Promise<string> {
-		const bot: Bot = await getBot(botId);
+		const bot: BotResult = await botManager.getBotById(botId);
 		if(isChatBotConfig(bot.config)) {
-			const systemMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('system', bot.config["systemMessage"]);
-			const userMessage: ChatCompletionRequestMessage = BotManager.toChatCompletionMessage('user', request.content);
-			return await BotManager.chatCompletion([systemMessage, userMessage]);
+			const systemMessage: ChatCompletionRequestMessage = ArtificialIntelligenceManager.toChatCompletionMessage('system', bot.config["systemMessage"]);
+			const userMessage: ChatCompletionRequestMessage = ArtificialIntelligenceManager.toChatCompletionMessage('user', request.content);
+			return await ArtificialIntelligenceManager.chatCompletion([systemMessage, userMessage]);
 		} else if (isImageBotConfig(bot.config)) {
 			const req : GenerateTextToImageRequest = {
 				prompt: {

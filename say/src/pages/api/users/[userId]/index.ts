@@ -1,5 +1,6 @@
+import { userManager } from '../../../../backend/db/db';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getUserDocument } from '../../../../backend/db/users';
+
 
 export default async function handler(
 	req: NextApiRequest,
@@ -8,9 +9,9 @@ export default async function handler(
 	const {query: { userId }} = req;
 	if (req.method === 'GET') {
 		try {
-			const user = await getUserDocument(userId as string);
-			if (user) {
-				res.status(200).json(user);
+			const newUser = await userManager.getUserById(userId as string);
+			if (newUser) {
+				res.status(200).json(newUser);
 			} else {
 				res.status(404).json({ message: `User with ID ${userId} not found` });
 			}
