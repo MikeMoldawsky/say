@@ -5,7 +5,7 @@ import {generateTextToImage} from "../stable-diffusion/stableDiffusionManager";
 import {GenerateTextToImageRequest} from "../../objects-api/generate-image";
 import { botManager } from "../db/db";
 
-const chatGPT_API_KEY = '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'; // TODO: remove to env var
+const chatGPT_API_KEY = '' // TODO: remove to env var
 
 const configuration = new Configuration({
 	organization: "org-E4HbdHV5iIPjN29fzh8sqVms",
